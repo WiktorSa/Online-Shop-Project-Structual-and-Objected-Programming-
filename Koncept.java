@@ -72,7 +72,7 @@ class Shop
 		 * choice -- // Wybór 1 to dla nas wybór 0
 		 * Tutaj uwzględnie warunek pytający czy użytkownik jest pewny wyboru swojej opcji
 		 * isPaymentDone = waysOfPaying[i].doSomething // Funkcja powinna zwracać true lub false (true - płatność została dokonana)
-		 * Korzystając z powyższej wiadomości albo wyświetlę pełną informację na temat zamówienia albo 
+		 * Korzystając z powyższej wiadomości albo wyświetlę pełną informację na temat zamówienia albo powiem, że płatność nie została dokonana
 		 */
 	
 		/* Przykładowy output
