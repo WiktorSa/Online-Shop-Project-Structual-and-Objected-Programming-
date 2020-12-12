@@ -1,27 +1,24 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Scanner;
 
-// Klasa stworzona przez Wiktor Sadowy
-// Notka do siebie - dokoncz implementacje kupna towarow (klient wybiera ilosc towarow)
-// Potem umozliw klientowi zakonczenie kupna przedmiotow (testem bedzie wypisanie zawartosci koszyka po zrobieniu zakupow
-// Zaimplementuj metodê skasowania produktów z koszyka (w dowolnej iloœci)
-// Potem mo¿esz przejœæ do implementacji klasy Klient
+// Klasa zaimplementowana przez Wiktor Sadowy
 class ChooseItems 
 {
-	private Map<String, Integer> basket; // Móg³bym tutaj zastosowaæ tablicê Stringów i mieæ ka¿dy przedmiot zapisany w tej tablicy w takiej iloœci jak¹ klient chce albo mieæ dwie oddzielne tablice i je jakoœ ze sob¹ powi¹zaæ (co komplikuje kod z oczywistych przyczyn)
 	private String locationOfTheCatalog;
 	private String[] categoriesNames;
-	private String[][][] productsNames; // S¹ potrzebne trzy [] (podzia³ na kategorie, produkty oraz informacje o produkcie)
+	private String[][][] productsNames; // S¹ potrzebne trzy [] (podzia³ na kategorie, produkty oraz informacje o produkcie (kategoria, nazwa, cena))
+	private String basket[][]; // W koszyku bêd¹ zawarte informacje o kategorii, nazwie, cenie i ilosci produktu
+	private double price;
 	
 	public ChooseItems() 
 	{
-		this.basket = null;
 		this.locationOfTheCatalog = "Zakupy/";
 		this.categoriesNames = obtainCategoriesNames();
 		this.productsNames = obtainProductsNames(categoriesNames);
+		this.basket = new String[0][];
+		this.price = 0;
 	}
 	
 	private String[] obtainCategoriesNames()
@@ -114,72 +111,208 @@ class ChooseItems
 		return newArray;
 	}
 	
-	// Notka do siebie - powinnyœmy umo¿liwiæ u¿ytkownikowi mo¿liwoœæ 
+	@SuppressWarnings("resource")
 	public void doShopping()
 	{
 		System.out.println("Witamy w sklepie .... Zyczymy udanych zakupow"); //Jak mam nazwaæ sklep? XD
-		System.out.println("Dzisiaj proponujemy panstwu kupno"); // To jest do implementacji (system proponowania zamówienia powinien byæ oparty na tym, ¿e proponowany jest jeden losowy produkt z tych najczesciej wybieranych przez klienta)
 		boolean isShopping = true;
 		Scanner takingInput = new Scanner(System.in);
 		while (isShopping)
 		{
-			for (int i=0; i<categoriesNames.length; i++)
-			{
-				System.out.println((i+1) + ". " + categoriesNames[i]);
-			}
-			System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
-			System.out.println("Wpisz cokolwiek innego aby wyjsc ze sklepu");
-			try
-			{
-				int numberOfCategory = takingInput.nextInt();
-				// Musisz dac nextLine inaczej Scanner nie bêdzie poprawnie wykonywa³ swoich funkcji
-				takingInput.nextLine();
-				// Czy u¿ytkownik
-				if (numberOfCategory>0 && numberOfCategory<=categoriesNames.length) {
-					System.out.println("Przegladasz teraz produkty z kategorii: " + categoriesNames[numberOfCategory-1]);
-					doShoppingBuyingItems(productsNames[numberOfCategory-1]);
-				}
-				else {
-					System.out.println("Dziekujemy za odwiedzenie naszego sklepu");
+			doShoppingSelectingCategory();
+			if (this.basket.length == 0) {
+				System.out.println("Czy naprawde nic nie chcesz kupic (wpisz 1 jesli tak)");
+				String decision = takingInput.nextLine();
+				if (decision.equals("1")) {
+					System.out.println("Dziekujemy za zakupy w naszym sklepie");
 					System.exit(0);
 				}
 			}
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Dziekujemy za odwiedzenie naszego sklepu");
-				System.exit(0);
+			else {
+				doShopingErasingItems();
+				System.out.println("Stan koszyka");
+				System.out.println(getInfoAboutBasket());
+				System.out.println("Napisz 1 jesli chcesz potwierdzic zawartosc koszyka (tej decyzji nie mozna cofnac)");
+				String decision = takingInput.nextLine();
+				if (decision.equals("1")) {
+					isShopping = false;
+				}
 			}
-			
-			isShopping = false;
 		}
-		takingInput.close();
 	}
 	
+	// Klient moze kupowac produkty ile chce
+	@SuppressWarnings("resource")
+	private void doShoppingSelectingCategory() 
+	{
+		for (int i=0; i<categoriesNames.length; i++)
+		{
+			System.out.println((i+1) + ". " + categoriesNames[i]);
+		}
+		System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
+		System.out.println("Wpisz 0 aby zakonczy kupowanie produktow");
+		try
+		{
+			Scanner takingInput = new Scanner(System.in);
+			int numberOfCategory = takingInput.nextInt();
+			takingInput.nextLine();
+			if (numberOfCategory == 0) {
+				return;
+			}
+			else if (numberOfCategory>0 && numberOfCategory<=categoriesNames.length) {
+				System.out.println("Przegladasz teraz produkty z kategorii: " + categoriesNames[numberOfCategory-1]);
+				doShoppingBuyingItems(productsNames[numberOfCategory-1]);
+				doShoppingSelectingCategory();
+			}
+			else {
+				doShoppingSelectingCategory();
+			}
+		}
+		catch (java.util.InputMismatchException e) {doShoppingSelectingCategory();}
+	}
+	
+	@SuppressWarnings("resource")
 	private void doShoppingBuyingItems(String[][] items)
 	{
 		Scanner takingInput = new Scanner(System.in);
-		for (int i=0; i<items.length; i++)
-		{
-			System.out.println((i+1) + ". " + items[i][1] + ", Cena - " + items[i][2]);
+		if (items != null) {
+			for (int i=0; i<items.length; i++)
+			{
+				System.out.println((i+1) + ". " + items[i][1] + ", Cena - " + items[i][2]);
+			}
+			System.out.println("Wpisz numer produktu, aby go kupic");
+			System.out.println("Wpisz cokolwiek innego jesli chcesz cofnac sie do wyboru kategorii");
 		}
-		System.out.println("Wpisz numer produktu, aby go kupic");
-		System.out.println("Wpisz cokolwiek innego jesli chcesz cofnac sie do wyboru kategorii");
+		else {
+			System.out.println("Brak produktow w podanej kategorii");
+			System.out.println("Wpisz cokolwiek, zeby sie cofnac");
+		}
 		try
 		{
 			int numberOfItem = takingInput.nextInt();
 			takingInput.nextLine();
 			if (numberOfItem>0 && numberOfItem<=items.length) {
 				System.out.println("Ile chcesz kupic produktow o nazwie: " + items[numberOfItem-1][1]);
+				int numberOfProducts = 0;
 				try
 				{
-					
+					numberOfProducts = takingInput.nextInt();
+					takingInput.nextLine();
 				}
-				catch (java.util.InputMismatchException e) 
-				{
-					
-				}
+				catch (java.util.InputMismatchException e) {numberOfProducts = 0;}
+				if (numberOfProducts>0) {addAProductToTheBasket(items[numberOfItem-1], numberOfProducts);}
 			}
 		}
 		catch (java.util.InputMismatchException e) {}
+	}
+	
+	// Je¿eli produkt ju¿ jest w koszyku to zmieniamy liczbê zamówionych produktów. Je¿eli nie to dodajemy go do koszyka
+	private void addAProductToTheBasket(String[] productInfo, int numberOfProducts)
+	{
+		String[][] newBasket = new String[this.basket.length+1][4];
+		this.price = this.price + Double.valueOf(productInfo[2]) * (double)(numberOfProducts); 
+		for (int i=0; i<this.basket.length; i++)
+		{
+			// Produkt juz byl w koszyku
+			if (this.basket[i][1] == productInfo[1]) {
+				int numberOfProductsInBasket = Integer.parseInt(this.basket[i][3]);
+				numberOfProductsInBasket += numberOfProducts;
+				this.basket[i][3] = String.valueOf(numberOfProductsInBasket);
+				return;
+			}
+			else {
+				newBasket[i] = this.basket[i];
+			}
+		}
+		newBasket[newBasket.length-1][0] =  productInfo[0];
+		newBasket[newBasket.length-1][1] =  productInfo[1];
+		newBasket[newBasket.length-1][2] =  productInfo[2];
+		newBasket[newBasket.length-1][3] =  String.valueOf(numberOfProducts);
+		this.basket = newBasket;
+	}
+
+	@SuppressWarnings("resource")
+	private void doShopingErasingItems()
+	{
+		System.out.println("Obecna zawartosc koszyka"); 
+		System.out.println(getInfoAboutBasket());
+		System.out.println("Wpisz numer produktu, aby sie go pozbyc z koszyka");
+		System.out.println("Wpisz 0 jezeli chcesz przejsc to potwierdzenia zawartosci koszyka");
+		try
+		{
+			Scanner takingInput = new Scanner(System.in);
+			int decision = takingInput.nextInt();
+			takingInput.nextLine();
+			if (decision == 0) {
+				return;
+			}
+			else if (decision>0 && decision<=this.basket.length) {
+				System.out.println("Ile produktow chcesz sie pozbyc?");
+				int numberOfItems = 0;
+				try
+				{
+					numberOfItems = takingInput.nextInt();
+					takingInput.nextLine();
+					// Jezeli uzytkownik wprowadzil wiêksz¹ liczbê produktów ni¿ jest w koszyku
+					if (numberOfItems>Integer.parseInt(this.basket[decision-1][3])) {numberOfItems = Integer.parseInt(this.basket[decision-1][3]);}
+				}
+				catch (java.util.InputMismatchException e) {numberOfItems = 0;}
+				// Zmieniamy zawartosc koszyka wtedy gdy uzytkownik wykresla jakis produkt
+				if (numberOfItems>0) {eraseProductFromTheBasket(this.basket[decision-1], numberOfItems);}
+			}
+			doShopingErasingItems();
+		}
+		catch (java.util.InputMismatchException e) {doShopingErasingItems();}
+	}
+	
+	private void eraseProductFromTheBasket(String[] productInfo, int numberOfProducts)
+	{
+		String[][] newBasket = new String[this.basket.length-1][4];
+		this.price = this.price - Double.valueOf(productInfo[2]) * (double)(numberOfProducts); 
+		int p=0;
+		for (int i=0; i<this.basket.length; i++)
+		{
+			// Znalezlismy szukany produkt
+			if (this.basket[i][1] == productInfo[1]) {
+				int numberOfProductsInBasket = Integer.parseInt(this.basket[i][3]);
+				numberOfProductsInBasket -= numberOfProducts;
+				// Jezeli uzytkownik zdecydowal, ze nie skasuje wszystkich produktow bedacych w koszyku to po prostu zmieniamy ilosc produktow w this.basket i tyle
+				if (numberOfProducts != 0) {
+					this.basket[i][3] = String.valueOf(numberOfProductsInBasket);
+					return;
+				}
+			}
+			else {
+				newBasket[p] = this.basket[i];
+				p++;
+			}
+		}
+		this.basket = newBasket;
+	}
+	
+	private String getInfoAboutBasket()
+	{
+		String data = "";
+		for (int i=0; i<this.basket.length; i++)
+		{
+			data = data + (i+1) + ". " + this.basket[i][1] + ", Cena: " + this.basket[i][2] + " Ilosc produktow: " + this.basket[i][3] + "\n"; 
+		}
+		data = data + "Cena koncowa: " + this.price;
+		return data;
+	}
+	
+	public String toString()
+	{
+		String data = "Zawartosc koszyka:\n";
+		for (int i=0; i<this.basket.length; i++)
+		{
+			data = data + (i+1) + ". " + this.basket[i][1] + ", Cena: " + this.basket[i][2] + " Ilosc produktow: " + this.basket[i][3] + "\n"; 
+		}
+		return data;
+	}
+	
+	public double getPrice()
+	{
+		return price;
 	}
 }
