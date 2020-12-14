@@ -43,7 +43,7 @@ class Shop
 	}
 
 	@SuppressWarnings("resource")
-	public static boolean getPaymentInfo(WaysOfPayments[] waysOfPayments)
+	public static boolean getPaymentInfo(Client client, WaysOfPayments[] waysOfPayments)
 	{
 		Scanner scanner = new Scanner(System.in);
 		for (int i=0; i<waysOfPayments.length; i++)
@@ -56,7 +56,7 @@ class Shop
 			int decision = scanner.nextInt();
 			scanner.nextLine();
 			if (decision>0 && decision<=waysOfPayments.length) {
-				waysOfPayments[decision-1].pay();
+				waysOfPayments[decision-1].pay(client);
 				return waysOfPayments[decision-1].isPaymentDone();
 			}
 			else {
@@ -90,7 +90,7 @@ class Shop
 		transactionInfo += ((Dostawa) waysOfDelivery[decision-1]).deliveryInfo();
 		cena += waysOfDelivery[decision-1].getPrice();
 		// Wybieranie metody platnosci
-		boolean wasTransactionPaid = getPaymentInfo(waysOfPayments);
+		boolean wasTransactionPaid = getPaymentInfo(client, waysOfPayments);
 		if (wasTransactionPaid) {
 			System.out.println("");
 			System.out.println(transactionInfo);
