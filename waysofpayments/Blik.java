@@ -6,14 +6,16 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import client.Client;
+
 //Klasa zimplementowana przez Szymona Sawczuka
 
 
 public class Blik implements WaysOfPayments{
 	
 	private Timer timer; 
-	private boolean isPaymentDone = false; //NOTE: Potrzebne aby móc poinformowaæ o dokonaniu p³atnoœci
-	private static boolean isActive; //NOTE: Static, aby moc wys³aæ j¹ do statycznej funkcji setActive()
+	private boolean isPaymentDone = false; //NOTE: Potrzebne aby moc poinformowac o dokonaniu platnosci
+	private static boolean isActive; //NOTE: Static, aby moc wyslac ja do statycznej funkcji setActive()
 
 	public static void setActive(boolean isActive) {  //NOTE: Static potrzebny jest, aby dac dostep do tej funkcji w timerTask
 		Blik.isActive = isActive;
@@ -32,7 +34,7 @@ public class Blik implements WaysOfPayments{
 	
 	@SuppressWarnings("resource")
 	@Override
-	public void pay() {
+	public void pay(Client client) {
 		
 		int code = 0;
 		int properCode = this.generateCode();
@@ -40,33 +42,33 @@ public class Blik implements WaysOfPayments{
 		Scanner input = new Scanner(System.in);
 		
 		
-		System.out.printf("Proszê podaæ 6-cyforwy kod(kod poprawny:%d, powrót na stronê wpisz (-1)):%n", properCode);
+		System.out.printf("Prosze podac 6-cyforwy kod(kod poprawny:%d, powrot na strone wpisz (-1)):%n", properCode);
 		while(!done) {
 			try {
 				
 				code = input.nextInt();
 				
 				if(code == -1)
-					done=true; //NOTE: Powrót na stronê
+					done=true; //NOTE: Powrot na strone
 				
-				else if(code<100000 || code>999999) //NOTE: Sprawdzam czy u¿ytkownik poda³ odpowiednio d³ugi kod
+				else if(code<100000 || code>999999) //NOTE: Sprawdzam czy uzytkownik podal odpowiednio dlugi kod
 					throw new InputMismatchException(); 
 				
 				else if(code == properCode && isActive) {
 					
 					input.nextLine();
-					System.out.print("PotwierdŸ p³atnoœæ na telefonie(Kliknij Enter, aby kontynuowaæ)..."); //NOTE: nextLine() potrzebny jest aby zatrzymaæ t¹ liniê póki nie zostanie klikniêty ENTER
+					System.out.print("Potwierdz platnosc na telefonie(Kliknij Enter, aby kontynuowac)..."); //NOTE: nextLine() potrzebny jest aby zatrzymac ta linie poki nie zostanie klikniety ENTER
 					input.nextLine();
 					
 					isPaymentDone = true;
 					done = true;
 					
 				}else if(code != properCode)
-					System.out.println("B³¹d: Podano b³êdny kod");
+					System.out.println("Blad: Podano bledny kod");
 				
 				else {
 					
-					System.out.println("B³¹d: Kod straci³ wa¿noœæ");
+					System.out.println("Blad: Kod stracil waznosc");
 					properCode = this.generateCode();
 					System.out.printf("Nowy kod: %d%n",properCode);
 					
@@ -74,13 +76,13 @@ public class Blik implements WaysOfPayments{
 				}
 				
 			}catch(InputMismatchException e) {
-				input.nextLine(); //NOTE: Bez tego zapêtla siê w nieskoñczonoœæ catch
-				System.out.println("B³¹d: Proszê podaæ 6-cyfrowy kod");
+				input.nextLine(); //NOTE: Bez tego zapetla sie w nieskonczonosc catch
+				System.out.println("Blad: Prosze podac 6-cyfrowy kod");
 				//e.getStackTrace(); NOTE: Tylko dla programisty
 				
 			}catch(NoSuchElementException e) {
 			
-				System.out.print("B³¹d: Dosz³o do krytycznego b³êdu programu");
+				System.out.print("Blad: Doszlo do krytycznego bledu programu");
 				//e.getStackTrace(); NOTE: Tylko dla programisty
 				System.exit(-1);
 				
@@ -88,7 +90,7 @@ public class Blik implements WaysOfPayments{
 			
 		}
 		
-		System.out.println("Powrót na stronê sklepu...");
+		System.out.println("Powrot na strone sklepu...");
 		
 
 		timer.cancel();
@@ -117,7 +119,7 @@ public class Blik implements WaysOfPayments{
 			
 		};
 		
-		timer.schedule(timerTask, 120000); //NOTE: Po 2 minutach kod przestaje byæ wa¿ny 
+		timer.schedule(timerTask, 120000); //NOTE: Po 2 minutach kod przestaje byc wazny 
 	
 		
 		
