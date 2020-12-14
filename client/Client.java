@@ -152,7 +152,22 @@ public class Client
 		Scanner scanner = new Scanner(System.in);
 		String phoneNumber = scanner.nextLine();
 		if (phoneNumber.length() == 9) {
-			this.phoneNumber = phoneNumber;
+			boolean isCorrectData = true;
+			char[] digits = phoneNumber.toCharArray();
+			for (int i=0; i<9; i++)
+			{
+				if (!Character.isDigit(digits[i])){
+					System.out.println("Podaj poprawny numer telefonu");
+					isCorrectData = false;
+					break;
+				}
+			}
+			if (isCorrectData) {
+				this.phoneNumber = phoneNumber;
+			}
+			else {
+				setCorrectPhoneNumber();
+			}
 		}
 		else {
 			System.out.println("Podaj poprawny numer telefonu");
