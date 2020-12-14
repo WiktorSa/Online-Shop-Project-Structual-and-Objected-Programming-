@@ -60,12 +60,12 @@ class Shop
 				return waysOfPayments[decision-1].isPaymentDone();
 			}
 			else {
-				return getPaymentInfo(waysOfPayments);
+				return getPaymentInfo(client, waysOfPayments);
 			}
 		} 
 		catch (java.util.InputMismatchException e) 
 		{
-			return getPaymentInfo(waysOfPayments);
+			return getPaymentInfo(client, waysOfPayments);
 		}
 	}
 	
