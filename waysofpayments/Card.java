@@ -5,15 +5,17 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import client.Client;
+
 //Klasa zimplementowana przez Szymona Sawczuka
 
 public class Card implements WaysOfPayments{
 
-	private boolean isPaymentDone = false;  //NOTE: Potrzebne aby móc poinformowaæ o dokonaniu p³atnoœci
+	private boolean isPaymentDone = false;  //NOTE: Potrzebne aby moc poinformowac o dokonaniu platnosci
 	
 	@Override
 	public String getName() {
-		return "P³atnoœæ kart¹";
+		return "Platnosc karta";
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class Card implements WaysOfPayments{
 
 			if(tmp.length != 16 && !cardNumber.equals("-1")) {
 				
-				System.out.println("B³êdny rozmiar numeru karty");
+				System.out.println("Blad: Bledny rozmiar numeru karty");
 				cardNumber = null;
 				
 			}
@@ -50,11 +52,11 @@ public class Card implements WaysOfPayments{
 	
 					}
 					
-				}catch(NumberFormatException e) { //NOTE: Jeœli w numerze karty jest np.litera
+				}catch(NumberFormatException e) { //NOTE: Jesli w numerze karty jest np.litera
 					
-					System.out.println("Podaj poprawny numer karty");
+					System.out.println("Blad: Podaj poprawny numer karty");
 					cardNumber = null;
-//					e.getStackTrace(); NOTE: Dostêpne tylko dla programisty
+//					e.getStackTrace(); NOTE: Dostepne tylko dla programisty
 					
 				}
 			}
@@ -68,7 +70,7 @@ public class Card implements WaysOfPayments{
 			builder.append("-1");
 		}
 
-		if(!cardNumber.equals("-1")) { //NOTE: Gdy numer nie bêdzie -1 to zmieniam wygl¹d numeru karty w postaci Stringa dodaj¹c co 4 element spacje
+		if(!cardNumber.equals("-1")) { //NOTE: Gdy numer nie bedzie -1 to zmieniam wyglad numeru karty w postaci Stringa dodajac co 4 element spacje
 			
 			for(int i = 0;i<cardNumber.length();i+=4) {
 				builder.append(cardNumber.substring(i, i+4));
@@ -92,13 +94,13 @@ public class Card implements WaysOfPayments{
 				cvv = input.nextInt();
 				
 				if((cvv<100 || cvv>999) && cvv!= -1)
-					System.out.println("Podaj poprawny numer CVV");
+					System.out.println("Blad: Podaj poprawny numer CVV");
 			
 			}catch(InputMismatchException e) {
 				
 				input.nextLine();
-				System.out.println("Podaj poprawny numer CVV");
-//				e.getStackTrace(); NOTE: Dostêpne tylko dla programisty
+				System.out.println("Blad: Podaj poprawny numer CVV");
+//				e.getStackTrace(); NOTE: Dostepne tylko dla programisty
 
 				
 			}
@@ -111,17 +113,17 @@ public class Card implements WaysOfPayments{
 	
 
 	@Override
-	public void pay() {
+	public void pay(Client client) {
 		
 		Scanner input = new Scanner(System.in);
 		String expirationDate = null;
 		int cvv = 0;
 		boolean done = false;
-		Map<String,int[]> card; //NOTE: Chce mieæ numer karty w dwóch postaciach (String i int[]);
+		Map<String,int[]> card; //NOTE: Chce miec numer karty w dwoch postaciach (String i int[]);
 	
 		
-		System.out.println("Podaj dane karty kredytowej/debetowej (Aby wróciæ wpisz w którymœ z pól (-1)):");
-		System.out.println("Przyk³adowa poprawna karta: 4556 7375 8689 9855");
+		System.out.println("Podaj dane karty kredytowej/debetowej (Aby wrocic wpisz w ktoryms z pol (-1)):");
+		System.out.println("Przykladowa poprawna karta: 4556 7375 8689 9855");
 		
 		try {
 			while(!done) {
@@ -129,7 +131,7 @@ public class Card implements WaysOfPayments{
 				System.out.println();
 			
 				done = false;
-				expirationDate = null; //NOTE: Wyzerowuje zmienne, aby móc zapêtliæ po odrzuceniu wpisanych danych
+				expirationDate = null; //NOTE: Wyzerowuje zmienne, aby moc zapetlic po odrzuceniu wpisanych danych
 				cvv = 0;
 				
 				card = cardNumberInput(input);
@@ -142,14 +144,14 @@ public class Card implements WaysOfPayments{
 	
 					while(!done && (expirationDate == null || !isValidDate(expirationDate))) {
 							
-						System.out.print("Data wa¿noœci: ");
+						System.out.print("Data waznosci: ");
 						expirationDate = input.next();
 						
 						done = expirationDate.equals("-1");
 
-						if(!done && (!isValidDate(expirationDate) || expirationDate.length() != 5) ) {
+						if(!done && (expirationDate.length() != 5 || !isValidDate(expirationDate) ) ) {
 							
-							System.out.println("Podaj poprawn¹ datê(np. 01/21)");
+							System.out.println("Blad: Podaj poprawna date(np. 01/21)");
 							expirationDate = null;
 								
 						}
@@ -157,19 +159,19 @@ public class Card implements WaysOfPayments{
 					}
 	
 				}else if(!done) {
-					System.out.println("Podaj poprawny numer karty");
+					System.out.println("Blad: Podaj poprawny numer karty");
 				}
 				
-				if(expirationDate != null && !expirationDate.equals("-1") && card.entrySet().toArray()[0] != null && cvv != 0) {//NOTE: Wypisanie danych koñcowych, aby móc zatwierdziæ
+				if(expirationDate != null && !expirationDate.equals("-1") && card.entrySet().toArray()[0] != null && cvv != 0) {//NOTE: Wypisanie danych koncowych, aby moc zatwierdzic
 					
 					input.nextLine();
 					
 					System.out.printf("%nPodane dane:%n"
 							+ "Numer karty: %s%n"
 							+ "Numer CVV: %d%n"
-							+ "Data wa¿noœci: %s%n%n"
-							+ "Kilkij Enter, aby zatwierdziæ%n"
-							+ "Wpisz N, aby wpisaæ od nowa dane%n", card.keySet().toArray()[0], cvv, expirationDate);
+							+ "Data waznosci: %s%n%n"
+							+ "Kilkij Enter, aby zatwierdzic%n"
+							+ "Wpisz N, aby wpisac od nowa dane%n", card.keySet().toArray()[0], cvv, expirationDate);
 					
 						if(!input.nextLine().equals("N")) {
 							
@@ -184,7 +186,7 @@ public class Card implements WaysOfPayments{
 	
 		}catch(NoSuchElementException e) {
 				
-			System.out.println("B³¹d: Dosz³o do krytycznego b³edu programu");
+			System.out.println("Blad: Doszlo do krytycznego bledu programu");
 			//e.getStackTrace(); NOTE: Tylko dla programisty
 			System.exit(-1);
 				
@@ -192,7 +194,7 @@ public class Card implements WaysOfPayments{
 		
 		
 		
-			System.out.println("Powrót na stronê sklepu...");
+			System.out.println("Powrot na strone sklepu...");
 
 			
 		
@@ -227,6 +229,6 @@ public class Card implements WaysOfPayments{
 		int monthInteger = Integer.parseInt(month);
 		int yearInteger = Integer.parseInt(year);
 		
-		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; //NOTE: Za³o¿y³em, ¿e karty o wa¿noœci do 2020 s¹ ju¿ nie wa¿ne 
+		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; //NOTE: Zalozylem, ze karty o waznosci do 2020 sa juz niewazne 
 	}
 }
