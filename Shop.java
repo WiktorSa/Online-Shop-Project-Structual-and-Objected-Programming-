@@ -16,29 +16,6 @@ import waysofpayments.WaysOfPayments;
 class Shop 
 {
 	@SuppressWarnings("resource")
-	public static Client setClientInfo(Client client)
-	{
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Podaj swoje imie");
-		client.setFirstName(scanner.nextLine());
-		System.out.println("Podaj swoje nazwisko");
-		client.setLastName(scanner.nextLine());
-		System.out.println("Podaj swoj adres email");
-		client.setEmail(scanner.nextLine());
-		System.out.println("Podaj swoj numer telefonu");
-		client.setPhoneNumber(scanner.nextLine());
-		System.out.println(client.toString());
-		System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
-		String decision = scanner.nextLine();
-		if (decision.equals("1")){
-			return client;
-		}
-		else {
-			return setClientInfo(client);
-		}
-	}
-
-	@SuppressWarnings("resource")
 	public static int setDeliveryInfo(Client client, WaysOfDelivery[] waysOfDelivery)
 	{
 		Scanner scanner = new Scanner(System.in);
@@ -107,7 +84,7 @@ class Shop
 		transactionInfo += chooseItems.toString();
 		cena += chooseItems.getPrice();
 		// Ustawianie danych klienta
-		client = setClientInfo(client);
+		client.setClientInfo();
 		// Wybieranie metody dostawy
 		int decision = setDeliveryInfo(client, waysOfDelivery);
 		transactionInfo += ((Dostawa) waysOfDelivery[decision-1]).deliveryInfo();
@@ -117,7 +94,7 @@ class Shop
 		if (wasTransactionPaid) {
 			System.out.println("");
 			System.out.println(transactionInfo);
-			System.out.println("Koszt zamowienia + " + cena);
+			System.out.println("Koszt zamowienia: " + cena);
 		}
 		else {
 			System.out.println("Za transakcje nie zaplacono. Zamowienie zostalo anulowane");
