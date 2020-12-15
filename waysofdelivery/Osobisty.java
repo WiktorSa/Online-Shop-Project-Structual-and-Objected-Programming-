@@ -13,7 +13,7 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 		this.potwierdzenie=-1;
 		this.firstName="";
 		this.lastName="";
-		this.name="OdbiÃ³r osobisty";
+		this.name="Odbiór osobisty";
 		this.price=0f;
 	}
 	@SuppressWarnings("resource")
@@ -25,22 +25,21 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 		dt = c.getTime();
 		setFirstName(client.getFirstName());
 		setLastName(client.getLastName());
-		System.out.println("Odbior osobisty bÄ™dzie mozliwy od dnia i godziny: "+ dt + " do koÅ„ca dnia nastÄ™pnego dnia w godzinach 8-20");
+		System.out.println("Odbior osobisty bêdzie mozliwy od dnia i godziny: "+ dt + " do koñca dnia nastêpnego dnia w godzinach 8-20");
 		System.out.println("Wpisz 1 by zatwierdzic odbior osobisty, lub nie 1 by anulowac.");
 		Scanner scan2= new Scanner(System.in);
 		potwierdzenie=scan2.nextInt();
-		scan2.close();
 		if(potwierdzenie==1)
 		{
-			return "OdbiÃ³r osobisty towaru zostaÅ‚ umÃ³wiony na dzieÅ„ "+dt+" .";
+			return "Odbiór osobisty towaru zosta³ umówiony na dzieñ "+dt+" .";
 		}
 		else
 		{
-			return "OdbiÃ³r osobisty zostaÅ‚ anulowany";
+			return "Odbiór osobisty zosta³ anulowany";
 		}
 	}
 	public String deliveryInfo()
 	{
-		return "OdbiÃ³r osobisty zostaÅ‚ umÃ³wiony od dnia  "+dt+"\nGodnoÅ›Ä‡ odbierajÄ…cego: "+ firstName +" "+lastName;
+		return "Odbiór osobisty zosta³ umówiony od dnia  "+dt+"\nGodnoœæ odbieraj¹cego: "+ firstName +" "+lastName;
 	}	
 }

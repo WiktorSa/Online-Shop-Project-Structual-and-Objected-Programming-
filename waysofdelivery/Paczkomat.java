@@ -22,7 +22,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		setClientNumber(client.getPhoneNumber());
 		setClientEmail(client.getEmail());
 		System.out.println("Oto przykladowe paczkomaty do ktorych dostarczamy:\n" +paczkomatList[0]+"\n"+paczkomatList[1]+"\n"+paczkomatList[4]+"\n");
-		System.out.println("ProszÄ™ podaÄ‡ kod paczkomatu do ktÃ³rego ma zostaÄ‡ dostarczony towar:");
+		System.out.println("Proszê podaæ kod paczkomatu do którego ma zostaæ dostarczony towar:");
 		Scanner scan= new Scanner(System.in);
 		paczkomatCode=scan.nextLine();
 		while(isCodeValid(paczkomatCode)==-1)
@@ -30,12 +30,11 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 			System.out.println("Prosze podac poprawny kod paczkomatu!");
 			paczkomatCode=scan.nextLine();
 		}
-		scan.close();
-		return "PomyÅ›lnie ustawiono informacje potrzebne do dostawy.";
+		return "Pomyœlnie ustawiono informacje potrzebne do dostawy.";
 	}
 	public String deliveryInfo()
 	{
-		return "Dostawa zostala zamÃ³wiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu" + clientNumber + "\nOraz adres email:" +clientEmail;
+		return "Dostawa zostala zamówiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" +clientEmail;
 	}
 	private int isCodeValid(String code)
 	{
