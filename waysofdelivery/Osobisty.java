@@ -1,54 +1,46 @@
 package waysofdelivery;
 import java.util.Scanner;
-
+import java.util.Calendar;
+import java.util.Date;
 import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Osobisty extends WaysOfDelivery implements Dostawa {
 
-	private String data;
-	private String godzina;
+	private Date dt = new Date();
+	private int potwierdzenie;
 	public Osobisty()
 	{
-		this.data="";
-		this.godzina="";
+		this.potwierdzenie=-1;
 		this.firstName="";
 		this.lastName="";
-		this.name="Odbiór osobisty";
+		this.name="OdbiÃ³r osobisty";
 		this.price=0f;
 	}
 	@SuppressWarnings("resource")
 	public String provideDeliveryInformations(Client client)
 	{
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 1);
+		dt = c.getTime();
 		setFirstName(client.getFirstName());
 		setLastName(client.getLastName());
-		System.out.println("Proszê podaæ datê odbioru przedmiotu:");
+		System.out.println("Odbior osobisty bÄ™dzie mozliwy od dnia i godziny: "+ dt + " do koÅ„ca dnia nastÄ™pnego dnia w godzinach 8-20");
+		System.out.println("Wpisz 1 by zatwierdzic odbior osobisty, lub nie 1 by anulowac.");
 		Scanner scan2= new Scanner(System.in);
-		data=scan2.nextLine();
-		System.out.println("Proszê podaæ godzinê odbioru przedmiotu:");
-		godzina=scan2.nextLine();
-		return "Odbiór osobisty towaru zosta³ umówiony na dzieñ "+data+" oraz godzinê "+godzina+".";
+		potwierdzenie=scan2.nextInt();
+		scan2.close();
+		if(potwierdzenie==1)
+		{
+			return "OdbiÃ³r osobisty towaru zostaÅ‚ umÃ³wiony na dzieÅ„ "+dt+" .";
+		}
+		else
+		{
+			return "OdbiÃ³r osobisty zostaÅ‚ anulowany";
+		}
 	}
 	public String deliveryInfo()
 	{
-		return "Odbiór osobisty zosta³ umówiony na dzieñ "+data+" oraz godzinê "+godzina+"\nGodnoœæ odbieraj¹cego: "+ firstName +" "+lastName;
-	}
-	
-	public void setData(String data)
-	{
-		this.data=data;
-	}
-	public void setGodzina(String godzina)
-	{
-		this.godzina=godzina;
-	}
-
-	public String getData()
-	{
-		return data;
-	}
-	public String getGodzina()
-	{
-		return godzina;
-	}
-	
+		return "OdbiÃ³r osobisty zostaÅ‚ umÃ³wiony od dnia  "+dt+"\nGodnoÅ›Ä‡ odbierajÄ…cego: "+ firstName +" "+lastName;
+	}	
 }
