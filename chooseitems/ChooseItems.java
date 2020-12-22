@@ -24,37 +24,55 @@ public class ChooseItems
 	
 	private String[] obtainCategoriesNames()
 	{
+		FileReader categoriesFile = null;
+		BufferedReader categoriesReader = null;
+		String[] categoriesNames = null;
+		
 		try 
 		{
-			FileReader categoriesFile = new FileReader(locationOfTheCatalog + "kategorie.txt");
-			BufferedReader categoriesReader = new BufferedReader(categoriesFile);	
+			categoriesFile = new FileReader(locationOfTheCatalog + "kategorie.txt");
+			categoriesReader = new BufferedReader(categoriesFile);	
+			
 			String categoryName = "";
-			String[] categoriesNames = new String[0];
+			categoriesNames = new String[0];
 			while ((categoryName = categoriesReader.readLine()) != null)
 			{
 				categoriesNames = increaseCategoriesArraySize(categoriesNames, categoryName);
 			}
-			categoriesReader.close();
-			categoriesFile.close();
-			return categoriesNames;
+			
 		} 
 		catch (IOException e) 
 		{
 			System.out.println("Nast¹pi³ krytyczny b³¹d w dzia³aniu aplikacji.");
 		//	e.printStackTrace();  This should only be visible to the developer
 			System.exit(-1);
-			return null;
 		}
+		finally 
+		{
+			try 
+			{
+				categoriesReader.close();
+			} 
+			catch (IOException e) 
+			{
+				System.out.println("Krytyczny b³¹d w dzia³aniu aplikacji");
+				System.exit(-1);
+			}
+		}
+		return categoriesNames;
 	}
 	
 	private String[] increaseCategoriesArraySize(String[] array, String categoryName)
 	{
 		String[] newArray = new String[array.length+1];
+		
 		for (int i=0; i<array.length; i++)
 		{
 			newArray[i] = array[i];
 		}
+		
 		newArray[array.length] = categoryName;
+		
 		return newArray;
 	}
 	
@@ -62,13 +80,18 @@ public class ChooseItems
 	private String[][][] obtainProductsNames(String[] categoriesNames)
 	{
 		String[][][] productsNames = new String[categoriesNames.length][0][0];
+		
 		for (int i=0; i<categoriesNames.length; i++)
 		{
+			FileReader productsFile = null;
+			BufferedReader productsReader = null;
+			
 			try 
 			{
-				FileReader productsFile = new FileReader(locationOfTheCatalog + categoriesNames[i] + ".txt");
-				BufferedReader productsReader = new BufferedReader(productsFile);	
+				productsFile = new FileReader(locationOfTheCatalog + categoriesNames[i] + ".txt");
+				productsReader = new BufferedReader(productsFile);	
 				String productsInformation = "";
+				
 				while ((productsInformation = productsReader.readLine()) != null)
 				{
 					String[] words = productsInformation.split("\\s+");
@@ -78,22 +101,38 @@ public class ChooseItems
 					{
 						productName = productName + " " + words[j];
 					}
+					
 					String price = words[words.length-1];
+					
 					productsNames[i] = increaseProductsArraySize(productsNames[i], categoriesNames[i], productName, price);
 				}
-				productsReader.close();
-				productsFile.close();
+				
 				// Gdy plik jest pusty to zakladamy, ze nie ma zadnych produktów w podanej kategorii (u¿ytkownikowi siê wyswietli wlasciwa informacja)
 				if (productsNames[i].length == 0) {
 					productsNames[i] = null;
 				}
 			} 
+			
 			// Je¿eli byl blad podczas odczytu pliku to te¿ zakladamy, ze nie ma ¿adnych produktow w podanej kategorii 
 			catch (IOException e) 
 			{
 				productsNames[i] = null;
 			}
+			
+			finally 
+			{
+				try 
+				{
+					productsReader.close();
+				}
+				// Jezeli byl blad podczas zamykania to zakladamy, ze doszlo do powaznego bledu i zakladamy, ze nie ma produktow w podanej kategorii
+				catch (Exception e) 
+				{
+					productsNames[i] = null;
+				}
+			}
 		}
+		
 		return productsNames;
 	}
 
@@ -102,25 +141,31 @@ public class ChooseItems
 	{
 		// Ka¿dy produkt zawiera kategoriê, nazwê oraz cenê
 		String[][] newArray = new String[array.length+1][3];
+		
 		for (int i=0; i<array.length; i++)
 		{
 			newArray[i] = array[i];
 		}
+		
 		newArray[array.length][0] = categoryName;
 		newArray[array.length][1] = productName;
 		newArray[array.length][2] = price;
+		
 		return newArray;
 	}
 	
 	@SuppressWarnings("resource")
 	public void doShopping()
 	{
-		System.out.println("Witamy w sklepie .... Zyczymy udanych zakupow"); //Jak mam nazwaæ sklep? XD
+		System.out.println("Witamy. Zyczymy udanych zakupow"); 
+		
 		boolean isShopping = true;
+		
 		Scanner takingInput = new Scanner(System.in);
 		while (isShopping)
 		{
 			doShoppingSelectingCategory();
+			
 			if (this.basket.length == 0) {
 				System.out.println("Czy naprawde nic nie chcesz kupic (wpisz 1 jesli tak)");
 				String decision = takingInput.nextLine();
@@ -128,11 +173,14 @@ public class ChooseItems
 					System.out.println("Dziekujemy za zakupy w naszym sklepie");
 					System.exit(0);
 				}
+				
 			}
 			else {
 				doShopingErasingItems();
+				
 				System.out.println("Stan koszyka");
 				System.out.println(getInfoAboutBasket());
+				
 				System.out.println("Napisz 1 jesli chcesz potwierdzic zawartosc koszyka (tej decyzji nie mozna cofnac)");
 				String decision = takingInput.nextLine();
 				if (decision.equals("1")) {
@@ -146,65 +194,116 @@ public class ChooseItems
 	@SuppressWarnings("resource")
 	private void doShoppingSelectingCategory() 
 	{
-		for (int i=0; i<categoriesNames.length; i++)
+		boolean shouldStopSelectingCategory = false;
+		
+		while (!shouldStopSelectingCategory)
 		{
-			System.out.println((i+1) + ". " + categoriesNames[i]);
+			// Wypisywanie mozliwych kategorii do wybrou
+			for (int i=0; i<categoriesNames.length; i++)
+			{
+				System.out.println((i+1) + ". " + categoriesNames[i]);
+			}
+			System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
+			System.out.println("Wpisz 0 aby zakonczyc kupowanie produktow");
+			
+			try
+			{
+				Scanner takingInput = new Scanner(System.in);
+				int numberOfCategory = takingInput.nextInt();
+				takingInput.nextLine();
+				
+				if (numberOfCategory == 0) {
+					shouldStopSelectingCategory = true;
+				}
+				
+				else if (numberOfCategory>0 && numberOfCategory<=categoriesNames.length) {
+					System.out.println("Przegladasz teraz produkty z kategorii: " + categoriesNames[numberOfCategory-1]);
+					doShoppingBuyingItems(productsNames[numberOfCategory-1]);
+				}
+				
+				else {
+					System.out.println("Nie ma takiej kategorii. Wybierz ponownie");
+				}
+			}
+			
+			catch (java.util.InputMismatchException e) 
+			{
+				System.out.println("Nie ma takiej kategorii. Wybierz ponownie");
+			}
 		}
-		System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
-		System.out.println("Wpisz 0 aby zakonczy kupowanie produktow");
-		try
-		{
-			Scanner takingInput = new Scanner(System.in);
-			int numberOfCategory = takingInput.nextInt();
-			takingInput.nextLine();
-			if (numberOfCategory == 0) {
-				return;
-			}
-			else if (numberOfCategory>0 && numberOfCategory<=categoriesNames.length) {
-				System.out.println("Przegladasz teraz produkty z kategorii: " + categoriesNames[numberOfCategory-1]);
-				doShoppingBuyingItems(productsNames[numberOfCategory-1]);
-				doShoppingSelectingCategory();
-			}
-			else {
-				doShoppingSelectingCategory();
-			}
-		}
-		catch (java.util.InputMismatchException e) {doShoppingSelectingCategory();}
+		
 	}
 	
 	@SuppressWarnings("resource")
 	private void doShoppingBuyingItems(String[][] items)
 	{
 		Scanner takingInput = new Scanner(System.in);
+		
 		if (items != null) {
-			for (int i=0; i<items.length; i++)
+			boolean shouldStopBuyingItems = false;
+			
+			while (!shouldStopBuyingItems)
 			{
-				System.out.println((i+1) + ". " + items[i][1] + ", Cena - " + items[i][2]);
-			}
-			System.out.println("Wpisz numer produktu, aby go kupic");
-			System.out.println("Wpisz cokolwiek innego jesli chcesz cofnac sie do wyboru kategorii");
-		}
-		else {
-			System.out.println("Brak produktow w podanej kategorii");
-			System.out.println("Wpisz cokolwiek, zeby sie cofnac");
-		}
-		try
-		{
-			int numberOfItem = takingInput.nextInt();
-			takingInput.nextLine();
-			if (numberOfItem>0 && numberOfItem<=items.length) {
-				System.out.println("Ile chcesz kupic produktow o nazwie: " + items[numberOfItem-1][1]);
-				int numberOfProducts = 0;
+				// Wypisywanie produktow
+				for (int i=0; i<items.length; i++)
+				{
+					System.out.println((i+1) + ". " + items[i][1] + ", Cena - " + items[i][2]);
+				}
+				System.out.println("Wpisz numer produktu, aby go kupic");
+				System.out.println("Wpisz 0 jesli chcesz cofnac sie do wyboru kategorii");
+				
 				try
 				{
-					numberOfProducts = takingInput.nextInt();
+					int numberOfItem = takingInput.nextInt();
 					takingInput.nextLine();
+					
+					if (numberOfItem == 0) {
+						shouldStopBuyingItems = true;
+					}
+					
+					else {
+						if (numberOfItem>0 && numberOfItem<=items.length) {
+							System.out.println("Ile chcesz kupic produktow o nazwie: " + items[numberOfItem-1][1]);
+							int numberOfProducts = 0;
+							
+							try
+							{
+								numberOfProducts = takingInput.nextInt();
+								takingInput.nextLine();
+							}
+							
+							// Jezeli uzytkownik wpisze s jako liczbe produktow to zakladamy, ze nie chce tego produktu kupic
+							catch (java.util.InputMismatchException e) 
+							{
+								System.out.println("Prosze podac prawidlowa liczbe produktow");
+								numberOfProducts = 0;
+							}
+							
+							finally 
+							{
+								if (numberOfProducts>0) {
+									addAProductToTheBasket(items[numberOfItem-1], numberOfProducts);
+									System.out.println("Prawidlowo zakupiono produkt/-y");
+								}
+							}
+						}
+					}
 				}
-				catch (java.util.InputMismatchException e) {numberOfProducts = 0;}
-				if (numberOfProducts>0) {addAProductToTheBasket(items[numberOfItem-1], numberOfProducts);}
+				
+				catch (java.util.InputMismatchException e) 
+				{
+					System.out.println("Nie ma takiego numeru produktu");
+				}
 			}
 		}
-		catch (java.util.InputMismatchException e) {}
+		
+		// Doszlo do bledu w czasie otwierania pliku zawierajacego nazwy produktow w podanej kategorii
+		else {
+			System.out.println("Brak produktow w podanej kategorii");
+			System.out.println("Nacisnij enter aby sie cofnac");
+			takingInput.nextLine();
+		}
+		
 	}
 	
 	// Je¿eli produkt juz jest w koszyku to zmieniamy liczbê zamowionych produktow. Je¿eli nie to dodajemy go do koszyka
@@ -212,6 +311,7 @@ public class ChooseItems
 	{
 		String[][] newBasket = new String[this.basket.length+1][4];
 		this.price = this.price + Double.valueOf(productInfo[2]) * (double)(numberOfProducts); 
+		
 		for (int i=0; i<this.basket.length; i++)
 		{
 			// Produkt juz byl w koszyku
@@ -219,16 +319,21 @@ public class ChooseItems
 				int numberOfProductsInBasket = Integer.parseInt(this.basket[i][3]);
 				numberOfProductsInBasket += numberOfProducts;
 				this.basket[i][3] = String.valueOf(numberOfProductsInBasket);
+				
 				return;
 			}
+			
 			else {
 				newBasket[i] = this.basket[i];
 			}
+			
 		}
+		
 		newBasket[newBasket.length-1][0] =  productInfo[0];
 		newBasket[newBasket.length-1][1] =  productInfo[1];
 		newBasket[newBasket.length-1][2] =  productInfo[2];
 		newBasket[newBasket.length-1][3] =  String.valueOf(numberOfProducts);
+		
 		this.basket = newBasket;
 	}
 
@@ -302,18 +407,8 @@ public class ChooseItems
 		return data;
 	}
 	
-	public String toString()
+	public String[][] getBasket()
 	{
-		String data = "Zawartosc koszyka:\n";
-		for (int i=0; i<this.basket.length; i++)
-		{
-			data = data + (i+1) + ". " + this.basket[i][1] + ", Cena: " + this.basket[i][2] + " Ilosc produktow: " + this.basket[i][3] + "\n"; 
-		}
-		return data;
-	}
-	
-	public double getPrice()
-	{
-		return price;
+		return basket;
 	}
 }
