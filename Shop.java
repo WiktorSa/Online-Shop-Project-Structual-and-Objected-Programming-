@@ -1,122 +1,74 @@
 import java.util.Scanner;
 
-import chooseitems.ChooseItems;
 import client.Client;
-import waysofdelivery.Kurier;
-import waysofdelivery.Osobisty;
-import waysofdelivery.Paczkomat;
-import waysofdelivery.WaysOfDelivery;
-import waysofpayments.Blik;
-import waysofpayments.Card;
-import waysofpayments.Paypal;
-import waysofpayments.WaysOfPayments;
 
 // Klasa zaimplementowana przez Wiktora Sadowego
 class Shop 
 {
 	@SuppressWarnings("resource")
-	public static WaysOfDelivery chooseWayOfDelivery()
-	{
-		WaysOfDelivery[] waysOfDelivery = {new Paczkomat(), new Kurier(), new Osobisty()};
-		boolean wasWayOfDeliveryChosen = false;
-		Scanner scanner = new Scanner(System.in);
-		int chosenWayOfDelivery = 0;
-		
-		while (!wasWayOfDeliveryChosen)
-		{
-			for (int i=0; i<waysOfDelivery.length; i++)
-			{
-				System.out.println(i+1 + ". " + waysOfDelivery[i].getName() + " Cena: " + waysOfDelivery[i].getPrice());
-			}
-			System.out.println("Wybierz metode dostawy");
-			
-			try 
-			{
-				chosenWayOfDelivery = scanner.nextInt();
-				scanner.nextLine();
-				
-				if (chosenWayOfDelivery>0 && chosenWayOfDelivery<=waysOfDelivery.length) {
-					System.out.println("Wybrano metode dostawy");
-					wasWayOfDeliveryChosen = true;
-				}
-				else {
-					System.out.println("Nie ma takiej opcji dostawy");
-				}
-			} 
-			
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Nie ma takiej opcji dostawy");
-			}
-		}
-		
-		return waysOfDelivery[chosenWayOfDelivery-1];
-	}
-	
-	@SuppressWarnings("resource")
-	public static WaysOfPayments chooseWayOfPayment()
-	{
-		WaysOfPayments[] waysOfPayments = {new Blik(), new Card(), new Paypal()};
-		boolean wasWayOfPaymentChosen = false;
-		Scanner scanner = new Scanner(System.in);
-		int chosenWayOfPayment = 0;
-		
-		while (!wasWayOfPaymentChosen)
-		{
-			for (int i=0; i<waysOfPayments.length; i++)
-			{
-				System.out.println(i+1 + ". " + waysOfPayments[i].getName());
-			}
-			System.out.println("Wybierz metode zaplaty");
-			
-			try 
-			{
-				chosenWayOfPayment = scanner.nextInt();
-				scanner.nextLine();
-				
-				if (chosenWayOfPayment>0 && chosenWayOfPayment<=waysOfPayments.length) {
-					System.out.println("Wybrano metode zaplaty");
-					wasWayOfPaymentChosen = true;
-				}
-				else {
-					System.out.println("Nie ma takiej opcji zaplaty");
-				}
-			} 
-			
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Nie ma takiej opcji zaplaty");
-			}
-		}
-		
-		return waysOfPayments[chosenWayOfPayment-1];
-	}
-	
 	public static void main(String[] args) 
 	{
-		// Klient dokonuje zakupow
-		ChooseItems chooseItems = new ChooseItems();
-		chooseItems.doShopping();
+		// Scanner do pobierania inputu
+		Scanner scanner = new Scanner(System.in);
 		
-		// Przypisujemy koszyk do klienta, ktory przed chwila zrobil zakupy
+		// Klient wchodzi do sklepu
 		Client client = new Client();
-		client.setBasket(chooseItems.getBasket());
 		
-		// Zbieramy podstawowe informacje o klience
+		// Klient dokonuje zakupow
+		client.doShopping();
+		
+		// Klient wpisuje swoje podstawowe dane
 		client.setClientInfo();
 		
-		// Klient wybiera metode dostawy. Wybrana metode przypisujemy do jego konta a potem prosimy klienta by podazal za instrukacjami
-		WaysOfDelivery wayOfDelivery =  chooseWayOfDelivery();
-		client.setWayOfDelivery(wayOfDelivery);
+		// Klient wybiera metode dostawy.
+		client.chooseWayOfDelivery();
+		
+		// Klient podaje potrzebne informacje do przesylki
 		client.setDeliveryInfo();
 		
-		// Klient wybiera metode platnosci. Wybrana metode przypisujemy do jego konta a potem prosimy klienta, by podazal za instrukcjami
-		WaysOfPayments wayOfPayment = chooseWayOfPayment();
-		client.setWayOfPayment(wayOfPayment);
-		client.Pay();
 		
-		// Zwracamy cala informacje na temat zamowienia
+		/* 
+		 * Klient powinien wybrac metode platnosci 
+		 * Potem powinien zaplacic za produkt (ma prawo do zmiany decyzji jezeli wybral zla opcje) 
+		 * Moze tez nie zaplacic i wowczas zamowienie zostanie anulowane 
+		*/
+		boolean wasWayOfPaymentChosen = false;
+		boolean isClientPaying = true;
+		boolean wasPaymentDone = false;
+		
+		while (isClientPaying && !wasPaymentDone)
+		{
+			// Klient wybiera metode platnosci. 
+			if (!wasWayOfPaymentChosen) {
+				client.chooseWayOfPayment();
+				wasWayOfPaymentChosen = true;
+			}
+			
+			// Klient placi za produkt
+			wasPaymentDone = client.Pay();
+			
+			// Tutaj klient moze zrezygnowac z platnosci tym samym anulujac zamowienie lub wybrac inna metode platnosci
+			if (!wasPaymentDone) {
+				System.out.println("Platnosc nie zostala dokonana. Nacisnij 0 jezeli nie chcesz ponowic platnosci, 1 by zmienic metode platnosci, cokolwiek innego by ponowic platnosc");
+				String decision = scanner.nextLine();
+				
+				if (decision.equals("0")) {
+					isClientPaying = false;
+					System.out.println("Zamowienie zostalo anulowane");
+				}
+				
+				else if (decision.equals("1")) {
+					wasWayOfPaymentChosen = false;
+					System.out.println("Prosze ponownie wybrac metode platnosci ");
+				}
+			}
+		}
+		
+		// Pobieramy informacje o calym zamowieniu
+		String transactionInfo = client.getTransactionInfo();
+		
+		// Pokazujemy informacje na temat zamowienia
 		System.out.println();
-		System.out.println(client.getTransactionInfo());
+		System.out.println(transactionInfo);
 	}
 }

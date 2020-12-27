@@ -1,8 +1,16 @@
 package client;
 
 import java.util.Scanner;
+
+import chooseitems.ChooseItems;
 import waysofdelivery.Dostawa;
+import waysofdelivery.Kurier;
+import waysofdelivery.Osobisty;
+import waysofdelivery.Paczkomat;
 import waysofdelivery.WaysOfDelivery;
+import waysofpayments.Blik;
+import waysofpayments.Card;
+import waysofpayments.Paypal;
 import waysofpayments.WaysOfPayments;
 
 public class Client
@@ -79,27 +87,46 @@ public class Client
 	{
 		return basket;
 	}
+
+	public void setWayOfDelivery(WaysOfDelivery wayOfDelivery)
+	{
+		this.wayOfDelivery = wayOfDelivery;
+	}
+	
+	public WaysOfDelivery getWaysOfDelivery()
+	{
+		return wayOfDelivery;
+	}
+	
+	public void setWayOfPayment(WaysOfPayments wayOfPayment)
+	{
+		this.wayOfPayment = wayOfPayment;
+	}
+
+	public WaysOfPayments getWayOfPayment()
+	{
+		return wayOfPayment;
+	}
+	
+	public void doShopping() 
+	{
+		ChooseItems chooseItems = new ChooseItems();
+		basket = chooseItems.doShopping();
+	}
 	
 	@SuppressWarnings("resource")
 	public void setClientInfo()
 	{
 		boolean shouldStopSettingClientInfo = false;
+		Scanner scanner = new Scanner(System.in);
 		
 		while (!shouldStopSettingClientInfo)
 		{
-			System.out.println("Podaj imie");
 			setCorrectFirstName();
-			
-			System.out.println("Podaj nazwisko");
 			setCorrectLastName();
-			
-			System.out.println("Podaj adres email");
 			setCorrectEmail();
-			
-			System.out.println("Podaj numer telefonu");
 			setCorrectPhoneNumber();
 			
-			Scanner scanner = new Scanner(System.in);
 			System.out.println(toString());
 			System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
 			String decision = scanner.nextLine();
@@ -114,12 +141,12 @@ public class Client
 	private void setCorrectFirstName()
 	{
 		boolean shouldStopSettingClientInfo = false;
+		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("Podaj imie");
 		while (!shouldStopSettingClientInfo)
 		{
-			Scanner scanner = new Scanner(System.in);
 			String firstName = scanner.nextLine();
-			
 			
 			// Sprawdzam czy nie ma zadnych dziwnych znakow w imieniu
 			char[] letters = firstName.toCharArray();
@@ -146,10 +173,11 @@ public class Client
 	private void setCorrectLastName()
 	{
 		boolean shouldStopSettingClientInfo = false;
+		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("Podaj nazwisko");
 		while (!shouldStopSettingClientInfo)
 		{
-			Scanner scanner = new Scanner(System.in);
 			String lastName = scanner.nextLine();
 			
 			// Sprawdzam czy nie ma zadnych dziwnych znakow w imieniu
@@ -177,10 +205,11 @@ public class Client
 	private void setCorrectEmail()
 	{
 		boolean shouldStopSettingClientInfo = false;
-		
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Podaj adres email");
 		while (!shouldStopSettingClientInfo)
 		{
-			Scanner scanner = new Scanner(System.in);
 			String email = scanner.nextLine();
 			
 			// Sprawdzam czy mail jest poprawny
@@ -199,10 +228,11 @@ public class Client
 	private void setCorrectPhoneNumber()
 	{
 		boolean shouldStopSettingClientInfo = false;
+		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("Podaj numer telefonu");
 		while (!shouldStopSettingClientInfo)
 		{
-			Scanner scanner = new Scanner(System.in);
 			String phoneNumber = scanner.nextLine();
 			
 			if (phoneNumber.length() == 9) {
@@ -232,34 +262,93 @@ public class Client
 		}
 	}
 
-	public void setWayOfDelivery(WaysOfDelivery wayOfDelivery)
+	@SuppressWarnings("resource")
+	public void chooseWayOfDelivery()
 	{
-		this.wayOfDelivery = wayOfDelivery;
-	}
-	
-	public WaysOfDelivery getWaysOfDelivery()
-	{
-		return wayOfDelivery;
-	}
-
-	public void setWayOfPayment(WaysOfPayments wayOfPayment)
-	{
-		this.wayOfPayment = wayOfPayment;
-	}
-	
-	public WaysOfPayments getWayOfPayment()
-	{
-		return wayOfPayment;
+		WaysOfDelivery[] waysOfDelivery = {new Paczkomat(), new Kurier(), new Osobisty()};
+		boolean wasWayOfDeliveryChosen = false;
+		Scanner scanner = new Scanner(System.in);
+		int chosenWayOfDelivery = 0;
+		
+		while (!wasWayOfDeliveryChosen)
+		{
+			for (int i=0; i<waysOfDelivery.length; i++)
+			{
+				System.out.println(i+1 + ". " + waysOfDelivery[i].getName() + " Cena: " + waysOfDelivery[i].getPrice());
+			}
+			System.out.println("Wybierz metode dostawy");
+			
+			try 
+			{
+				chosenWayOfDelivery = scanner.nextInt();
+				scanner.nextLine();
+				
+				if (chosenWayOfDelivery>0 && chosenWayOfDelivery<=waysOfDelivery.length) {
+					System.out.println("Wybrano metode dostawy");
+					wasWayOfDeliveryChosen = true;
+				}
+				else {
+					System.out.println("Nie ma takiej opcji dostawy");
+				}
+			} 
+			
+			catch (java.util.InputMismatchException e) 
+			{
+				System.out.println("Nie ma takiej opcji dostawy");
+			}
+		}
+		
+		this.wayOfDelivery = waysOfDelivery[chosenWayOfDelivery-1];
 	}
 
 	public void setDeliveryInfo()
 	{
 		System.out.println(((Dostawa) wayOfDelivery).provideDeliveryInformations(this));
 	}
+
+	@SuppressWarnings("resource")
+	public void chooseWayOfPayment()
+	{
+		WaysOfPayments[] waysOfPayments = {new Blik(), new Card(), new Paypal()};
+		boolean wasWayOfPaymentChosen = false;
+		Scanner scanner = new Scanner(System.in);
+		int chosenWayOfPayment = 0;
+		
+		while (!wasWayOfPaymentChosen)
+		{
+			for (int i=0; i<waysOfPayments.length; i++)
+			{
+				System.out.println(i+1 + ". " + waysOfPayments[i].getName());
+			}
+			System.out.println("Wybierz metode zaplaty");
+			
+			try 
+			{
+				chosenWayOfPayment = scanner.nextInt();
+				scanner.nextLine();
+				
+				if (chosenWayOfPayment>0 && chosenWayOfPayment<=waysOfPayments.length) {
+					System.out.println("Wybrano metode zaplaty");
+					wasWayOfPaymentChosen = true;
+				}
+				else {
+					System.out.println("Nie ma takiej opcji zaplaty");
+				}
+			} 
+			
+			catch (java.util.InputMismatchException e) 
+			{
+				System.out.println("Nie ma takiej opcji zaplaty");
+			}
+		}
+		
+		this.wayOfPayment = waysOfPayments[chosenWayOfPayment-1];
+	} 
 	
-	public void Pay()
+	public boolean Pay()
 	{
 		wayOfPayment.pay(this);
+		return wayOfPayment.isPaymentDone();
 	}
 	
 	public String getTransactionInfo()
@@ -274,7 +363,7 @@ public class Client
 		}
 		
 		else {
-			transactionInfo += "Transakcja nie zostala oplacona. Zamowienie zostanie anulowane";
+			transactionInfo += "Nie dokonano platnosci za produkty";
 		}
 		
 		return transactionInfo;
