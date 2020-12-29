@@ -239,11 +239,9 @@ public class ChooseItems
 	@SuppressWarnings("resource")
 	private void doShoppingBuyingItems(String[][] items)
 	{
-		Scanner scanner = new Scanner(System.in);
-		
 		if (items != null) {
-			boolean shouldStopBuyingItems = false;
 			
+			boolean shouldStopBuyingItems = false;
 			while (!shouldStopBuyingItems)
 			{
 				// Wypisywanie produktow
@@ -256,7 +254,10 @@ public class ChooseItems
 				
 				try
 				{
-					int numberOfItem = scanner.nextInt();
+					Scanner scanner = new Scanner(System.in);
+					
+					int numberOfItem = 0;
+					numberOfItem = scanner.nextInt();
 					scanner.nextLine();
 					
 					if (numberOfItem == 0) {
@@ -301,6 +302,7 @@ public class ChooseItems
 		
 		// Doszlo do bledu w czasie otwierania pliku zawierajacego nazwy produktow w podanej kategorii
 		else {
+			Scanner scanner = new Scanner(System.in);
 			System.out.println("Brak produktow w podanej kategorii");
 			System.out.println("Nacisnij enter aby sie cofnac");
 			scanner.nextLine();
