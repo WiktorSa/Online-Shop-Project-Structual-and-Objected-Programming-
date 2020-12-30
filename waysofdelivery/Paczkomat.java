@@ -17,27 +17,47 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		this.price=10.5f;
 	}
 	@SuppressWarnings("resource")
-	public String provideDeliveryInformations(Client client)
+	public boolean provideDeliveryInformations(Client client)
 	{
+		//ustawianie+ deklaracja zmiennych
+		
 		setClientNumber(client.getPhoneNumber());
 		setClientEmail(client.getEmail());
+		String decision;
+		//Informacja o przykladowych paczkomatach oraz branie kodu od uzytkownika
+		
 		System.out.println("Oto przykladowe paczkomaty do ktorych dostarczamy:\n" +paczkomatList[0]+"\n"+paczkomatList[1]+"\n"+paczkomatList[4]+"\n");
-		System.out.println("Proszê podaæ kod paczkomatu do którego ma zostaæ dostarczony towar:");
-		Scanner scan= new Scanner(System.in);
+		System.out.println("Prosze podac kod paczkomatu do którego ma zostac dostarczony towar:");
+			Scanner scan= new Scanner(System.in);
 		paczkomatCode=scan.nextLine();
 		while(isCodeValid(paczkomatCode)==-1)
 		{
 			System.out.println("Prosze podac poprawny kod paczkomatu!");
 			paczkomatCode=scan.nextLine();
 		}
-		return "Pomyœlnie ustawiono informacje potrzebne do dostawy.";
+		//Decyzja uzytownika
+		
+		System.out.println("Wpisz 1 by zatwierdzic dostawe do danego paczkomatu, lub nie 1 by anulowac.");
+			decision=scan.nextLine();
+		if (decision.equals("1"))
+		{
+			System.out.println("Dostawa do paczkomatu zostala ustawiona pomyslnie.");
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	public String deliveryInfo()
 	{
-		return "Dostawa zostala zamówiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" +clientEmail;
+		return "Dostawa zostala zamowiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" +clientEmail;
 	}
+	
 	private int isCodeValid(String code)
 	{
+		//sprawdzamy czy kod podany znajduje sie na liscie paczkomatow
+		
 		for(int i=0;i<paczkomatList.length;i++)
 		{
 			if(paczkomatList[i].equals(code))
@@ -51,11 +71,13 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		}
 		return 0;
 	}
+	//seter
 	
 	public void setPaczkomatCode(String kod)
 	{
 		paczkomatCode=kod;
 	}
+	//geter
 	
 	public String getPaczkomatCode()
 	{

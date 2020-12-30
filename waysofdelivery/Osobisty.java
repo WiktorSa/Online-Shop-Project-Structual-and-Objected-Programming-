@@ -7,39 +7,46 @@ import client.Client;
 public class Osobisty extends WaysOfDelivery implements Dostawa {
 
 	private Date dt = new Date();
-	private int potwierdzenie;
 	public Osobisty()
 	{
-		this.potwierdzenie=-1;
 		this.firstName="";
 		this.lastName="";
 		this.name="Odbiór osobisty";
 		this.price=0f;
 	}
 	@SuppressWarnings("resource")
-	public String provideDeliveryInformations(Client client)
+	public boolean provideDeliveryInformations(Client client)
 	{
+		//deklaracja zmiennych i ustawienie daty
+		String decision;
+		
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(dt); 
 		c.add(Calendar.DATE, 1);
 		dt = c.getTime();
+		
 		setFirstName(client.getFirstName());
 		setLastName(client.getLastName());
-		System.out.println("Odbior osobisty bêdzie mozliwy od dnia i godziny: "+ dt + " do koñca dnia nastêpnego dnia w godzinach 8-20");
-		System.out.println("Wpisz 1 by zatwierdzic odbior osobisty, lub nie 1 by anulowac.");
+		
+		System.out.println("Odbior osobisty bedzie mozliwy od dnia i godziny: "+ dt + " do konca dnia nastepnego w godzinach 8-20");
+		//potwierdzenie
+		
 		Scanner scan2= new Scanner(System.in);
-		potwierdzenie=scan2.nextInt();
-		if(potwierdzenie==1)
+		System.out.println("Wpisz 1 by zatwierdzic dostawe na dany adres, lub nie 1 by anulowac.");
+			decision=scan2.nextLine();
+		if (decision.equals("1"))
 		{
-			return "Odbiór osobisty towaru zosta³ umówiony na dzieñ "+dt+" .";
+			System.out.println("Odbior osobisty zostal ustawiony pomyslnie.");
+			return true;
 		}
 		else
 		{
-			return "Odbiór osobisty zosta³ anulowany";
+			return false;
 		}
+		
 	}
 	public String deliveryInfo()
 	{
-		return "Odbiór osobisty zosta³ umówiony od dnia  "+dt+"\nGodnoœæ odbieraj¹cego: "+ firstName +" "+lastName;
+		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbieraj¹cego: "+ firstName +" "+lastName;
 	}	
 }

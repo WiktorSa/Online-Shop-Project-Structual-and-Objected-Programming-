@@ -19,23 +19,91 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 		this.price=12.5f;
 	}
 	@SuppressWarnings("resource")
-	public String provideDeliveryInformations(Client client)
+	public boolean provideDeliveryInformations(Client client)
 	{
+		//ustawienie/deklaracja zmiennych
+		
 		setClientNumber(client.getPhoneNumber());
 		setClientEmail(client.getEmail());
-		System.out.println("Prosze podac swoje miasto:");
+		String decision;
+		// scaner
+		
 		Scanner scan2= new Scanner(System.in);
-		miasto=scan2.nextLine();
+		//branie danych
+		
+		System.out.println("Prosze podac swoje miasto:");
+			miasto=scan2.nextLine();
 		System.out.println("Prosze podac swoja ulice z numerem domu/mieszkania:");
-		ulica=scan2.nextLine();
-		System.out.println("Prosze podac swój kod pocztowy:");
-		kodPocztowy=scan2.nextLine();
-		return "Dostawa kurierska do "+miasto+ " " + ulica+ " "+kodPocztowy+"\nZostala ustawiona pomyslnie.";
+			ulica=scan2.nextLine();
+		setCorrectPostCode();
+			
+		System.out.println("Wpisz 1 by zatwierdzic dostawe na dany adres, lub nie 1 by anulowac.");
+			decision=scan2.nextLine();
+			
+		if (decision.equals("1"))
+		{
+			System.out.println("Dostawa kurierska zostala ustawiona pomyslnie.");
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 	public String deliveryInfo()
 	{
-		return "Dostawa zostala zamówiona na: " +miasto+ " "+ ulica+ " "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
+		return "Dostawa zostala zamówiona do: " +miasto+ " "+ ulica+ " "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
 	}
+	private void setCorrectPostCode() //pilnujemy by kod byl poprawny
+	{
+		boolean shouldStopSetingPostCode = false;
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Podaj kod pocztowy");
+		while (!shouldStopSetingPostCode)
+		{
+			String kodPocztowy = scanner.nextLine();
+			//najpierw dlugosc
+			if (kodPocztowy.length() == 6) {
+				//a potem zawartosc
+				char[] digits = kodPocztowy.toCharArray();
+				for (int i=0; i<6; i++)
+				{
+					if(i!=2) 
+					{
+						if (!Character.isDigit(digits[i]))
+						{
+						System.out.println("Podaj poprawny kod pocztowy");
+						break;
+						}
+					}
+					if(i==2)
+					{
+						if(digits[i]!='-')
+						{
+							System.out.println("Podaj poprawny kod pocztowy");
+							break;
+						}
+					}
+					// Sprawdzilismy caly kod pocztowy, wiec jest dobry
+					if (i==5) 
+					{
+						shouldStopSetingPostCode = true;
+					}
+				}
+				if (shouldStopSetingPostCode) 
+				{
+					this.kodPocztowy = kodPocztowy;
+				}
+			}
+			else 
+			{
+				System.out.println("Podaj poprawny kod pocztowy");
+			}
+		}
+	}
+	//setery
 	
 	public void setMiasto(String miasto)
 	{
@@ -49,6 +117,7 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 	{
 		this.kodPocztowy=kodPocztowy;
 	}
+	//getery
 	
 	public String getMiasto()
 	{

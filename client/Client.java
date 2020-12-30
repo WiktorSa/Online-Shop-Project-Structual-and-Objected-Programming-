@@ -301,9 +301,9 @@ public class Client
 		this.wayOfDelivery = waysOfDelivery[chosenWayOfDelivery-1];
 	}
 
-	public void setDeliveryInfo()
+	public boolean setDeliveryInfo()
 	{
-		System.out.println(((Dostawa) wayOfDelivery).provideDeliveryInformations(this));
+		return ((Dostawa) wayOfDelivery).provideDeliveryInformations(this);
 	}
 
 	@SuppressWarnings("resource")
@@ -355,17 +355,25 @@ public class Client
 	{
 		String transactionInfo = "Informacje o transakcji\n";
 		transactionInfo += getBasketContent();
-		transactionInfo += ((Dostawa) wayOfDelivery).deliveryInfo() + "\n";
-		transactionInfo = transactionInfo + "Cena: " + String.valueOf(getOverallPrice()) + "\n";
+		transactionInfo = transactionInfo + "Cena: " + String.valueOf(getOverallPrice()) + " (z wliczona dostawa)\n";
 		
-		if (wayOfPayment.isPaymentDone()) {
-			transactionInfo += "Transakcja zostala oplacona";
+		if (WaysOfDelivery.isDeliveryDone()){
+			transactionInfo += ((Dostawa) wayOfDelivery).deliveryInfo() + "\n";
+			transactionInfo += "Metoda dostawy zostala zatwierdzona oraz ";
+			
+			if (wayOfPayment.isPaymentDone()){
+				transactionInfo += "transakcja zostala oplacona";
+			}
+			
+			else {
+				transactionInfo += "nie dokonano platnosci za produkty";
+			}
 		}
 		
 		else {
-			transactionInfo += "Nie dokonano platnosci za produkty";
+			transactionInfo += "Nie zatwierdzono metody dostawy";
 		}
-		
+
 		return transactionInfo;
 	}
 	

@@ -43,7 +43,7 @@ public class ChooseItems
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Nast¹pi³ krytyczny b³¹d w dzia³aniu aplikacji.");
+			System.out.println("Nastapil krytyczny blad w dzialaniu aplikacji.");
 		//	e.printStackTrace();  This should only be visible to the developer
 			System.exit(-1);
 		}
@@ -55,7 +55,7 @@ public class ChooseItems
 			} 
 			catch (IOException e) 
 			{
-				System.out.println("Krytyczny b³¹d w dzia³aniu aplikacji");
+				System.out.println("Krytyczny blad w dzialaniu aplikacji");
 				System.exit(-1);
 			}
 		}
@@ -76,7 +76,7 @@ public class ChooseItems
 		return newArray;
 	}
 	
-	// Otrzymujê wszystkie informacje o produkcie (nazwa kategorii, nazwa produktu, cena)
+	// OtrzymujÃª wszystkie informacje o produkcie (nazwa kategorii, nazwa produktu, cena)
 	private String[][][] obtainproducts(String[] categories)
 	{
 		String[][][] products = new String[categories.length][0][0];
@@ -96,7 +96,7 @@ public class ChooseItems
 				{
 					String[] words = productsInformation.split("\\s+");
 					String productName = words[0];
-					// Nazwa produktu nie musi siê skladac z jednego slowa
+					// Nazwa produktu nie musi siÃª skladac z jednego slowa
 					for (int j=1; j<words.length-1; j++)
 					{
 						productName = productName + " " + words[j];
@@ -107,13 +107,13 @@ public class ChooseItems
 					products[i] = increaseProductsArraySize(products[i], categories[i], productName, price);
 				}
 				
-				// Gdy plik jest pusty to zakladamy, ze nie ma zadnych produktów w podanej kategorii (u¿ytkownikowi siê wyswietli wlasciwa informacja)
+				// Gdy plik jest pusty to zakladamy, ze nie ma zadnych produktÃ³w w podanej kategorii (uÂ¿ytkownikowi siÃª wyswietli wlasciwa informacja)
 				if (products[i].length == 0) {
 					products[i] = null;
 				}
 			} 
 			
-			// Je¿eli byl blad podczas odczytu pliku to te¿ zakladamy, ze nie ma ¿adnych produktow w podanej kategorii 
+			// JeÂ¿eli byl blad podczas odczytu pliku to teÂ¿ zakladamy, ze nie ma Â¿adnych produktow w podanej kategorii 
 			catch (IOException e) 
 			{
 				products[i] = null;
@@ -136,10 +136,10 @@ public class ChooseItems
 		return products;
 	}
 
-	// Cena to wyjatkowo String!!! Wynika to z tego, ze array musi siê skladac z obiektow tego samego typu
+	// Cena to wyjatkowo String!!! Wynika to z tego, ze array musi siÃª skladac z obiektow tego samego typu
 	private String[][] increaseProductsArraySize(String[][] array, String categoryName, String productName, String price)
 	{
-		// Ka¿dy produkt zawiera kategoriê, nazwê oraz cenê
+		// KaÂ¿dy produkt zawiera kategoriÃª, nazwÃª oraz cenÃª
 		String[][] newArray = new String[array.length+1][3];
 		
 		for (int i=0; i<array.length; i++)
@@ -310,7 +310,7 @@ public class ChooseItems
 		
 	}
 	
-	// Je¿eli produkt juz jest w koszyku to zmieniamy liczbê zamowionych produktow. Je¿eli nie to dodajemy go do koszyka
+	// Jezeli produkt juz jest w koszyku to zmieniamy liczbe zamowionych produktow. Jezeli nie to dodajemy go do koszyka
 	private void addAProductToTheBasket(String[] productInfo, int numberOfProducts)
 	{
 		String[][] newBasket = new String[this.basket.length+1][4];
@@ -363,7 +363,7 @@ public class ChooseItems
 				{
 					numberOfItems = scanner.nextInt();
 					scanner.nextLine();
-					// Jezeli uzytkownik wprowadzil wieksza liczbê produktow niz jest w koszyku
+					// Jezeli uzytkownik wprowadzil wieksza liczbÃª produktow niz jest w koszyku
 					if (numberOfItems>Integer.parseInt(this.basket[decision-1][3])) {numberOfItems = Integer.parseInt(this.basket[decision-1][3]);}
 				}
 				catch (java.util.InputMismatchException e) {numberOfItems = 0;}
