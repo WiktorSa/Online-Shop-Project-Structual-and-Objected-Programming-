@@ -20,7 +20,10 @@ public class Paypal implements WaysOfPayments{
 		return isPaymentDone;
 	}
 	
-	private String inputForm(int whichForm, String form, String properAccount[][], Scanner input) { //NOTE: whichForm -> 1 to email, 2 to haslo
+	@SuppressWarnings("resource")
+	private String inputForm(int whichForm, String form, String properAccount[][]) { //NOTE: whichForm -> 1 to email, 2 to haslo
+		
+		Scanner input = new Scanner(System.in);
 		
 		while(form == null || form.equals("pomoc")) { //NOTE: Sprawdzam czy nie jest potrzebne przypomnienie email'a
 			
@@ -73,12 +76,12 @@ public class Paypal implements WaysOfPayments{
 					
 				}
 				
-				account[0] = inputForm(1, account[0], properAccount, input);
+				account[0] = inputForm(1, account[0], properAccount);
 				
 				
 				if(!account[0].equals("-1")){ //NOTE: Sprawdzam czy nie chcemy wrocic na strone sklepu
 				
-					account[1] = inputForm(2, account[1], properAccount, input);
+					account[1] = inputForm(2, account[1], properAccount);
 					
 					
 					if(account[0].equals("") || account[1].equals(""))
