@@ -139,7 +139,7 @@ class Shop
 				if (decision.equals("0")) {
 					System.out.println("Zamowienie zostalo anulowane.");
 					isClientDelivering = false;
-					client.getWaysOfDelivery().setisItDone(isClientDelivering);
+					client.setDeliveryChosen(false);
 				}
 				
 				else if (decision.equals("1")) {
@@ -149,7 +149,7 @@ class Shop
 			}
 			
 			else{
-				client.getWaysOfDelivery().setisItDone(true);
+				client.setDeliveryChosen(true);
 			}
 		}
 		
