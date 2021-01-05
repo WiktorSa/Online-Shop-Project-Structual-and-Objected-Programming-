@@ -89,14 +89,14 @@ class Shop
 			client.setClientInfo();
 		else {
 			System.out.println(client.toString());
-			
 			System.out.println("Czy chcesz zmienic dane?");
-			System.out.print("[Y/N]:");
-			String decision = scanner.nextLine();
 			
-			boolean doneSettingClientInfo = false;
-			
+			boolean doneSettingClientInfo = false;	
 			while(!doneSettingClientInfo) {
+				
+				System.out.print("[Y/N]:");
+				String decision = scanner.nextLine();
+				
 				if(decision.equals("Y")) {
 					client.setClientInfo();
 					doneSettingClientInfo = true;
