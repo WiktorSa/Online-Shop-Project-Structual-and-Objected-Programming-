@@ -26,7 +26,8 @@ public class Card implements WaysOfPayments{
 	private Map<String,int[]> cardNumberInput(Scanner input){
 		
 		String cardNumber = null;
-		int[] number = new int[16];
+		final int lengthOfCardNumber = 16;
+		int[] number = new int[lengthOfCardNumber];
 		String[] tmp;
 		Map<String, int[]> card = new HashMap<>();
 		
@@ -37,7 +38,7 @@ public class Card implements WaysOfPayments{
 			cardNumber = cardNumber.replaceAll("\\s+", ""); //NOTE: Usuwam wszystkie przerwy miedzy cyframi numeru
 			tmp = cardNumber.split("");
 
-			if(tmp.length != 16 && !cardNumber.equals("-1")) {
+			if(tmp.length != lengthOfCardNumber && !cardNumber.equals("-1")) {
 				
 				System.out.println("Blad: Bledny rozmiar numeru karty");
 				cardNumber = null;
@@ -170,17 +171,16 @@ public class Card implements WaysOfPayments{
 							+ "Numer karty: %s%n"
 							+ "Numer CVV: %d%n"
 							+ "Data waznosci: %s%n%n"
-							+ "Kilkij Enter, aby zatwierdzic%n"
+							+ "Kilkij cokolwiek, aby zatwierdzic%n"
 							+ "Wpisz N, aby wpisac od nowa dane%n", card.keySet().toArray()[0], cvv, expirationDate);
 					
-						if(!input.nextLine().equals("N")) {
-							
-							isPaymentDone = true;
-							done = true;
-							
-						}
+					if(!input.nextLine().equals("N")) {
 						
+						isPaymentDone = true;
+						done = true;
 						
+					}
+					
 				}
 			}
 	
@@ -229,6 +229,6 @@ public class Card implements WaysOfPayments{
 		int monthInteger = Integer.parseInt(month);
 		int yearInteger = Integer.parseInt(year);
 		
-		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; //NOTE: Zalozylem, ze karty o waznosci do 2020 sa juz niewazne 
+		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; 
 	}
 }

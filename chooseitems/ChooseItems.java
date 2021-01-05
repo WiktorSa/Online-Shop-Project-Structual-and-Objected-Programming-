@@ -4,22 +4,38 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-// Klasa zaimplementowana przez Wiktor Sadowy
+import client.Client;
+
+// Klasa zaimplementowana przez Wiktora Sadowego oraz Szymona Sawczuka
 public class ChooseItems 
 {
 	private String locationOfTheCatalog;
 	private String[] categories;
-	private String[][][] products; // Sa potrzebne trzy [] (podzial na kategorie, produkty oraz informacje o produkcie (kategoria, nazwa, cena))
-	private String basket[][]; // W koszyku beda zawarte informacje o kategorii, nazwie, cenie i ilosci produktu
+	private Product[][] products; // NOTE(Szymon):Sa potrzebne dwa [] (podzial na kategorie i produkty informacje o produkcie (kategoria, nazwa, cena) sa w klasie)
+	private Basket basket[]; //(Szymon): Wszystkie informacje sa zawarte w klasie
 	private double price;
 	
-	public ChooseItems() 
+	public ChooseItems(Client client) //NOTE(Szymon): Konstruktor w przypadku powracajacego klienta
 	{
 		this.locationOfTheCatalog = "Zakupy/";
 		this.categories = obtaincategories();
 		this.products = obtainproducts(categories);
-		this.basket = new String[0][];
+		this.basket = client.getBasket();
+		this.price = client.getPrice();
+	}
+	
+	public ChooseItems() //NOTE(Szymon): Konstruktor w przypadku nowego klienta
+	{
+		this.locationOfTheCatalog = "Zakupy/";
+		this.categories = obtaincategories();
+		this.products = obtainproducts(categories);
+		this.basket = new Basket[0];
 		this.price = 0;
+	}
+	
+	public double getPrice() 
+	{
+		return price;
 	}
 	
 	private String[] obtaincategories()
@@ -44,7 +60,6 @@ public class ChooseItems
 		catch (IOException e) 
 		{
 			System.out.println("Nastapil krytyczny blad w dzialaniu aplikacji.");
-		//	e.printStackTrace();  This should only be visible to the developer
 			System.exit(-1);
 		}
 		finally 
@@ -76,10 +91,10 @@ public class ChooseItems
 		return newArray;
 	}
 	
-	// Otrzymujê wszystkie informacje o produkcie (nazwa kategorii, nazwa produktu, cena)
-	private String[][][] obtainproducts(String[] categories)
+	// Otrzymujac wszystkie informacje o produkcie (nazwa kategorii, nazwa produktu, cena)
+	private Product[][] obtainproducts(String[] categories)
 	{
-		String[][][] products = new String[categories.length][0][0];
+		Product[][] products = new Product[categories.length][0];
 		
 		for (int i=0; i<categories.length; i++)
 		{
@@ -96,7 +111,7 @@ public class ChooseItems
 				{
 					String[] words = productsInformation.split("\\s+");
 					String productName = words[0];
-					// Nazwa produktu nie musi siê skladac z jednego slowa
+					// Nazwa produktu nie musi sie skladac z jednego slowa
 					for (int j=1; j<words.length-1; j++)
 					{
 						productName = productName + " " + words[j];
@@ -104,16 +119,11 @@ public class ChooseItems
 					
 					String price = words[words.length-1];
 					
-					products[i] = increaseProductsArraySize(products[i], categories[i], productName, price);
-				}
-				
-				// Gdy plik jest pusty to zakladamy, ze nie ma zadnych produktów w podanej kategorii (u¿ytkownikowi siê wyswietli wlasciwa informacja)
-				if (products[i].length == 0) {
-					products[i] = null;
+					products[i] = increaseProductsArraySize(products[i], categories[i], productName, Double.parseDouble(price));
 				}
 			} 
 			
-			// Je¿eli byl blad podczas odczytu pliku to te¿ zakladamy, ze nie ma ¿adnych produktow w podanej kategorii 
+			// Jezeli byl blad podczas odczytu pliku to tez zakladamy, ze nie ma zadnych produktow w podanej kategorii 
 			catch (IOException e) 
 			{
 				products[i] = null;
@@ -136,26 +146,24 @@ public class ChooseItems
 		return products;
 	}
 
-	// Cena to wyjatkowo String!!! Wynika to z tego, ze array musi siê skladac z obiektow tego samego typu
-	private String[][] increaseProductsArraySize(String[][] array, String categoryName, String productName, String price)
+	// NOTE(Szymon):Gdy mamy klase Product to mozna dac price jako double/float
+	private Product[] increaseProductsArraySize(Product[] array, String categoryName, String productName, double price)
 	{
-		// Ka¿dy produkt zawiera kategoriê, nazwê oraz cenê
-		String[][] newArray = new String[array.length+1][3];
+		// Kazdy produkt zawiera kategorie, nazwe oraz cene
+		Product[] newArray = new Product[array.length+1];
 		
 		for (int i=0; i<array.length; i++)
 		{
 			newArray[i] = array[i];
 		}
 		
-		newArray[array.length][0] = categoryName;
-		newArray[array.length][1] = productName;
-		newArray[array.length][2] = price;
+		newArray[array.length] = new Product(categoryName, productName, price);
 		
 		return newArray;
 	}
 	
 	@SuppressWarnings("resource")
-	public String[][] doShopping()
+	public Basket[] doShopping()
 	{
 		System.out.println("Witamy. Zyczymy udanych zakupow"); 
 		
@@ -237,17 +245,17 @@ public class ChooseItems
 	}
 	
 	@SuppressWarnings("resource")
-	private void doShoppingBuyingItems(String[][] items)
+	private void doShoppingBuyingItems(Product[] products2)
 	{
-		if (items != null) {
+		if (products2 != null) {
 			
 			boolean shouldStopBuyingItems = false;
 			while (!shouldStopBuyingItems)
 			{
 				// Wypisywanie produktow
-				for (int i=0; i<items.length; i++)
+				for (int i=0; i<products2.length; i++)
 				{
-					System.out.println((i+1) + ". " + items[i][1] + ", Cena - " + items[i][2]);
+					System.out.println((i+1) + ". " + products2[i].getName() + ", Cena - " + products2[i].getPrice());
 				}
 				System.out.println("Wpisz numer produktu, aby go kupic");
 				System.out.println("Wpisz 0 jesli chcesz cofnac sie do wyboru kategorii");
@@ -265,8 +273,8 @@ public class ChooseItems
 					}
 					
 					else {
-						if (numberOfItem>0 && numberOfItem<=items.length) {
-							System.out.println("Ile chcesz kupic produktow o nazwie: " + items[numberOfItem-1][1]);
+						if (numberOfItem>0 && numberOfItem<=products2.length) {
+							System.out.println("Ile chcesz kupic produktow o nazwie: " + products2[numberOfItem-1].getName());
 							int numberOfProducts = 0;
 							
 							try
@@ -285,7 +293,7 @@ public class ChooseItems
 							finally 
 							{
 								if (numberOfProducts>0) {
-									addAProductToTheBasket(items[numberOfItem-1], numberOfProducts);
+									addAProductToTheBasket(products2[numberOfItem-1], numberOfProducts);
 									System.out.println("Prawidlowo zakupiono produkt/-y");
 								}
 							}
@@ -311,18 +319,18 @@ public class ChooseItems
 	}
 	
 	// Jezeli produkt juz jest w koszyku to zmieniamy liczbe zamowionych produktow. Jezeli nie to dodajemy go do koszyka
-	private void addAProductToTheBasket(String[] productInfo, int numberOfProducts)
+	private void addAProductToTheBasket(Product productInfo, int numberOfProducts)
 	{
-		String[][] newBasket = new String[this.basket.length+1][4];
-		this.price = this.price + Double.valueOf(productInfo[2]) * (double)(numberOfProducts); 
+		Basket[] newBasket = new Basket[this.basket.length+1];
+		this.price = this.price + productInfo.getPrice() * (double)(numberOfProducts); 
 		
 		for (int i=0; i<this.basket.length; i++)
 		{
 			// Produkt juz byl w koszyku
-			if (this.basket[i][1] == productInfo[1]) {
-				int numberOfProductsInBasket = Integer.parseInt(this.basket[i][3]);
+			if (this.basket[i].getName().equals(productInfo.getName())) {
+				int numberOfProductsInBasket = this.basket[i].getAmountOfProduct();
 				numberOfProductsInBasket += numberOfProducts;
-				this.basket[i][3] = String.valueOf(numberOfProductsInBasket);
+				this.basket[i].setAmountOfProduct(numberOfProductsInBasket);
 				
 				return;
 			}
@@ -333,11 +341,8 @@ public class ChooseItems
 			
 		}
 		
-		newBasket[newBasket.length-1][0] =  productInfo[0];
-		newBasket[newBasket.length-1][1] =  productInfo[1];
-		newBasket[newBasket.length-1][2] =  productInfo[2];
-		newBasket[newBasket.length-1][3] =  String.valueOf(numberOfProducts);
-		
+		newBasket[newBasket.length-1] = new Basket(productInfo.getCategory(), productInfo.getName(), productInfo.getPrice(), numberOfProducts);
+	
 		this.basket = newBasket;
 	}
 
@@ -364,7 +369,7 @@ public class ChooseItems
 					numberOfItems = scanner.nextInt();
 					scanner.nextLine();
 					// Jezeli uzytkownik wprowadzil wieksza liczbê produktow niz jest w koszyku
-					if (numberOfItems>Integer.parseInt(this.basket[decision-1][3])) {numberOfItems = Integer.parseInt(this.basket[decision-1][3]);}
+					if (numberOfItems>this.basket[decision-1].getAmountOfProduct()) {numberOfItems = this.basket[decision-1].getAmountOfProduct();}
 				}
 				catch (java.util.InputMismatchException e) {numberOfItems = 0;}
 				// Zmieniamy zawartosc koszyka wtedy gdy uzytkownik wykresla jakis produkt
@@ -375,20 +380,21 @@ public class ChooseItems
 		catch (java.util.InputMismatchException e) {doShopingErasingItems();}
 	}
 	
-	private void eraseProductFromTheBasket(String[] productInfo, int numberOfProducts)
+	private void eraseProductFromTheBasket(Basket productInfo, int numberOfProducts)
 	{
-		String[][] newBasket = new String[this.basket.length-1][4];
-		this.price = this.price - Double.valueOf(productInfo[2]) * (double)(numberOfProducts); 
+		Basket[] newBasket = new Basket[this.basket.length-1];
+		this.price = this.price - productInfo.getPrice() * (double)(numberOfProducts); 
 		int p=0;
+		
 		for (int i=0; i<this.basket.length; i++)
 		{
 			// Znalezlismy szukany produkt
-			if (this.basket[i][1] == productInfo[1]) {
-				int numberOfProductsInBasket = Integer.parseInt(this.basket[i][3]);
+			if (this.basket[i].getName().equals(productInfo.getName())) {
+				int numberOfProductsInBasket = this.basket[i].getAmountOfProduct();
 				numberOfProductsInBasket -= numberOfProducts;
 				// Jezeli uzytkownik zdecydowal, ze nie skasuje wszystkich produktow bedacych w koszyku to po prostu zmieniamy ilosc produktow w this.basket i tyle
-				if (numberOfProducts != 0) {
-					this.basket[i][3] = String.valueOf(numberOfProductsInBasket);
+				if (numberOfProductsInBasket != 0) {
+					this.basket[i].setAmountOfProduct(numberOfProductsInBasket); 
 					return;
 				}
 			}
@@ -403,9 +409,10 @@ public class ChooseItems
 	private String getInfoAboutBasket()
 	{
 		String data = "";
+		
 		for (int i=0; i<this.basket.length; i++)
 		{
-			data = data + (i+1) + ". " + this.basket[i][1] + ", Cena: " + this.basket[i][2] + " Ilosc produktow: " + this.basket[i][3] + "\n"; 
+			data = data + (i+1) + ". " + this.basket[i].getName() + ", Cena: " + this.basket[i].getPrice() + " Ilosc produktow: " + this.basket[i].getAmountOfProduct() + "\n"; 
 		}
 		data = data + "Cena koncowa: " + this.price;
 		return data;

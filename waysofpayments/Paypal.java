@@ -132,7 +132,8 @@ public class Paypal implements WaysOfPayments{
 		
 		String[][] account = {{"",""},{""}}; //NOTE: Nieregularna macierz w pierwszym wierszu dwie kolumny(email, tel), w drugim wierszu haslo
 		Random randomizer = new Random();	
-		StringBuilder builder = new StringBuilder(10);
+		final int lengthOfPassword = 10;
+		StringBuilder builder = new StringBuilder(lengthOfPassword);
 		
 //		NOTE: Wczytanie email'a
 			account[0][0] = client.getEmail();
@@ -141,7 +142,7 @@ public class Paypal implements WaysOfPayments{
 			account[0][1] = client.getPhoneNumber();
 		
 //		NOTE: Generowanie hasla
-		for(int j = 0;j<10;j++) {
+		for(int j = 0;j<lengthOfPassword;j++) {
 			
 			builder.append(CHARACTERS.charAt(randomizer.nextInt(CHARACTERS.length()))); 
 			
@@ -164,10 +165,11 @@ public class Paypal implements WaysOfPayments{
 		String codeCaptcha = "";	
 		String code = "";		
 		Random randomizer = new Random();	
-		StringBuilder builder = new StringBuilder(6);
+		final int lengthOfCode = 6;
+		StringBuilder builder = new StringBuilder(lengthOfCode);
 		
 //		NOTE: Generowanie kodu Captcha
-			for(int j = 0;j<6;j++) {
+			for(int j = 0;j<lengthOfCode;j++) {
 				
 				builder.append(CHARACTERS.charAt(randomizer.nextInt(CHARACTERS.length()))); 
 				

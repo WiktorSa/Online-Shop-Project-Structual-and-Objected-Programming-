@@ -1,7 +1,13 @@
 package client;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Scanner;
 
+import chooseitems.Basket;
 import chooseitems.ChooseItems;
 import waysofdelivery.Dostawa;
 import waysofdelivery.Kurier;
@@ -13,15 +19,19 @@ import waysofpayments.Card;
 import waysofpayments.Paypal;
 import waysofpayments.WaysOfPayments;
 
-public class Client
+public class Client implements Serializable
 {
+	private static final long serialVersionUID = 4480120372403237397L;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	private String[][] basket;
-	private WaysOfDelivery wayOfDelivery;
-	private WaysOfPayments wayOfPayment;
+	private String password;
+	private Basket[] basket;
+	private double price; //NOTE(Szymon): Potrzebne, aby zapisac informacje o koszcie zakupow klienta
+	private boolean isSaved; //NOTE(Szymon): Informacja czy dany klient jest juz zapisany
+	transient private WaysOfDelivery wayOfDelivery; //NOTE(Szymon): Nie zapisujemy
+	transient private WaysOfPayments wayOfPayment;  //NOTE(Szymon): Nie zapisujemy
 	
 	public Client() 
 	{
@@ -29,8 +39,11 @@ public class Client
 		this.lastName = "";
 		this.email = "";
 		this.phoneNumber = "";
+		this.password = "";
+		this.isSaved = false;
 		this.wayOfDelivery = null;
 		this.wayOfPayment = null;
+		this.price = 0;
 	}
 	
 	public String getFirstName() 
@@ -73,19 +86,43 @@ public class Client
 		this.phoneNumber = phoneNumber;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean getIsSaved() {
+		return isSaved;
+	}
+
+	public void setWillBeSaved(boolean willBeSaved) {
+		this.isSaved = willBeSaved;
+	}
+
 	public String toString() 
 	{
 		return "Dane o kliencie: Imie: " + firstName + ", Nazwisko: " + lastName + ", Email: " + email + ", Numer telefonu: " + phoneNumber;
 	}
 	
-	public void setBasket(String[][] basket) 
+	public void setBasket(Basket[] basket) 
 	{
 		this.basket = basket;
 	}
 
-	public String[][] getBasket()
+	public Basket[] getBasket()
 	{
 		return basket;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public void setWayOfDelivery(WaysOfDelivery wayOfDelivery)
@@ -108,10 +145,17 @@ public class Client
 		return wayOfPayment;
 	}
 	
-	public void doShopping() 
+	public void doShopping(boolean isNewClient) 
 	{
-		ChooseItems chooseItems = new ChooseItems();
+		ChooseItems chooseItems = null;
+		
+		if(!isNewClient)
+			 chooseItems = new ChooseItems(this); //NOTE(Szymon): Wywolanie dla powracajacego klienta
+		else
+			 chooseItems = new ChooseItems();  //NOTE(Szymon): Wywolanie dla nowego klienta
+		
 		basket = chooseItems.doShopping();
+		price = chooseItems.getPrice();
 	}
 	
 	@SuppressWarnings("resource")
@@ -124,15 +168,72 @@ public class Client
 		{
 			setCorrectFirstName();
 			setCorrectLastName();
-			setCorrectEmail();
+			if(!isSaved) //NOTE(Szymon): W przypadku powracajacego klienta nie mozna bedzie zmienic maila, gdyz jest on informacja rozpoznawcza w bazie
+				setCorrectEmail();
 			setCorrectPhoneNumber();
 			
 			System.out.println(toString());
+			
+			
+			
 			System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
 			String decision = scanner.nextLine();
 			
 			if (decision.equals("1")){
 				shouldStopSettingClientInfo = true;
+			}
+		}
+		
+		//NOTE(Szymon): W przypadku nowego klienta pytamy czy chce zapisac konto
+		if(!isSaved) {
+			System.out.println("Czy chcesz utworzyc konto?");
+			System.out.print("[Y/N]: ");
+			String tmp = scanner.next();
+			
+			boolean done = false;
+			while(!done) {
+				
+				if(tmp.equals("Y")) {
+					
+					setCorrectPassword();
+					saveClient();
+					isSaved = true;
+					done = true;
+					
+				}else if(tmp.equals("N")) {
+					done = true;
+					
+				}else {
+					System.out.println("Nie ma takiej opcji!");
+				}
+				
+			}
+		}
+		
+	}
+	
+	@SuppressWarnings("resource")
+	private void setCorrectPassword()
+	{
+		boolean shouldStopSettingClientInfo = false;
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Podaj haslo: ");
+		
+		while(!shouldStopSettingClientInfo) 
+		{
+			String password = scanner.nextLine();
+			
+			// Sprawdzam czy hasla sie zgadzaja
+			System.out.println("Potwierdz haslo: ");
+			String confirm = scanner.nextLine();
+				
+			if (password.equals(confirm)) {
+				shouldStopSettingClientInfo = true;
+			}
+		
+			if (shouldStopSettingClientInfo) {
+				this.password = password;
 			}
 		}
 	}
@@ -355,7 +456,7 @@ public class Client
 	{
 		String transactionInfo = "Informacje o transakcji\n";
 		transactionInfo += getBasketContent();
-		transactionInfo = transactionInfo + "Cena: " + String.valueOf(getOverallPrice()) + " (z wliczona dostawa)\n";
+		transactionInfo = transactionInfo + "Cena: " + String.valueOf(price) + " (z wliczona dostawa)\n";
 		
 		if (WaysOfDelivery.isDeliveryDone()){
 			transactionInfo += ((Dostawa) wayOfDelivery).deliveryInfo() + "\n";
@@ -382,20 +483,27 @@ public class Client
 		String basketContent = "Zawartosc koszyka:\n";
 		for (int i=0; i<basket.length; i++)
 		{
-			basketContent = basketContent + (i+1) + ". " + basket[i][1] + ", Cena: " + basket[i][2] + " Ilosc produktow: " + basket[i][3] + "\n"; 
+			basketContent = basketContent + (i+1) + ". " + basket[i].getName() + ", Cena: " + basket[i].getPrice() + " Ilosc produktow: " + basket[i].getAmountOfProduct() + "\n"; 
 		}
 		return basketContent;
 	}
 	
-	private double getOverallPrice()
-	{
-		double OverallPrice = 0;
-		for (int i=0; i<basket.length; i++)
+	//NOTE(Szymon): Metoda zapisu klienta do pliku
+	public void saveClient() {
+		
+		try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("Client_"+email+".ser")))
 		{
-			// Mnoze cene przez ilosc produktow
-			OverallPrice = OverallPrice + Double.parseDouble(basket[i][2]) * Double.parseDouble(basket[i][3]);
+			outputStream.writeObject(this);
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.out.println("Doszlo do krytycznego bledu programu");
+			System.exit(-1);
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Doszlo do krytycznego bledu programu");
+			System.exit(-1);
 		}
-		OverallPrice += wayOfDelivery.getPrice();
-		return OverallPrice;
 	}
 }

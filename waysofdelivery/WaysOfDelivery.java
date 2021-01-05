@@ -1,7 +1,9 @@
 package waysofdelivery;
 
+
 // Klasa stworzona przez Jana Skibinskiego
-public abstract class WaysOfDelivery  {
+public abstract class WaysOfDelivery {
+	
 	//zmienne
 	
 	public String clientNumber;
@@ -45,6 +47,6 @@ public abstract class WaysOfDelivery  {
 	}
 	public void setisItDone(boolean isItDone)
 	{
-		this.isItDone=isItDone;
+		WaysOfDelivery.isItDone=isItDone;
 	}
 }

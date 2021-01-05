@@ -4,7 +4,7 @@ import client.Client;
 
 //Interfejs zaimplementowany przez Szymona Sawczuka
 
-public interface WaysOfPayments {
+public interface WaysOfPayments{
 
 	public abstract String getName();
 	public abstract boolean isPaymentDone();

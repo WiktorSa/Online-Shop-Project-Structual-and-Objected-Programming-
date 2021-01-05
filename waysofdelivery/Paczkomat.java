@@ -5,7 +5,7 @@ import java.util.Scanner;
 import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Paczkomat extends WaysOfDelivery implements Dostawa {
-
+	
 	private String paczkomatCode;
 	public String [] paczkomatList={"WRO321","WRO412","WRO643","WAR312","WAR321"};
 	public Paczkomat()
@@ -27,7 +27,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		//Informacja o przykladowych paczkomatach oraz branie kodu od uzytkownika
 		
 		System.out.println("Oto przykladowe paczkomaty do ktorych dostarczamy:\n" +paczkomatList[0]+"\n"+paczkomatList[1]+"\n"+paczkomatList[4]+"\n");
-		System.out.println("Prosze podac kod paczkomatu do którego ma zostac dostarczony towar:");
+		System.out.println("Prosze podac kod paczkomatu do ktï¿½rego ma zostac dostarczony towar:");
 			Scanner scan= new Scanner(System.in);
 		paczkomatCode=scan.nextLine();
 		while(isCodeValid(paczkomatCode)==-1)

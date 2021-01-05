@@ -13,7 +13,7 @@ import client.Client;
 
 public class Blik implements WaysOfPayments{
 	
-	private Timer timer; 
+	transient private Timer timer; 
 	private boolean isPaymentDone = false; //NOTE: Potrzebne aby moc poinformowac o dokonaniu platnosci
 	private static boolean isActive; //NOTE: Static, aby moc wyslac ja do statycznej funkcji setActive()
 

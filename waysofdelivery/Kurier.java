@@ -2,7 +2,7 @@ package waysofdelivery;
 import java.util.Scanner;
 
 import client.Client;
-//Klasa stworzona przez Jana Skibiñskiego
+//Klasa stworzona przez Jana Skibinskiego
 public class Kurier extends WaysOfDelivery implements Dostawa {
 
 	private String miasto;
@@ -53,8 +53,9 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 	}
 	public String deliveryInfo()
 	{
-		return "Dostawa zostala zamówiona do: " +miasto+ " "+ ulica+ " "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
+		return "Dostawa zostala zamowiona do: " +miasto+ " "+ ulica+ " "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
 	}
+	@SuppressWarnings("resource")
 	private void setCorrectPostCode() //pilnujemy by kod byl poprawny
 	{
 		boolean shouldStopSetingPostCode = false;

@@ -11,7 +11,7 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 	{
 		this.firstName="";
 		this.lastName="";
-		this.name="Odbiór osobisty";
+		this.name="Odbior osobisty";
 		this.price=0f;
 	}
 	@SuppressWarnings("resource")
@@ -47,6 +47,6 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 	}
 	public String deliveryInfo()
 	{
-		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbieraj¹cego: "+ firstName +" "+lastName;
+		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbierajacego: "+ firstName +" "+lastName;
 	}	
 }
