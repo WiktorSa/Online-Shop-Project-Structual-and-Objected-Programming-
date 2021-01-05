@@ -23,8 +23,10 @@ public class Card implements WaysOfPayments{
 		return isPaymentDone;
 	}
 	
-	private Map<String,int[]> cardNumberInput(Scanner input){
+	@SuppressWarnings("resource")
+	private Map<String,int[]> cardNumberInput(){
 		
+		Scanner input = new Scanner(System.in);
 		String cardNumber = null;
 		final int lengthOfCardNumber = 16;
 		int[] number = new int[lengthOfCardNumber];
@@ -85,8 +87,10 @@ public class Card implements WaysOfPayments{
 		
 	}
 	
-	private int cvvInput(Scanner input, int cvv) {
+	@SuppressWarnings("resource")
+	private int cvvInput(int cvv) {
 		
+		Scanner input = new Scanner(System.in);
 		while((cvv <100 || cvv>999) && cvv!=-1) {
 			
 			System.out.print("Numer CVV: ");
@@ -113,6 +117,7 @@ public class Card implements WaysOfPayments{
 	}
 	
 
+	@SuppressWarnings("resource")
 	@Override
 	public void pay(Client client) {
 		
@@ -135,12 +140,12 @@ public class Card implements WaysOfPayments{
 				expirationDate = null; //NOTE: Wyzerowuje zmienne, aby moc zapetlic po odrzuceniu wpisanych danych
 				cvv = 0;
 				
-				card = cardNumberInput(input);
+				card = cardNumberInput();
 				done = (card.get(card.keySet().toArray()[0])[0] == -1);
 				
 				if(!done && isValid(card.get(card.keySet().toArray()[0]))) {
 					
-					cvv = cvvInput(input, cvv);
+					cvv = cvvInput(cvv);
 					done = (cvv == -1);
 	
 					while(!done && (expirationDate == null || !isValidDate(expirationDate))) {
