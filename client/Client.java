@@ -20,6 +20,7 @@ import waysofpayments.Card;
 import waysofpayments.Paypal;
 import waysofpayments.WaysOfPayments;
 
+// Klase tworzyl Wiktor Sadowy i Szymon Sawczuk i Jan Skibinski
 public class Client implements Serializable
 {
 	private static final long serialVersionUID = 4480120372403237397L;
@@ -186,8 +187,6 @@ public class Client implements Serializable
 			
 			System.out.println(toString());
 			
-			
-			
 			System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
 			String decision = scanner.nextLine();
 			
@@ -212,21 +211,22 @@ public class Client implements Serializable
 						saveClient();
 						isSaved = true;
 						done = true;
-					}else{
-						System.out.println("Konto juz istenieje");
+					}
+					else{
+						System.out.println("Konto juz istnieje");
 						done = true;
 					}
 					
-				}else if(tmp.equals("N")) {
+				}
+				else if(tmp.equals("N")) {
 					done = true;
 					
-				}else {
+				}
+				else {
 					System.out.println("Nie ma takiej opcji!");
 				}
-				
 			}
 		}
-		
 	}
 	
 	@SuppressWarnings("resource")
