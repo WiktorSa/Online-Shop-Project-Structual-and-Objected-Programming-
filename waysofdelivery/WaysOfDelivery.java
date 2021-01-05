@@ -12,7 +12,6 @@ public abstract class WaysOfDelivery {
 	public String lastName;
 	public double price;
 	public String name;
-	public static boolean isItDone;
 	//getery
 	
 	public double getPrice()
@@ -22,10 +21,6 @@ public abstract class WaysOfDelivery {
 	public String getName()
 	{
 		return name;
-	}
-	public static boolean isDeliveryDone()
-	{
-		return isItDone;
 	}
 	//setery
 	
@@ -44,9 +39,5 @@ public abstract class WaysOfDelivery {
 	public void setLastName(String lastName)
 	{
 		this.lastName=lastName;
-	}
-	public void setisItDone(boolean isItDone)
-	{
-		WaysOfDelivery.isItDone=isItDone;
 	}
 }
