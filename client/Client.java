@@ -32,6 +32,7 @@ public class Client implements Serializable
 	private boolean isSaved; //NOTE(Szymon): Informacja czy dany klient jest juz zapisany
 	transient private WaysOfDelivery wayOfDelivery; //NOTE(Szymon): Nie zapisujemy
 	transient private WaysOfPayments wayOfPayment;  //NOTE(Szymon): Nie zapisujemy
+	private boolean deliveryChosen;
 	
 	public Client() 
 	{
@@ -44,6 +45,11 @@ public class Client implements Serializable
 		this.wayOfDelivery = null;
 		this.wayOfPayment = null;
 		this.price = 0;
+	}
+	
+	public String getDeliveryChosen()
+	{
+		return deliveryChosen;
 	}
 	
 	public String getFirstName() 
@@ -79,6 +85,11 @@ public class Client implements Serializable
 	public String getPhoneNumber() 
 	{
 		return phoneNumber;
+	}
+	
+	public void setDeliveryChosen(boolean deliveryChosen)
+	{
+		this.deliveryChosen=deliveryChosen;
 	}
 	
 	public void setPhoneNumber(String phoneNumber) 
