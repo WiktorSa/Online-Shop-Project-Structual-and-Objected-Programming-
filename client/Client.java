@@ -47,7 +47,7 @@ public class Client implements Serializable
 		this.price = 0;
 	}
 	
-	public String getDeliveryChosen()
+	public boolean getDeliveryChosen()
 	{
 		return deliveryChosen;
 	}
@@ -469,7 +469,7 @@ public class Client implements Serializable
 		transactionInfo += getBasketContent();
 		transactionInfo = transactionInfo + "Cena: " + String.valueOf(price) + " (z wliczona dostawa)\n";
 		
-		if (WaysOfDelivery.isDeliveryDone()){
+		if (getDeliveryChosen()){
 			transactionInfo += ((Dostawa) wayOfDelivery).deliveryInfo() + "\n";
 			transactionInfo += "Metoda dostawy zostala zatwierdzona oraz ";
 			
