@@ -1,5 +1,6 @@
 package client;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -200,16 +201,21 @@ public class Client implements Serializable
 			System.out.println("Czy chcesz utworzyc konto?");
 			System.out.print("[Y/N]: ");
 			String tmp = scanner.next();
+			File file = new File("Client_"+email+".ser");
 			
 			boolean done = false;
 			while(!done) {
 				
 				if(tmp.equals("Y")) {
-					
-					setCorrectPassword();
-					saveClient();
-					isSaved = true;
-					done = true;
+					if(!file.exists()) {	
+						setCorrectPassword();
+						saveClient();
+						isSaved = true;
+						done = true;
+					}else{
+						System.out.println("Konto juz istenieje");
+						done = true;
+					}
 					
 				}else if(tmp.equals("N")) {
 					done = true;
