@@ -7,7 +7,7 @@ import client.Client;
 public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	
 	private String paczkomatCode;
-	public String [] paczkomatList={"WRO321","WRO412","WRO643","WAR312","WAR321"};
+	private String [] paczkomatList={"WRO321","WRO412","WRO643","WAR312","WAR321"};
 	public Paczkomat()
 	{
 		this.paczkomatCode="";
