@@ -50,7 +50,8 @@ class Shop
 						  System.out.println("Bledne haslo");
 					  }
 					  else {
-						  doneLoggingIn = true;
+						 isLogIn = true;
+						 doneLoggingIn = true;
 					  }
 						
 					} 
