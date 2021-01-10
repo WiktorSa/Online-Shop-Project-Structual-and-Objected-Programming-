@@ -3,9 +3,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Scanner;
+import java.io.File;
 
 import chooseitems.Basket;
 import client.Client;
+import client.NormalClient;
+import client.RegisteredClient;
+import client.UnregisteredClient;
 
 // Klasa zaimplementowana przez Wiktora Sadowego oraz Szymona Sawczuka
 class Shop 
@@ -15,12 +19,11 @@ class Shop
 		// Scanner do pobierania inputu
 		Scanner scanner = new Scanner(System.in);
 		
-		// Klient wchodzi do sklepu
-		Client client = new Client();
+		// Klient wchodzi do sklepu (Domyslnie zakladamy, ze jest niezalogowany)
+		Client client = new UnregisteredClient(); 
 		
 		// Klient loguje sie na swoje konto (jezeli takowe posiada)
 		boolean doneLoggingIn = false; 
-		boolean isNewClient = false;
 
 		while(!doneLoggingIn) {
 			System.out.println("Czy jestes powracajacym klientem?");
@@ -43,9 +46,9 @@ class Shop
 					{
 					  System.out.print("Podaj haslo: ");
 					  password = scanner.nextLine();
-					  client = (Client) outputStream.readObject();
+					  client = (RegisteredClient) outputStream.readObject();
 					  
-					  if(!client.getPassword().equals(password)) {
+					  if(!((RegisteredClient) client).getPassword().equals(password)) {
 						  client = null; // NOTE(Szymon): Zabezpieczenie, aby nie mozna bylo dostac sie do nieswojego konta
 						  System.out.println("Bledne haslo");
 					  }
@@ -61,6 +64,7 @@ class Shop
 					} 
 					catch (IOException e) 
 					{
+						e.printStackTrace();
 						System.out.println("Doszlo do krytycznego bledu programu");
 						System.exit(-1);
 					} 
@@ -74,7 +78,6 @@ class Shop
 			
 			else if(decision.equals("N")) {
 				doneLoggingIn = true;
-				isNewClient = true;
 			}
 			
 			else {
@@ -82,12 +85,45 @@ class Shop
 			}
 		}
 		
-		// Klient dokonuje zakupow (uwaga
-		client.doShopping(isNewClient);
+		// Klient dokonuje zakupow 
+		client.initiateShopping();
 		
 		// Klient wpisuje swoje podstawowe dane
-		if(isNewClient)
+		if(client instanceof UnregisteredClient) {
 			client.setClientInfo();
+			//NOTE(Szymon): W przypadku nowego klienta pytamy czy chce zapisac konto
+			System.out.println("Czy chcesz utworzyc konto?");
+			System.out.print("[Y/N]: ");
+			String decision = scanner.nextLine();
+			File file = new File("Client_" + client.getEmail() + ".ser");
+			
+			boolean done = false;
+			while(!done) 
+			{
+				if(decision.equals("Y")) {
+					
+					if(!file.exists()) {
+						client = new NormalClient(client);
+						((RegisteredClient) client).setCorrectPassword();
+						((RegisteredClient) client).saveClient();
+						done = true;
+					}
+					
+					else{
+						System.out.println("Konto juz istnieje");
+						done = true;
+					}
+					
+				}
+				else if(decision.equals("N")) {
+					done = true;
+					
+				}
+				else {
+					System.out.println("Nie ma takiej opcji!");
+				}
+			}
+		}
 		else {
 			System.out.println(client.toString());
 			System.out.println("Czy chcesz zmienic dane?");
@@ -176,7 +212,7 @@ class Shop
 				}
 				
 				// Klient placi za produkt
-				wasPaymentDone = client.Pay();
+				wasPaymentDone = client.initiatePay();
 				
 				// Tutaj klient moze zrezygnowac z platnosci tym samym anulujac zamowienie lub wybrac inna metode platnosci
 				if (!wasPaymentDone) {
@@ -195,9 +231,7 @@ class Shop
 					}
 				}
 			}
-			
 		}
-		
 		
 		// Pobieramy informacje o calym zamowieniu
 		String transactionInfo = client.getTransactionInfo();
@@ -208,14 +242,14 @@ class Shop
 		
 		//NOTE(Szymon): Jezeli zaplacono to czyszcze koszyk klienta
 		if(wasPaymentDone) { 
-			client.setBasket(new Basket[0]);
-			client.setPrice(0);
+			client.setBasket(new Basket());
 		}
 		
 		//NOTE(Szymon): Ostatni raz zapisuje klienta przed wyjsciem
-		if(client.getIsSaved())
-			client.saveClient();
-			
+		if(client instanceof RegisteredClient) {
+			((RegisteredClient) client).saveClient();
+		}
+		
 		// Zamykamy scannera
 		scanner.close();
 	}

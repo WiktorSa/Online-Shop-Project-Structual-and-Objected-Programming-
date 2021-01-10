@@ -27,7 +27,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		//Informacja o przykladowych paczkomatach oraz branie kodu od uzytkownika
 		
 		System.out.println("Oto przykladowe paczkomaty do ktorych dostarczamy:\n" +paczkomatList[0]+"\n"+paczkomatList[1]+"\n"+paczkomatList[4]+"\n");
-		System.out.println("Prosze podac kod paczkomatu do kt�rego ma zostac dostarczony towar:");
+		System.out.println("Prosze podac kod paczkomatu do ktorego ma zostac dostarczony towar:");
 			Scanner scan= new Scanner(System.in);
 		paczkomatCode=scan.nextLine();
 		while(isCodeValid(paczkomatCode)==-1)

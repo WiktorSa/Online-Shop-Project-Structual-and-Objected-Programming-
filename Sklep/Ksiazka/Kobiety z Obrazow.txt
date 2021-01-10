@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Kobiety z obrazow
+Price:28.24 
+Author:Czynska Malgorzata
+Subcategory:Biografia
+Publisher:Wydawnictwo Marginesy
+premiereDate:2020-11-25
+numberOfPages:320

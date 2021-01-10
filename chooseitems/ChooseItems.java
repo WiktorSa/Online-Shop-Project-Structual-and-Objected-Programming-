@@ -1,61 +1,53 @@
 package chooseitems;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import client.Client;
 
 // Klasa zaimplementowana przez Wiktora Sadowego oraz Szymona Sawczuka
 public class ChooseItems 
 {
-	private String locationOfTheCatalog;
-	private String[] categories;
-	private Product[][] products; // NOTE(Szymon):Sa potrzebne dwa [] (podzial na kategorie i produkty informacje o produkcie (kategoria, nazwa, cena) sa w klasie)
-	private Basket basket[]; //(Szymon): Wszystkie informacje sa zawarte w klasie
-	private double price;
+	private String locationOfShopCatalog;
+	private ArrayList<String> categories;
+	private TreeMap<String, ArrayList<Product>> listOfProducts; // String - kategoria, reszta to informacje o produktach
+	private Basket basket;
 	
 	public ChooseItems(Client client) //NOTE(Szymon): Konstruktor w przypadku powracajacego klienta
 	{
-		this.locationOfTheCatalog = "Zakupy/";
+		this.locationOfShopCatalog = "Sklep/";
 		this.categories = obtaincategories();
-		this.products = obtainproducts(categories);
+		this.listOfProducts = obtainListOfProducts(categories);
 		this.basket = client.getBasket();
-		this.price = client.getPrice();
 	}
 	
 	public ChooseItems() //NOTE(Szymon): Konstruktor w przypadku nowego klienta
 	{
-		this.locationOfTheCatalog = "Zakupy/";
+		this.locationOfShopCatalog = "Sklep/";
 		this.categories = obtaincategories();
-		this.products = obtainproducts(categories);
-		this.basket = new Basket[0];
-		this.price = 0;
+		this.listOfProducts = obtainListOfProducts(categories);
+		this.basket = new Basket();
 	}
 	
-	public double getPrice() 
+	private ArrayList<String> obtaincategories()
 	{
-		return price;
-	}
-	
-	private String[] obtaincategories()
-	{
-		FileReader categoriesFile = null;
 		BufferedReader categoriesReader = null;
-		String[] categories = null;
+		ArrayList<String> categories = new ArrayList<String>();
 		
 		try 
 		{
-			categoriesFile = new FileReader(locationOfTheCatalog + "kategorie.txt");
-			categoriesReader = new BufferedReader(categoriesFile);	
+			categoriesReader = new BufferedReader(new FileReader(locationOfShopCatalog + "kategorie.txt"));	
 			
 			String categoryName = "";
-			categories = new String[0];
 			while ((categoryName = categoriesReader.readLine()) != null)
 			{
-				categories = increaseCategoriesArraySize(categories, categoryName);
+				categories.add(categoryName);
 			}
-			
+
 		} 
 		catch (IOException e) 
 		{
@@ -74,96 +66,110 @@ public class ChooseItems
 				System.exit(-1);
 			}
 		}
+		
 		return categories;
 	}
 	
-	private String[] increaseCategoriesArraySize(String[] array, String categoryName)
+	// Sporzadzamy liste produktow, ktore odczytujemy
+	private TreeMap<String, ArrayList<Product>> obtainListOfProducts(ArrayList<String> categories)
 	{
-		String[] newArray = new String[array.length+1];
+		TreeMap<String, ArrayList<Product>> listOfProducts = new TreeMap<String, ArrayList<Product>>();
 		
-		for (int i=0; i<array.length; i++)
+		for (String category : categories)
 		{
-			newArray[i] = array[i];
+			ArrayList<Product> products = obtainProducts(category);
+			listOfProducts.put(category, products);
 		}
 		
-		newArray[array.length] = categoryName;
-		
-		return newArray;
+		return listOfProducts;
 	}
 	
-	// Otrzymujac wszystkie informacje o produkcie (nazwa kategorii, nazwa produktu, cena)
-	private Product[][] obtainproducts(String[] categories)
+	// Idziemy do katalogu w ktorym znajduje sie produkty z podanej kategorii i zaczynamy odczytywac produkty
+	private ArrayList<Product> obtainProducts(String category)
 	{
-		Product[][] products = new Product[categories.length][0];
+		ArrayList<Product> products = new ArrayList<Product>();
+		String locationOfCategoryCatalog = locationOfShopCatalog + category + "/";
 		
-		for (int i=0; i<categories.length; i++)
-		{
-			FileReader productsFile = null;
-			BufferedReader productsReader = null;
-			
-			try 
+		File[] files = new File(locationOfCategoryCatalog).listFiles();
+		if (files != null) {
+			for (int i=0; i<files.length; i++)
 			{
-				productsFile = new FileReader(locationOfTheCatalog + categories[i] + ".txt");
-				productsReader = new BufferedReader(productsFile);	
-				String productsInformation = "";
-				
-				while ((productsInformation = productsReader.readLine()) != null)
-				{
-					String[] words = productsInformation.split("\\s+");
-					String productName = words[0];
-					// Nazwa produktu nie musi sie skladac z jednego slowa
-					for (int j=1; j<words.length-1; j++)
-					{
-						productName = productName + " " + words[j];
-					}
-					
-					String price = words[words.length-1];
-					
-					products[i] = increaseProductsArraySize(products[i], categories[i], productName, Double.parseDouble(price));
-				}
-			} 
-			
-			// Jezeli byl blad podczas odczytu pliku to tez zakladamy, ze nie ma zadnych produktow w podanej kategorii 
-			catch (IOException e) 
-			{
-				products[i] = null;
-			}
-			
-			finally 
-			{
-				try 
-				{
-					productsReader.close();
-				}
-				// Jezeli byl blad podczas zamykania to zakladamy, ze doszlo do powaznego bledu i zakladamy, ze nie ma produktow w podanej kategorii
-				catch (Exception e) 
-				{
-					products[i] = null;
+				Product product = obtainProduct(category, files[i]);
+				if (product != null) {
+					products.add(product);
 				}
 			}
 		}
 		
 		return products;
 	}
-
-	// NOTE(Szymon):Gdy mamy klase Product to mozna dac price jako double/float
-	private Product[] increaseProductsArraySize(Product[] array, String categoryName, String productName, double price)
+	
+	// Zdobywamy informacje o produkcie
+	private Product obtainProduct(String category, File file)
 	{
-		// Kazdy produkt zawiera kategorie, nazwe oraz cene
-		Product[] newArray = new Product[array.length+1];
+		BufferedReader bufferedReader = null;
+		Product product = null;
+		ArrayList<String> information = new ArrayList<String>();
 		
-		for (int i=0; i<array.length; i++)
+		try 
 		{
-			newArray[i] = array[i];
+			bufferedReader = new BufferedReader(new FileReader(file));	
+			
+			String info = "";
+			while ((info = bufferedReader.readLine()) != null)
+			{
+				try 
+				{
+					info = info.split(":")[1];
+					information.add(info);
+				} 
+				catch (java.lang.ArrayIndexOutOfBoundsException e) 
+				{
+					// W pliku moga byc dodatkowe entery. Pomijamy te linijki
+				}
+			}
+
+		} 
+		catch (IOException e) 
+		{
+			return null;
+		}
+		finally 
+		{
+			try 
+			{
+				bufferedReader.close();
+			} 
+			catch (IOException e) 
+			{
+				return null;
+			}
 		}
 		
-		newArray[array.length] = new Product(categoryName, productName, price);
+		// Deklarujemy obiekt. Jezeli sa zle dane to danego produktu nie bedzie w sklepie
+		try 
+		{
+			switch (category) 
+			{
+				case "Ksiazka":
+					product = new Ksiazka(information);
+					break;
+
+				default:
+					break;
+			}
+		} 
+		catch (java.lang.IndexOutOfBoundsException | java.lang.NumberFormatException e) 
+		{
+			return null;
+		}
 		
-		return newArray;
+		return product;
 	}
 	
+	// Klient rozpoczyna zakupy
 	@SuppressWarnings("resource")
-	public Basket[] doShopping()
+	public Basket doShopping()
 	{
 		System.out.println("Witamy. Zyczymy udanych zakupow"); 
 		
@@ -174,7 +180,8 @@ public class ChooseItems
 		{
 			doShoppingSelectingCategory();
 			
-			if (this.basket.length == 0) {
+			if (basket.getPrice() == 0) {
+				
 				System.out.println("Czy naprawde nic nie chcesz kupic (wpisz 1 jesli tak)");
 				String decision = scanner.nextLine();
 				if (decision.equals("1")) {
@@ -187,7 +194,7 @@ public class ChooseItems
 				doShopingErasingItems();
 				
 				System.out.println("Stan koszyka");
-				System.out.println(getInfoAboutBasket());
+				System.out.println(basket.toString());
 				
 				System.out.println("Napisz 1 jesli chcesz potwierdzic zawartosc koszyka (tej decyzji nie mozna cofnac)");
 				String decision = scanner.nextLine();
@@ -200,7 +207,7 @@ public class ChooseItems
 		return basket;
 	}
 	
-	// Klient moze kupowac produkty ile chce
+	// Klient wybiera kategorie
 	@SuppressWarnings("resource")
 	private void doShoppingSelectingCategory() 
 	{
@@ -209,9 +216,9 @@ public class ChooseItems
 		while (!shouldStopSelectingCategory)
 		{
 			// Wypisywanie mozliwych kategorii do wybrou
-			for (int i=0; i<categories.length; i++)
+			for (int i=0; i<categories.size(); i++)
 			{
-				System.out.println((i+1) + ". " + categories[i]);
+				System.out.println((i+1) + ". " + categories.get(i));
 			}
 			System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
 			System.out.println("Wpisz 0 aby zakonczyc kupowanie produktow");
@@ -226,9 +233,8 @@ public class ChooseItems
 					shouldStopSelectingCategory = true;
 				}
 				
-				else if (numberOfCategory>0 && numberOfCategory<=categories.length) {
-					System.out.println("Przegladasz teraz produkty z kategorii: " + categories[numberOfCategory-1]);
-					doShoppingBuyingItems(products[numberOfCategory-1]);
+				else if (numberOfCategory>0 && numberOfCategory<=categories.size()) {
+					doShoppingBuyingItems(categories.get(numberOfCategory-1));
 				}
 				
 				else {
@@ -244,18 +250,22 @@ public class ChooseItems
 		
 	}
 	
+	// Klient wybiera produkty i je kupuje
 	@SuppressWarnings("resource")
-	private void doShoppingBuyingItems(Product[] products2)
+	private void doShoppingBuyingItems(String category)
 	{
-		if (products2 != null) {
+		System.out.println("Przegladasz teraz produkty z kategorii: " + category);
+		
+		ArrayList<Product> products = listOfProducts.get(category);
+		if (products.size() != 0) {
 			
 			boolean shouldStopBuyingItems = false;
 			while (!shouldStopBuyingItems)
 			{
 				// Wypisywanie produktow
-				for (int i=0; i<products2.length; i++)
+				for (int i=0; i<products.size(); i++)
 				{
-					System.out.println((i+1) + ". " + products2[i].getName() + ", Cena - " + products2[i].getPrice());
+					System.out.println((i+1) + "\n" + products.get(i));
 				}
 				System.out.println("Wpisz numer produktu, aby go kupic");
 				System.out.println("Wpisz 0 jesli chcesz cofnac sie do wyboru kategorii");
@@ -273,29 +283,25 @@ public class ChooseItems
 					}
 					
 					else {
-						if (numberOfItem>0 && numberOfItem<=products2.length) {
-							System.out.println("Ile chcesz kupic produktow o nazwie: " + products2[numberOfItem-1].getName());
+						if (numberOfItem>0 && numberOfItem<=products.size()) {
+							System.out.println("Ile chcesz kupic produktow o nazwie: " + products.get(numberOfItem-1).getName());
 							int numberOfProducts = 0;
 							
 							try
 							{
 								numberOfProducts = scanner.nextInt();
 								scanner.nextLine();
+								
+								if (numberOfProducts>0) {
+									basket.addAProductToTheBasket(products.get(numberOfItem-1), numberOfProducts);
+									System.out.println("Prawidlowo zakupiono produkt/-y\n");
+								}
 							}
 							
 							// Jezeli uzytkownik wpisze s jako liczbe produktow to zakladamy, ze nie chce tego produktu kupic
 							catch (java.util.InputMismatchException e) 
 							{
 								System.out.println("Prosze podac prawidlowa liczbe produktow");
-								numberOfProducts = 0;
-							}
-							
-							finally 
-							{
-								if (numberOfProducts>0) {
-									addAProductToTheBasket(products2[numberOfItem-1], numberOfProducts);
-									System.out.println("Prawidlowo zakupiono produkt/-y");
-								}
 							}
 						}
 					}
@@ -308,7 +314,7 @@ public class ChooseItems
 			}
 		}
 		
-		// Doszlo do bledu w czasie otwierania pliku zawierajacego nazwy produktow w podanej kategorii
+		// Nie ma produktow w danej kategorii
 		else {
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("Brak produktow w podanej kategorii");
@@ -318,103 +324,63 @@ public class ChooseItems
 		
 	}
 	
-	// Jezeli produkt juz jest w koszyku to zmieniamy liczbe zamowionych produktow. Jezeli nie to dodajemy go do koszyka
-	private void addAProductToTheBasket(Product productInfo, int numberOfProducts)
-	{
-		Basket[] newBasket = new Basket[this.basket.length+1];
-		this.price = this.price + productInfo.getPrice() * (double)(numberOfProducts); 
-		
-		for (int i=0; i<this.basket.length; i++)
-		{
-			// Produkt juz byl w koszyku
-			if (this.basket[i].getName().equals(productInfo.getName())) {
-				int numberOfProductsInBasket = this.basket[i].getAmountOfProduct();
-				numberOfProductsInBasket += numberOfProducts;
-				this.basket[i].setAmountOfProduct(numberOfProductsInBasket);
-				
-				return;
-			}
-			
-			else {
-				newBasket[i] = this.basket[i];
-			}
-			
-		}
-		
-		newBasket[newBasket.length-1] = new Basket(productInfo.getCategory(), productInfo.getName(), productInfo.getPrice(), numberOfProducts);
-	
-		this.basket = newBasket;
-	}
-
+	// Klient wybiera produkty, ktore chce skasowac z koszyka
 	@SuppressWarnings("resource")
 	private void doShopingErasingItems()
 	{
-		System.out.println("Obecna zawartosc koszyka"); 
-		System.out.println(getInfoAboutBasket());
-		System.out.println("Wpisz numer produktu, aby sie go pozbyc z koszyka");
-		System.out.println("Wpisz 0 jezeli chcesz przejsc to potwierdzenia zawartosci koszyka");
-		try
+		boolean isErasingItems = true;
+		while (isErasingItems)
 		{
-			Scanner scanner = new Scanner(System.in);
-			int decision = scanner.nextInt();
-			scanner.nextLine();
-			if (decision == 0) {
-				return;
-			}
-			else if (decision>0 && decision<=this.basket.length) {
-				System.out.println("Ile produktow chcesz sie pozbyc?");
-				int numberOfItems = 0;
-				try
-				{
-					numberOfItems = scanner.nextInt();
-					scanner.nextLine();
-					// Jezeli uzytkownik wprowadzil wieksza liczbê produktow niz jest w koszyku
-					if (numberOfItems>this.basket[decision-1].getAmountOfProduct()) {numberOfItems = this.basket[decision-1].getAmountOfProduct();}
+			System.out.println("Obecna zawartosc koszyka"); 
+			System.out.println(basket.toString());
+			System.out.println("Wpisz numer produktu, aby sie go pozbyc z koszyka");
+			System.out.println("Wpisz 0 jezeli chcesz przejsc to potwierdzenia zawartosci koszyka");
+			
+			try
+			{
+				Scanner scanner = new Scanner(System.in);
+				int decision = scanner.nextInt();
+				scanner.nextLine();
+				
+				if (decision == 0) {
+					isErasingItems = false;
 				}
-				catch (java.util.InputMismatchException e) {numberOfItems = 0;}
-				// Zmieniamy zawartosc koszyka wtedy gdy uzytkownik wykresla jakis produkt
-				if (numberOfItems>0) {eraseProductFromTheBasket(this.basket[decision-1], numberOfItems);}
-			}
-			doShopingErasingItems();
-		}
-		catch (java.util.InputMismatchException e) {doShopingErasingItems();}
-	}
-	
-	private void eraseProductFromTheBasket(Basket productInfo, int numberOfProducts)
-	{
-		Basket[] newBasket = new Basket[this.basket.length-1];
-		this.price = this.price - productInfo.getPrice() * (double)(numberOfProducts); 
-		int p=0;
-		
-		for (int i=0; i<this.basket.length; i++)
-		{
-			// Znalezlismy szukany produkt
-			if (this.basket[i].getName().equals(productInfo.getName())) {
-				int numberOfProductsInBasket = this.basket[i].getAmountOfProduct();
-				numberOfProductsInBasket -= numberOfProducts;
-				// Jezeli uzytkownik zdecydowal, ze nie skasuje wszystkich produktow bedacych w koszyku to po prostu zmieniamy ilosc produktow w this.basket i tyle
-				if (numberOfProductsInBasket != 0) {
-					this.basket[i].setAmountOfProduct(numberOfProductsInBasket); 
-					return;
+				
+				else if (decision > 0 && decision <= basket.getProducts().keySet().toArray().length) {
+					System.out.println("Ile produktow chcesz usunac z koszyka?");
+					int numberOfProducts = 0;
+					
+					try
+					{
+						numberOfProducts = scanner.nextInt();
+						scanner.nextLine();
+						
+						if (numberOfProducts > 0 && numberOfProducts <= basket.getProducts().get(basket.getProducts().keySet().toArray()[decision-1])) {
+							basket.eraseAProductFromTheBasket((Product) basket.getProducts().keySet().toArray()[decision-1], numberOfProducts);
+							System.out.println("Prawidlowo skasowano produkty z koszyka");
+						}
+						
+						else {
+							System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
+						}
+						
+					}
+					catch (java.util.InputMismatchException e) 
+					{
+						System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
+					}
 				}
+				
+				else {
+					System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
+				}
+				
 			}
-			else {
-				newBasket[p] = this.basket[i];
-				p++;
+			
+			catch (java.util.InputMismatchException e) 
+			{
+				System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
 			}
 		}
-		this.basket = newBasket;
-	}
-	
-	private String getInfoAboutBasket()
-	{
-		String data = "";
-		
-		for (int i=0; i<this.basket.length; i++)
-		{
-			data = data + (i+1) + ". " + this.basket[i].getName() + ", Cena: " + this.basket[i].getPrice() + " Ilosc produktow: " + this.basket[i].getAmountOfProduct() + "\n"; 
-		}
-		data = data + "Cena koncowa: " + this.price;
-		return data;
 	}
 }

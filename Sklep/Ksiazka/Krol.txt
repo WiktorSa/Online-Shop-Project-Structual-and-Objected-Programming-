@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Krol
+Price:30.99
+Author:Twardoch Szczepan
+Subcategory:Literatura piekna polska
+Publisher:Wydawnictwo Literackie
+premiereDate:2020-10-28
+numberOfPages:230

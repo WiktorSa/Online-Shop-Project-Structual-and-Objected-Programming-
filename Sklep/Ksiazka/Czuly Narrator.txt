@@ -1,0 +1,10 @@
+Category:Ksiazka
+Name:Czuly narrator
+Price:30.00
+Author:Tokarczuk Olga
+Subcategory:Literatura piekna polska
+Publisher:Wydawnictwo Literackie
+premiereDate:2020-11-12
+numberOfPages:214
+
+

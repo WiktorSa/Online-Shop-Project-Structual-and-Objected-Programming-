@@ -1,0 +1,12 @@
+Category:Ksiazka
+Name:Hobbit
+Price:20.81
+Author:Tolkien John Ronald Reuel
+Subcategory:Fantastyka
+Publisher:Wydawnictwo Iskry
+premiereDate:2014-11-07
+numberOfPages:320
+
+
+
+

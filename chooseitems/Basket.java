@@ -1,55 +1,83 @@
 package chooseitems;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-//Klasa zaimplementowana przez Szymona Sawczuka
-
-public class Basket implements Serializable{
-	
-	
+//Klasa zaimplementowana przez Szymona Sawczuka i Wiktora Sadowego
+public class Basket implements Serializable
+{
 	private static final long serialVersionUID = 4369378650407739091L;
-	private String category, name;
+	
+	HashMap<Product, Integer> products; // Produkt i ilosc produktu
 	private double price;
-	private int amountOfProduct;
-	
-	public Basket(String category, String name, double price, int amountOfProduct) {
-		this.category = category;
-		this.name = name;
-		this.price = price;
-		this.amountOfProduct = amountOfProduct;
+
+	public Basket() 
+	{
+		this.products = new LinkedHashMap<Product, Integer>();
+		this.price = 0;
 	}
 	
-	public int getAmountOfProduct() {
-		return amountOfProduct;
+	public HashMap<Product, Integer> getProducts() 
+	{
+		return products;
 	}
-	
-	public String getCategory() {
-		return category;
+
+	public void setProducts(HashMap<Product, Integer> products) 
+	{
+		this.products = products;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public double getPrice() {
+
+	public double getPrice() 
+	{
 		return price;
 	}
 	
-	public void setAmountOfProduct(int amountOfProduct) {
-		this.amountOfProduct = amountOfProduct;
-	}
-	
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setPrice(double price) {
+	public void setPrice(double price) 
+	{
 		this.price = price;
 	}
-	
 
+	public String toString()
+	{
+		String info = "";
+		Object[] items = products.keySet().toArray();
+		for (int i=0; i<items.length; i++)
+		{
+			info = info + (i+1) + ". Nazwa: " + ((Product) items[i]).getName() + " Cena: " + ((Product) items[i]).getPrice() + " Ilosc: " + products.get(items[i]) + "\n";
+		}
+		info = info + "Cena koncowa: " + String.format("%.2f", price);
+		return info;
+	}
+	
+	public String toStringWithoutPrice()
+	{
+		String info = "";
+		Object[] items = products.keySet().toArray();
+		for (int i=0; i<items.length; i++)
+		{
+			info = info + (i+1) + ". Nazwa: " + ((Product) items[i]).getName() + " Cena: " + ((Product) items[i]).getPrice() + " Ilosc: " + products.get(items[i]) + "\n";
+		}
+		return info;
+	}
+	
+	public void addAProductToTheBasket(Product product, int numberOfProducts)
+	{
+		if (products.containsKey(product)){
+			products.put(product, products.get(product) + numberOfProducts);
+		}
+		else {
+			products.put(product, numberOfProducts);
+		}
+		price = price + numberOfProducts * product.getPrice();
+	}
+
+	public void eraseAProductFromTheBasket(Product product, int numberOfProducts)
+	{
+		products.put(product, products.get(product) - numberOfProducts);
+		price = price - numberOfProducts * product.getPrice();
+		if (products.get(product) == 0) {
+			products.remove(product);
+		}
+	}
 }
