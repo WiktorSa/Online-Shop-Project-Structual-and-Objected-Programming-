@@ -7,9 +7,9 @@ import java.io.Serializable;
 public abstract class Product implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private String category;
-	private String name;
-	private double price;
+	protected String category;
+	protected String name;
+	protected double price;
 	
 	public Product(String category, String name, double price) 
 	{
