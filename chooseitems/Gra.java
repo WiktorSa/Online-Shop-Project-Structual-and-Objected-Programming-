@@ -36,7 +36,6 @@ public class Gra extends Product implements Serializable{
 		
 	}
 	
-	
 	public String getAuthor() {
 		return author;
 	}
