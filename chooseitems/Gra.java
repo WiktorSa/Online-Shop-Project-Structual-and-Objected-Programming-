@@ -86,8 +86,5 @@ public class Gra extends Product implements Serializable{
 		info = info + "Platforma: " + platform + "\n";
 		return info;
 	}
-	
-	
-	
 
 }

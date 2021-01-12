@@ -159,6 +159,10 @@ public class ChooseItems
 					product = new Plyta(information);
 					break;
 					
+				case "Gra":
+					product = new Gra(information);
+					break;
+					
 				default:
 					break;
 			}
