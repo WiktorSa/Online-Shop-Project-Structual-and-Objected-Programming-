@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Plyta extends Product
 {
 	private static final long serialVersionUID = 2L;
-  private String subCategory; //np. metal, klasyczna itd.
+	private String subCategory; //np. metal, klasyczna itd.
 	private String author;
 	private String publisher;
 	private String premiereDate;
@@ -14,7 +14,7 @@ public class Plyta extends Product
 	public Plyta(String category, String name, double price,  String subcategory, String author, String publisher, String premiereDate) 
 	{
 		super(category, name, price);
-    this.subcategory = subcategory;
+		this.subCategory = subcategory;
 		this.author = author;
 		this.publisher = publisher;
 		this.premiereDate = premiereDate;
@@ -24,7 +24,7 @@ public class Plyta extends Product
 	public Plyta(ArrayList<String> information)
 	{
 		super(information.get(0), information.get(1), Double.parseDouble(information.get(2)));
-    this.subcategory = information.get(3);
+		this.subCategory = information.get(3);
 		this.author = information.get(4);
 		this.publisher = information.get(5);
 		this.premiereDate = information.get(6);
@@ -32,12 +32,12 @@ public class Plyta extends Product
 
 	public String getSubcategory() 
 	{
-		return subcategory;
+		return subCategory;
 	}
 
 	public void setSubcategory(String subcategory) 
 	{
-		this.subcategory = subcategory;
+		this.subCategory = subcategory;
 	}
   
   	public String getAuthor()
@@ -48,20 +48,25 @@ public class Plyta extends Product
 	public void setAuthor(String author)
 	{
 		this.author = author;
-
-	public String getPublisher() {
+	}
+	
+	public String getPublisher() 
+	{
 		return publisher;
 	}
 
-	public void setPublisher(String publisher) {
+	public void setPublisher(String publisher) 
+	{
 		this.publisher = publisher;
 	}
 
-	public String getPremiereDate() {
+	public String getPremiereDate() 
+	{
 		return premiereDate;
 	}
 
-	public void setPremiereDate(String premiereDate) {
+	public void setPremiereDate(String premiereDate) 
+	{
 		this.premiereDate = premiereDate;
 	}
 
@@ -70,7 +75,7 @@ public class Plyta extends Product
 	{
 		String info = super.toString();
 		info = info + "Autor: " + author + "\n";
-		info = info + "Gatunek: " + subcategory + "\n";
+		info = info + "Gatunek: " + subCategory + "\n";
 		info = info + "Producent: " + publisher + "\n";
 		info = info + "Data premiery: " + premiereDate + "\n";
 		return info;

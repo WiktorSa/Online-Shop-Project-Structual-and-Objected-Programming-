@@ -155,6 +155,10 @@ public class ChooseItems
 					product = new Ksiazka(information);
 					break;
 
+				case "Plyta":
+					product = new Plyta(information);
+					break;
+					
 				default:
 					break;
 			}
