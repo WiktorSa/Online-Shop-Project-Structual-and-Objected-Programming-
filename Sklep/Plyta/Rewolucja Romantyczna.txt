@@ -1,0 +1,7 @@
+Category:Plyta
+Name:Rewolucja romantyczna
+Price:18.99
+Subcategory:Rap
+Author:Bedoes
+Publisher:SBM Label
+premiereDate:2021-01-15

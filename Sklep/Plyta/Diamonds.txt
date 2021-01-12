@@ -1,0 +1,7 @@
+Category:Plyta
+Name:Diamonds
+Price:18.99
+Subcategory:Pop
+Author:John Elton
+Publisher:Universal Music Group
+premiereDate:2018-09-07

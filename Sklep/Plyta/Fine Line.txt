@@ -1,0 +1,7 @@
+Category:Plyta
+Name:Fine Line
+Price:37.49
+Subcategory:Pop
+Author:Styles Harry
+Publisher:Sony Music Entertainment
+premiereDate:2019-12-13
