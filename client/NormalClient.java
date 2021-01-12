@@ -151,7 +151,7 @@ public class NormalClient extends RegisteredClient implements Serializable
 	public String getTransactionInfo() 
 	{
 		String transactionInfo = "Informacje o transakcji\n";
-		transactionInfo += getBasket();
+		transactionInfo += getBasket().toStringWithoutPrice();
 		transactionInfo = transactionInfo + "Cena: " + String.format("%.2f", basket.getPrice() + wayOfDelivery.getPrice()) + " (z wliczona dostawa)\n";
 		
 		if (getWasDeliveryChosen()){
