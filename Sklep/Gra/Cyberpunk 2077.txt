@@ -1,0 +1,8 @@
+Category:Gra
+Name:Cyberpunk 2077
+Price:219.99
+Subcategory:RPG
+Author:CD Project Red
+Publisher:CD Project Red
+premiereDate:2020-12-10
+Platform:PC

@@ -1,0 +1,8 @@
+Category:Gra
+Name:Grand Theft Auto V
+Price:169.80
+Subcategory:Gra akcji
+Author:Rockstar Games
+Publisher:Rockstar Games
+premiereDate:2015-04-14
+Platform:PC
