@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,27 +19,24 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import chooseitems.Basket;
+import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
 
-//Klasa stworzona przez Wiktora Sadowego 
-public class ChooseItemsBuyItemGUI
+public class ChooseItemsEraseItemGUI 
 {
 	private Client client;
 	private Product product;
-	private ArrayList<Product> items;
 	private JFrame jFrame;
 	private JFormattedTextField numberOfItems;
-	private JButton buyButton;
+	private JButton eraseButton;
 	private JButton goBackButton;
 	
-	// ArrayList jest uzywany tylko do cofniecia sie do listy produktow
-	public ChooseItemsBuyItemGUI(Client client, Product product, ArrayList<Product> items)
+	public ChooseItemsEraseItemGUI(Client client, Product product, int maxNumberToErase) // ArrayList jest uzywany tylko do cofniecia sie do listy produktow
 	{
 		this.client = client;
 		this.product = product;
-		this.items = items;
 		if (this.client instanceof RegisteredClient) {
 			((RegisteredClient) this.client).saveClient();
 		}
@@ -62,17 +58,16 @@ public class ChooseItemsBuyItemGUI
 		itemLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		jPanel.add(itemLabel);
 		
-		JLabel inputingANumberJLabel = new JLabel("Wpisz ile sztuk powyzszego produktu chcesz kupic");
+		JLabel inputingANumberJLabel = new JLabel("Wpisz ile sztuk powyzszego produktu chcesz usunac z koszyka");
 		inputingANumberJLabel.setBorder(new EmptyBorder(0, 10, 5, 10));
 		inputingANumberJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(inputingANumberJLabel);
 		
-		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatter = new NumberFormatter(format);
 		formatter.setValueClass(Integer.class);
 		formatter.setMinimum(1);
-		formatter.setMaximum(Integer.MAX_VALUE);
+		formatter.setMaximum(maxNumberToErase);
 		formatter.setAllowsInvalid(false);
 		
 		numberOfItems = new JFormattedTextField(formatter);
@@ -84,10 +79,10 @@ public class ChooseItemsBuyItemGUI
 		// chce miec wolne miejsce pomiedzy JTextField a JButton
 		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
-		buyButton = new JButton("KUP");
-		buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		buyButton.addActionListener(new BuyItem());
-		jPanel.add(buyButton);
+		eraseButton = new JButton("Usun z koszyka");
+		eraseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		eraseButton.addActionListener(new EraseItem());
+		jPanel.add(eraseButton);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
@@ -113,16 +108,24 @@ public class ChooseItemsBuyItemGUI
 		jFrame.setVisible(true);
 	}
 	
-	class BuyItem implements ActionListener
+	class EraseItem implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());
+			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText());
 			Basket basket = client.getBasket();
-			basket.addAProductToTheBasket(product, numberOfBoughtProducts);
+			basket.eraseAProductFromTheBasket(product, numberOfErasedProducts);
 			client.setBasket(basket);
-			JOptionPane.showMessageDialog(new JFrame(), "Pomyslnie zakupiono przedmiot/-y");
-			new ChooseItemsSelectingItemsGUI(client, items, 0);
+			JOptionPane.showMessageDialog(new JFrame(), "Pomyslnie skasowano przedmiot/-y w ilosci: " + numberOfErasedProducts);
+			
+			// Jezeli klient skasowal cala zawartosc koszyka to go cofamy do wyboru kategorii
+			if (client.getBasket().getProducts().size() == 0) {
+				new ChooseItemsSelectingCategoryGUI(client, new ChooseItems());
+			}
+			else {
+				new ChooseItemsBasketGUI(client);
+			}
+			
 			jFrame.dispose();
 		}
 	}
@@ -131,7 +134,7 @@ public class ChooseItemsBuyItemGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ChooseItemsSelectingItemsGUI(client, items, 0);
+			new ChooseItemsBasketGUI(client);
 			jFrame.dispose();
 		}
 	}

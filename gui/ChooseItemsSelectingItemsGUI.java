@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Button;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,10 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
@@ -33,12 +29,15 @@ public class ChooseItemsSelectingItemsGUI
 {
 	private Client client;
 	private ArrayList<Product> items;
-	private HashMap<JButton, Integer> selectItems = new LinkedHashMap<JButton, Integer>(); // Integer to numer w indeksie
+	// Integer to numer w indeksie
+	private HashMap<JButton, Integer> selectItems = new LinkedHashMap<JButton, Integer>(); 
 	private JFrame jFrame;
-	private JTextField selectIndexJTextField;
+	private JFormattedTextField selectIndexJTextField;
 	private JButton selectOtherItemsButton; 
 	private JButton goBackButton;
 	
+	// Uzywamy starting index, bo nie moge wyswietlic wszystkich produktow.
+	// Uzytkownik wiec bedzie sobie wybieral jakie 3 produkty chce zobaczyc
 	public ChooseItemsSelectingItemsGUI(Client client, ArrayList<Product> items, int startingIndex) 
 	{
 		this.client = client;
@@ -90,7 +89,8 @@ public class ChooseItemsSelectingItemsGUI
 		}
 		
 		// Reszta guzikow
-		gbc.gridx = 10;
+		gbc.gridx = 0;
+		gbc.gridwidth = 30;
 		gbc.gridheight = 1;
 		
 		gbc.gridy = 34;
@@ -103,10 +103,8 @@ public class ChooseItemsSelectingItemsGUI
 		if (nextIndex > items.size()) {
 			nextIndex = items.size()-2;
 		}
-		gbc.gridy = 35;
 		
 		// Chcemy aby JTextField pozwalal tylko na wpisanie intow
-		
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatter = new NumberFormatter(format);
 		formatter.setValueClass(Integer.class);
@@ -114,7 +112,10 @@ public class ChooseItemsSelectingItemsGUI
 		formatter.setMaximum(Integer.MAX_VALUE);
 		formatter.setAllowsInvalid(false);
 		
-		selectIndexJTextField = new JTextField(String.valueOf(nextIndex), 20);
+		gbc.gridy = 35;
+		selectIndexJTextField = new JFormattedTextField(formatter);
+		selectIndexJTextField.setText(String.valueOf(nextIndex));
+		selectIndexJTextField.setColumns(20);
 		jPanel.add(selectIndexJTextField, gbc);
 		
 		gbc.gridy = 36;
@@ -163,36 +164,18 @@ public class ChooseItemsSelectingItemsGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			try 
-			{
-				// Inna jest numeracja w ArrayList a inna wyswietla sie uzytkownikowi. Dlatego odejmujemy 1
-				int index = Integer.parseInt(selectIndexJTextField.getText()) - 1;
-				
-				// Dla ujemnego indeksu cofamy sie do pierwszego przedmiotu
-				if (index < 0) {
-					new ChooseItemsSelectingItemsGUI(client, items, 0);
-					jFrame.dispose();
-				}
-				
-				else {
-					// Dla indeksu powyzej limitu przedmiotow wyswietlamy 3 ostatnie przedmioty
-					if (index+3 > items.size()) {
-						new ChooseItemsSelectingItemsGUI(client, items, items.size()-3);
-						jFrame.dispose();
-					}
-					else {
-						new ChooseItemsSelectingItemsGUI(client, items, index);
-						jFrame.dispose();
-					}
-				}
-			} 
+			// Inna jest numeracja w ArrayList a inna wyswietla sie uzytkownikowi. Dlatego odejmujemy 1
+			int index = Integer.parseInt(selectIndexJTextField.getText()) - 1;
 			
-			// Gdyby uzytkownik wpadl na pomysl wpisania sad1431sf
-			catch (java.lang.NumberFormatException e) 
-			{
-				JOptionPane.showMessageDialog(new JPanel(), "Wpisz poprawny indeks", "Error", JOptionPane.WARNING_MESSAGE);
+			// Dla indeksu powyzej limitu przedmiotow wyswietlamy 3 ostatnie przedmioty
+			if (index+3 > items.size()) {
+				new ChooseItemsSelectingItemsGUI(client, items, items.size()-3);
+				jFrame.dispose();
 			}
-			
+			else {
+				new ChooseItemsSelectingItemsGUI(client, items, index);
+				jFrame.dispose();
+			}
 		}
 	}
 	

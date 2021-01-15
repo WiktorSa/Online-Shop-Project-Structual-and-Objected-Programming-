@@ -58,6 +58,6 @@ public abstract class Product implements Serializable
 	
 	public String toStringOneLine()
 	{
-		return "Nazwa: " + name + " Cena: " + price;
+		return "Nazwa: " + name + ", Cena: " + price + ", ";
 	}
 }

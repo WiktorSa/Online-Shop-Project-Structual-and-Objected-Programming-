@@ -19,6 +19,8 @@ import chooseitems.ChooseItems;
 import client.Client;
 import client.RegisteredClient;
 
+
+//chooseOptionJLabel.setBorder(new EmptyBorder(25,0,10,0)); //top,left,bottom,right
 //Klasa stworzona przez Wiktora Sadowego 
 public class ShopGUI implements ActionListener
 {
