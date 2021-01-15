@@ -1,5 +1,6 @@
 package waysofdelivery;
 
+import java.util.ArrayList;
 
 // Klasa stworzona przez Jana Skibinskiego
 public abstract class WaysOfDelivery {
@@ -12,6 +13,7 @@ public abstract class WaysOfDelivery {
 	public String lastName;
 	public double price;
 	public String name;
+	private static ArrayList <String> categories=new ArrayList<String>();
 	//getery
 	
 	public double getPrice()
@@ -39,5 +41,13 @@ public abstract class WaysOfDelivery {
 	public void setLastName(String lastName)
 	{
 		this.lastName=lastName;
+	}
+	
+	public static ArrayList<String> getCategories()
+	{
+		categories.add(new Paczkomat().getName());
+		categories.add(new Kurier().getName());
+		categories.add(new Osobisty().getName());
+		return categories;
 	}
 }
