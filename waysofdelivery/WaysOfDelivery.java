@@ -1,12 +1,15 @@
 package waysofdelivery;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 // Klasa stworzona przez Jana Skibinskiego
 public abstract class WaysOfDelivery {
 	
 	//zmienne
-	
+	private static String locationOfShopCatalog= "Sklep/";
 	public String clientNumber;
 	public String clientEmail;
 	public String firstName;
@@ -45,9 +48,6 @@ public abstract class WaysOfDelivery {
 	
 	public static ArrayList<String> getCategories()
 	{
-		categories.add(new Paczkomat().getName());
-		categories.add(new Kurier().getName());
-		categories.add(new Osobisty().getName());
 		return categories;
 	}
 	private static ArrayList<String> WODobtainCategories()
@@ -86,5 +86,4 @@ public abstract class WaysOfDelivery {
 		
 		return categories;
 	}
-}
 }
