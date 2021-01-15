@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import client.Client;
 import client.RegisteredClient;
 import waysofpayments.WaysOfPayments;
+//Klasa zaimplementowana przez Szymona Sawczuka
 
 public class WaysOfPaymentSelectingCategoryGUI {
 
