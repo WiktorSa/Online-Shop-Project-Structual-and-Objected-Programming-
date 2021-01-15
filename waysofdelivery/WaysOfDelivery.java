@@ -13,7 +13,7 @@ public abstract class WaysOfDelivery {
 	public String lastName;
 	public double price;
 	public String name;
-	private static ArrayList <String> categories=new ArrayList<String>();
+	private static ArrayList <String> categories=WODobtainCategories();
 	//getery
 	
 	public double getPrice()
@@ -50,4 +50,41 @@ public abstract class WaysOfDelivery {
 		categories.add(new Osobisty().getName());
 		return categories;
 	}
+	private static ArrayList<String> WODobtainCategories()
+	{
+		BufferedReader categoriesReader = null;
+		ArrayList<String> categories = new ArrayList<String>();
+		
+		try 
+		{
+			categoriesReader = new BufferedReader(new FileReader(locationOfShopCatalog + "WODcategories.txt"));	
+			
+			String categoryName = "";
+			while ((categoryName = categoriesReader.readLine()) != null)
+			{
+				categories.add(categoryName);
+			}
+
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Nastapil krytyczny blad w dzialaniu aplikacji.");
+			System.exit(-1);
+		}
+		finally 
+		{
+			try 
+			{
+				categoriesReader.close();
+			} 
+			catch (IOException e) 
+			{
+				System.out.println("Krytyczny blad w dzialaniu aplikacji");
+				System.exit(-1);
+			}
+		}
+		
+		return categories;
+	}
+}
 }
