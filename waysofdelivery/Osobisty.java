@@ -6,13 +6,21 @@ import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Osobisty extends WaysOfDelivery implements Dostawa {
 
-	private Date dt = new Date();
+	private static Date dt = new Date();
 	public Osobisty()
 	{
 		this.firstName="";
 		this.lastName="";
 		this.name="Odbior osobisty";
 		this.price=0f;
+	}
+	public static Date getDt()
+	{
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 1);
+		dt = c.getTime();
+		return dt;
 	}
 	@SuppressWarnings("resource")
 	public boolean provideDeliveryInformations(Client client)
