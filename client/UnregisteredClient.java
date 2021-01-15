@@ -3,7 +3,6 @@ package client;
 import java.io.Serializable;
 import java.util.Scanner;
 
-import chooseitems.ChooseItems;
 import waysofdelivery.Dostawa;
 import waysofdelivery.Kurier;
 import waysofdelivery.Osobisty;
@@ -22,12 +21,6 @@ public class UnregisteredClient extends Client implements Serializable
 	public UnregisteredClient() 
 	{
 		super();
-	}
-
-	public void initiateShopping() 
-	{
-		ChooseItems chooseItems = new ChooseItems();
-		basket = chooseItems.doShopping();
 	}
 
 	@SuppressWarnings("resource")
@@ -147,7 +140,7 @@ public class UnregisteredClient extends Client implements Serializable
 	public String getTransactionInfo() 
 	{
 		String transactionInfo = "Informacje o transakcji\n";
-		transactionInfo += getBasket();
+		transactionInfo += basket.toString();
 		transactionInfo = transactionInfo + "Cena: " + String.format("%.2f", basket.getPrice() + wayOfDelivery.getPrice()) + " (z wliczona dostawa)\n";
 		
 		if (getWasDeliveryChosen()){

@@ -1,28 +1,34 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
 import chooseitems.ChooseItems;
 import client.Client;
 import client.RegisteredClient;
 
-public class ChooseItemsSelectingCategoryGUI extends JFrame implements ActionListener
+//Klasa stworzona przez Wiktora Sadowego 
+public class ChooseItemsSelectingCategoryGUI
 {
-	private static final long serialVersionUID = 1L;
 	private Client client;
 	private ChooseItems chooseItems;
 	private ArrayList<JButton> selectCategory = new ArrayList<JButton>();
+	private JFrame jFrame;
+	private JButton goToBasketButton;
 	private JButton goBackButton;
 	
 	public ChooseItemsSelectingCategoryGUI(Client client, ChooseItems chooseItems) 
@@ -33,35 +39,47 @@ public class ChooseItemsSelectingCategoryGUI extends JFrame implements ActionLis
 			((RegisteredClient) this.client).saveClient();
 		}
 		
-		setLocationRelativeTo(null);
-		setTitle("Sklep");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(300, 170 + 30*chooseItems.getCategories().size());
-		setResizable(false);
+		jFrame = new JFrame();
+		jFrame.setLocationRelativeTo(null);
+		jFrame.setTitle("Sklep");
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jFrame.setResizable(false);
 		
 		JPanel jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
 		
-		JLabel jLabel1 = new JLabel("Wybierz kategorie", SwingConstants.CENTER);
-		jLabel1.setFont(new Font("Times New Roman", Font.BOLD, 24));
-		jLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jLabel1.setBorder(new EmptyBorder(0,0,20,0)); //top,left,bottom,right
-		jPanel.add(jLabel1);
+		JLabel titleJLabel = new JLabel("Wybierz kategorie", SwingConstants.CENTER);
+		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
+		jPanel.add(titleJLabel);
 		
 		for (String category : chooseItems.getCategories())
 		{
 			JButton jButton = new JButton(category);
-			jButton.addActionListener(this);
+			jButton.addActionListener(new SelectCategory());
 			jButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			jPanel.add(jButton);
 			selectCategory.add(jButton);
 			
-			JLabel filler = new JLabel("");
-			filler.setAlignmentX(Component.CENTER_ALIGNMENT);
-			filler.setBorder(new EmptyBorder(0,0,7,0));
-			jPanel.add(filler);
+			// Zeby guziki na siebie nie nachodzily
+			jPanel.add(Box.createRigidArea(new Dimension(0,7))); 
 		}
+		
+		jPanel.add(Box.createRigidArea(new Dimension(0,10))); 
+		
+		goToBasketButton = new JButton("Przejdz do koszyka");
+		goToBasketButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		goToBasketButton.addActionListener(new GoToBasket());
+		jPanel.add(goToBasketButton);
+		
+		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		
+		goBackButton = new JButton("Cofnij sie");
+		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		goBackButton.addActionListener(new GoBack());
+		jPanel.add(goBackButton);
 		
 		String text = "";
 		if (client instanceof RegisteredClient) {
@@ -70,33 +88,53 @@ public class ChooseItemsSelectingCategoryGUI extends JFrame implements ActionLis
 		else {
 			text = "Jestes niezalogowany";
 		}
-		JLabel jLabel2 = new JLabel(text);
-		jLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jLabel2.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(jLabel2);
+		JLabel infoAboutClientStatelJLabel = new JLabel(text);
+		infoAboutClientStatelJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		infoAboutClientStatelJLabel.setBorder(new EmptyBorder(10,0,10,0));
+		jPanel.add(infoAboutClientStatelJLabel);
 		
-		goBackButton = new JButton("Cofnij sie");
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		goBackButton.addActionListener(this);
-		jPanel.add(goBackButton);
-		
-		add(jPanel);
-		setVisible(true);
+		jFrame.add(jPanel);
+		jFrame.pack();
+		jFrame.setVisible(true);
 	}
-
-	public void actionPerformed(ActionEvent event) 
+	
+	class SelectCategory implements ActionListener
 	{
-		for (JButton jButton : selectCategory)
+		public void actionPerformed(ActionEvent event) 
 		{
-			if (event.getSource() == jButton) {
-				new ChooseItemsSelectingItemsGUI(client, chooseItems.getListOfProducts().get(jButton.getText()), 0, chooseItems);
-				dispose();
+			for (JButton jButton : selectCategory)
+			{
+				if (event.getSource() == jButton) {
+					new ChooseItemsSelectingItemsGUI(client, chooseItems.getListOfProducts().get(jButton.getText()), 0);
+					jFrame.dispose();
+				}
 			}
 		}
-		
-		if (event.getSource() == goBackButton) {
+	}
+	
+	class GoToBasket implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event) 
+		{
+			// Nie wyswietlamy listy produktow gdy ich klient nie ma w koszyku
+			if (client.getBasket().getProducts().size() == 0) {
+				JOptionPane.showMessageDialog(new JFrame(), "Pusty koszyk. Prosimy o wybranie produktow");
+			}
+			
+			// Na razie na potrzeby testowe to robimy
+			else {
+				new ChooseItemsBasketGUI(client);
+				jFrame.dispose();
+			}
+		}
+	}
+	
+	class GoBack implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event) 
+		{
 			new ShopGUI(client);
-			dispose();
+			jFrame.dispose();
 		}
 	}
 }

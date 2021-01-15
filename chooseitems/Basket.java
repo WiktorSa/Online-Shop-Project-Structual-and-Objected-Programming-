@@ -37,20 +37,8 @@ public class Basket implements Serializable
 	{
 		this.price = price;
 	}
-
-	public String toString()
-	{
-		String info = "";
-		Object[] items = products.keySet().toArray();
-		for (int i=0; i<items.length; i++)
-		{
-			info = info + (i+1) + ". Nazwa: " + ((Product) items[i]).getName() + " Cena: " + ((Product) items[i]).getPrice() + " Ilosc: " + products.get(items[i]) + "\n";
-		}
-		info = info + "Cena koncowa: " + String.format("%.2f", price);
-		return info;
-	}
 	
-	public String toStringWithoutPrice()
+	public String toString()
 	{
 		String info = "";
 		Object[] items = products.keySet().toArray();

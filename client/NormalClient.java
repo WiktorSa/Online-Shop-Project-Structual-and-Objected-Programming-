@@ -3,7 +3,6 @@ package client;
 import java.io.Serializable;
 import java.util.Scanner;
 
-import chooseitems.ChooseItems;
 import waysofdelivery.Dostawa;
 import waysofdelivery.Kurier;
 import waysofdelivery.Osobisty;
@@ -27,12 +26,6 @@ public class NormalClient extends RegisteredClient implements Serializable
 	public NormalClient(Client client) 
 	{
 		super(client);
-	}
-
-	public void initiateShopping() 
-	{
-		ChooseItems chooseItems = new ChooseItems(this);
-		basket = chooseItems.doShopping();
 	}
 
 	// Nie pozwalamy na zmiane adresu email uzytkownikowi, bo dzieki adresom jestesmy w stanie utrzymac baze klientow
@@ -151,7 +144,7 @@ public class NormalClient extends RegisteredClient implements Serializable
 	public String getTransactionInfo() 
 	{
 		String transactionInfo = "Informacje o transakcji\n";
-		transactionInfo += getBasket().toStringWithoutPrice();
+		transactionInfo += getBasket().toString();
 		transactionInfo = transactionInfo + "Cena: " + String.format("%.2f", basket.getPrice() + wayOfDelivery.getPrice()) + " (z wliczona dostawa)\n";
 		
 		if (getWasDeliveryChosen()){

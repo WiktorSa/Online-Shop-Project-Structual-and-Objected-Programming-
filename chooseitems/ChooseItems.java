@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.TreeMap;
-
-import client.Client;
 
 // Klasa zaimplementowana przez Wiktora Sadowego oraz Szymona Sawczuka
 public class ChooseItems 
@@ -15,24 +12,44 @@ public class ChooseItems
 	private String locationOfShopCatalog;
 	private ArrayList<String> categories;
 	private TreeMap<String, ArrayList<Product>> listOfProducts; // String - kategoria, reszta to informacje o produktach
-	private Basket basket;
 	
-	public ChooseItems(Client client) //NOTE(Szymon): Konstruktor w przypadku powracajacego klienta
+	public ChooseItems()
 	{
 		this.locationOfShopCatalog = "Sklep/";
 		this.categories = obtaincategories();
 		this.listOfProducts = obtainListOfProducts(categories);
-		this.basket = client.getBasket();
 	}
 	
-	public ChooseItems() //NOTE(Szymon): Konstruktor w przypadku nowego klienta
+	public String getLocationOfShopCatalog() 
 	{
-		this.locationOfShopCatalog = "Sklep/";
-		this.categories = obtaincategories();
-		this.listOfProducts = obtainListOfProducts(categories);
-		this.basket = new Basket();
+		return locationOfShopCatalog;
 	}
-	
+
+	public void setLocationOfShopCatalog(String locationOfShopCatalog) 
+	{
+		this.locationOfShopCatalog = locationOfShopCatalog;
+	}
+
+	public ArrayList<String> getCategories() 
+	{
+		return categories;
+	}
+
+	public void setCategories(ArrayList<String> categories) 
+	{
+		this.categories = categories;
+	}
+
+	public TreeMap<String, ArrayList<Product>> getListOfProducts() 
+	{
+		return listOfProducts;
+	}
+
+	public void setListOfProducts(TreeMap<String, ArrayList<Product>> listOfProducts) 
+	{
+		this.listOfProducts = listOfProducts;
+	}
+
 	private ArrayList<String> obtaincategories()
 	{
 		BufferedReader categoriesReader = null;
@@ -175,220 +192,4 @@ public class ChooseItems
 		return product;
 	}
 	
-	// Klient rozpoczyna zakupy
-	@SuppressWarnings("resource")
-	public Basket doShopping()
-	{
-		System.out.println("Witamy. Zyczymy udanych zakupow"); 
-		
-		boolean isShopping = true;
-		
-		Scanner scanner = new Scanner(System.in);
-		while (isShopping)
-		{
-			doShoppingSelectingCategory();
-			
-			if (basket.getPrice() == 0) {
-				
-				System.out.println("Czy naprawde nic nie chcesz kupic (wpisz 1 jesli tak)");
-				String decision = scanner.nextLine();
-				if (decision.equals("1")) {
-					System.out.println("Dziekujemy za zakupy w naszym sklepie");
-					System.exit(0);
-				}
-				
-			}
-			else {
-				doShopingErasingItems();
-				
-				System.out.println("Stan koszyka");
-				System.out.println(basket.toString());
-				
-				System.out.println("Napisz 1 jesli chcesz potwierdzic zawartosc koszyka (tej decyzji nie mozna cofnac)");
-				String decision = scanner.nextLine();
-				if (decision.equals("1")) {
-					isShopping = false;
-				}
-			}
-		}
-		
-		return basket;
-	}
-	
-	// Klient wybiera kategorie
-	@SuppressWarnings("resource")
-	private void doShoppingSelectingCategory() 
-	{
-		boolean shouldStopSelectingCategory = false;
-		
-		while (!shouldStopSelectingCategory)
-		{
-			// Wypisywanie mozliwych kategorii do wybrou
-			for (int i=0; i<categories.size(); i++)
-			{
-				System.out.println((i+1) + ". " + categories.get(i));
-			}
-			System.out.println("Wpisz numer kategorii, ktora chcesz przegladnac");
-			System.out.println("Wpisz 0 aby zakonczyc kupowanie produktow");
-			
-			try
-			{
-				Scanner scanner = new Scanner(System.in);
-				int numberOfCategory = scanner.nextInt();
-				scanner.nextLine();
-				
-				if (numberOfCategory == 0) {
-					shouldStopSelectingCategory = true;
-				}
-				
-				else if (numberOfCategory>0 && numberOfCategory<=categories.size()) {
-					doShoppingBuyingItems(categories.get(numberOfCategory-1));
-				}
-				
-				else {
-					System.out.println("Nie ma takiej kategorii. Wybierz ponownie");
-				}
-			}
-			
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Nie ma takiej kategorii. Wybierz ponownie");
-			}
-		}
-		
-	}
-	
-	// Klient wybiera produkty i je kupuje
-	@SuppressWarnings("resource")
-	private void doShoppingBuyingItems(String category)
-	{
-		System.out.println("Przegladasz teraz produkty z kategorii: " + category);
-		
-		ArrayList<Product> products = listOfProducts.get(category);
-		if (products.size() != 0) {
-			
-			boolean shouldStopBuyingItems = false;
-			while (!shouldStopBuyingItems)
-			{
-				// Wypisywanie produktow
-				for (int i=0; i<products.size(); i++)
-				{
-					System.out.println((i+1) + "\n" + products.get(i));
-				}
-				System.out.println("Wpisz numer produktu, aby go kupic");
-				System.out.println("Wpisz 0 jesli chcesz cofnac sie do wyboru kategorii");
-				
-				try
-				{
-					Scanner scanner = new Scanner(System.in);
-					
-					int numberOfItem = 0;
-					numberOfItem = scanner.nextInt();
-					scanner.nextLine();
-					
-					if (numberOfItem == 0) {
-						shouldStopBuyingItems = true;
-					}
-					
-					else {
-						if (numberOfItem>0 && numberOfItem<=products.size()) {
-							System.out.println("Ile chcesz kupic produktow o nazwie: " + products.get(numberOfItem-1).getName());
-							int numberOfProducts = 0;
-							
-							try
-							{
-								numberOfProducts = scanner.nextInt();
-								scanner.nextLine();
-								
-								if (numberOfProducts>0) {
-									basket.addAProductToTheBasket(products.get(numberOfItem-1), numberOfProducts);
-									System.out.println("Prawidlowo zakupiono produkt/-y\n");
-								}
-							}
-							
-							// Jezeli uzytkownik wpisze s jako liczbe produktow to zakladamy, ze nie chce tego produktu kupic
-							catch (java.util.InputMismatchException e) 
-							{
-								System.out.println("Prosze podac prawidlowa liczbe produktow");
-							}
-						}
-					}
-				}
-				
-				catch (java.util.InputMismatchException e) 
-				{
-					System.out.println("Nie ma takiego numeru produktu");
-				}
-			}
-		}
-		
-		// Nie ma produktow w danej kategorii
-		else {
-			Scanner scanner = new Scanner(System.in);
-			System.out.println("Brak produktow w podanej kategorii");
-			System.out.println("Nacisnij enter aby sie cofnac");
-			scanner.nextLine();
-		}
-		
-	}
-	
-	// Klient wybiera produkty, ktore chce skasowac z koszyka
-	@SuppressWarnings("resource")
-	private void doShopingErasingItems()
-	{
-		boolean isErasingItems = true;
-		while (isErasingItems)
-		{
-			System.out.println("Obecna zawartosc koszyka"); 
-			System.out.println(basket.toString());
-			System.out.println("Wpisz numer produktu, aby sie go pozbyc z koszyka");
-			System.out.println("Wpisz 0 jezeli chcesz przejsc to potwierdzenia zawartosci koszyka");
-			
-			try
-			{
-				Scanner scanner = new Scanner(System.in);
-				int decision = scanner.nextInt();
-				scanner.nextLine();
-				
-				if (decision == 0) {
-					isErasingItems = false;
-				}
-				
-				else if (decision > 0 && decision <= basket.getProducts().keySet().toArray().length) {
-					System.out.println("Ile produktow chcesz usunac z koszyka?");
-					int numberOfProducts = 0;
-					
-					try
-					{
-						numberOfProducts = scanner.nextInt();
-						scanner.nextLine();
-						
-						if (numberOfProducts > 0 && numberOfProducts <= basket.getProducts().get(basket.getProducts().keySet().toArray()[decision-1])) {
-							basket.eraseAProductFromTheBasket((Product) basket.getProducts().keySet().toArray()[decision-1], numberOfProducts);
-							System.out.println("Prawidlowo skasowano produkty z koszyka");
-						}
-						
-						else {
-							System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
-						}
-						
-					}
-					catch (java.util.InputMismatchException e) 
-					{
-						System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
-					}
-				}
-				
-				else {
-					System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
-				}
-				
-			}
-			
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Wybierz jeszcze raz produkt i wpisz prawidlowa liczbe produktow");
-			}
-		}
-	}
 }

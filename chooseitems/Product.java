@@ -55,4 +55,9 @@ public abstract class Product implements Serializable
 		info = info + "Cena: " + price + "\n";
 		return info;
 	}
+	
+	public String toStringOneLine()
+	{
+		return "Nazwa: " + name + " Cena: " + price;
+	}
 }

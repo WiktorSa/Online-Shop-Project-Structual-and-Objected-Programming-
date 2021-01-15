@@ -70,7 +70,6 @@ public class Plyta extends Product
 		this.premiereDate = premiereDate;
 	}
 
-	
 	public String toString()
 	{
 		String info = super.toString();

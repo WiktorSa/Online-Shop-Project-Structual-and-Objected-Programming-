@@ -80,8 +80,6 @@ public abstract class RegisteredClient extends Client implements Serializable
 		}
 	}
 	
-	public abstract void initiateShopping();
-	
 	public abstract void setClientInfo();
 	
 	public abstract void chooseWayOfDelivery();

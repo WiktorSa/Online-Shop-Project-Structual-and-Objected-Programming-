@@ -254,8 +254,6 @@ public abstract class Client implements Serializable
 		}
 	}
 
-	public abstract void initiateShopping();
-	
 	public abstract void setClientInfo();
 	
 	public abstract void chooseWayOfDelivery();
