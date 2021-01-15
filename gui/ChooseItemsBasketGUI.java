@@ -144,7 +144,7 @@ public class ChooseItemsBasketGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ClientSetClientInfoGUI(client);
+			new WaysOfDeliverySelectingCategoryGUI(client);
 			jFrame.dispose();
 		}
 	}
