@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +24,6 @@ import waysofdelivery.*;
 public class WaysOfDeliverySelectingCategoryGUI
 {
 	private Client client;
-	private WaysOfDelivery waysOfDelivery;
 	private ArrayList<JButton> selectCategory = new ArrayList<JButton>();
 	private JFrame jFrame;
 	private JButton goBackButton;
@@ -52,7 +50,6 @@ public class WaysOfDeliverySelectingCategoryGUI
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
-		
 		for (String category : WaysOfDelivery.getCategories())
 		{
 			JButton jButton = new JButton(category);
@@ -98,7 +95,12 @@ public class WaysOfDeliverySelectingCategoryGUI
 			for (JButton jButton : selectCategory)
 			{
 				if (event.getSource() == jButton) {
-					jFrame.dispose();
+					if(jButton.getText().equals("Odbior osobisty"))
+					{
+						new WaysOfDeliveryOsobistyGUI(client);
+						jFrame.dispose();
+					}
+					
 				}
 			}
 		}
