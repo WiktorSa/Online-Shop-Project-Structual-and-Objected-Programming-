@@ -70,7 +70,7 @@ public class WaysOfDeliveryOsobistyGUI
 		gbc.gridy += 3;
 		gbc.gridheight = 1;
 		
-		JLabel adresJLabel = new JLabel("Adres sklepu: Wroc³aw  ul. Teczowa 3");
+		JLabel adresJLabel = new JLabel("Adres sklepu: Wroclaw  ul. Teczowa 3");
 		adresJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
 		adresJLabel.setFont(new Font("New Times Roman", Font.BOLD, 16));
 		jPanel.add(adresJLabel, gbc);
