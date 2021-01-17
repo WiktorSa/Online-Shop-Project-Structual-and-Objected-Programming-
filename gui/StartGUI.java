@@ -11,6 +11,6 @@ public class StartGUI
 	{
 		// Klient na poczatku nie jest zalogowany
 		Client client = new UnregisteredClient();
-		new ShopGUI(client);
+		new ShopUnregisteredClientGUI(client);
 	}
 }

@@ -22,30 +22,10 @@ public class UnregisteredClient extends Client implements Serializable
 	{
 		super();
 	}
-
-	@SuppressWarnings("resource")
-	public void setClientInfo() 
+	
+	public UnregisteredClient(Client client)
 	{
-
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		while (!shouldStopSettingClientInfo)
-		{
-			setCorrectFirstName();
-			setCorrectLastName();
-			setCorrectEmail();
-			setCorrectPhoneNumber();
-			
-			System.out.println(toString());
-			
-			System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
-			String decision = scanner.nextLine();
-			
-			if (decision.equals("1")){
-				shouldStopSettingClientInfo = true;
-			}
-		}
+		super(client);
 	}
 
 	@SuppressWarnings("resource")

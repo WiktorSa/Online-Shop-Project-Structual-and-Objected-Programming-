@@ -31,13 +31,10 @@ public class ChooseItemsSelectingCategoryGUI
 	private JButton goToBasketButton;
 	private JButton goBackButton;
 	
-	public ChooseItemsSelectingCategoryGUI(Client client, ChooseItems chooseItems) 
+	public ChooseItemsSelectingCategoryGUI(Client client) 
 	{
 		this.client = client;
-		this.chooseItems = chooseItems;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
+		this.chooseItems = new ChooseItems();
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
@@ -81,17 +78,24 @@ public class ChooseItemsSelectingCategoryGUI
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
 		
-		String text = "";
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
+			jPanel.add(RegisteredClientJLabel);
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel);
 		}
-		JLabel infoAboutClientStatelJLabel = new JLabel(text);
-		infoAboutClientStatelJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		infoAboutClientStatelJLabel.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(infoAboutClientStatelJLabel);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
@@ -133,7 +137,12 @@ public class ChooseItemsSelectingCategoryGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ShopGUI(client);
+			if (client instanceof RegisteredClient) {
+				new ShopRegisteredClientGUI(client);
+			}
+			else {
+				new ShopUnregisteredClientGUI(client);
+			}
 			jFrame.dispose();
 		}
 	}

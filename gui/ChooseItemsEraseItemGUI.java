@@ -18,8 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import chooseitems.Basket;
-import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
@@ -37,9 +35,6 @@ public class ChooseItemsEraseItemGUI
 	{
 		this.client = client;
 		this.product = product;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
@@ -63,14 +58,7 @@ public class ChooseItemsEraseItemGUI
 		inputingANumberJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(inputingANumberJLabel);
 		
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(1);
-		formatter.setMaximum(maxNumberToErase);
-		formatter.setAllowsInvalid(false);
-		
-		numberOfItems = new JFormattedTextField(formatter);
+		numberOfItems = new JFormattedTextField(onlyAllowNaturalNumbersUpToNumberOfItems(maxNumberToErase));
 		numberOfItems.setText("1");
 		numberOfItems.setMaximumSize(new Dimension(200, 30));
 		numberOfItems.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -91,36 +79,56 @@ public class ChooseItemsEraseItemGUI
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
 		
-		String text = "";
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
+			jPanel.add(RegisteredClientJLabel);
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel);
 		}
-		JLabel infoAboutClientStatelJLabel = new JLabel(text);
-		infoAboutClientStatelJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		infoAboutClientStatelJLabel.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(infoAboutClientStatelJLabel);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
 		jFrame.setVisible(true);
 	}
 	
+	public NumberFormatter onlyAllowNaturalNumbersUpToNumberOfItems(int maxNumberToErase)
+	{
+		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(false);
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(1);
+		formatter.setMaximum(maxNumberToErase);
+		formatter.setAllowsInvalid(false);
+		return formatter;
+	}
+	
 	class EraseItem implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText());
-			Basket basket = client.getBasket();
-			basket.eraseAProductFromTheBasket(product, numberOfErasedProducts);
-			client.setBasket(basket);
-			JOptionPane.showMessageDialog(new JFrame(), "Pomyslnie skasowano przedmiot/-y w ilosci: " + numberOfErasedProducts);
+			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText().replaceAll("\\s+",""));
+			client.changeContentOfTheBasket(false, product, numberOfErasedProducts);
+			if (client instanceof RegisteredClient) {
+				((RegisteredClient) client).saveClient();
+			}
+			JOptionPane.showMessageDialog(null, "Pomyslnie skasowano przedmiot w ilosci: " + numberOfErasedProducts);
 			
 			// Jezeli klient skasowal cala zawartosc koszyka to go cofamy do wyboru kategorii
 			if (client.getBasket().getProducts().size() == 0) {
-				new ChooseItemsSelectingCategoryGUI(client, new ChooseItems());
+				new ChooseItemsSelectingCategoryGUI(client);
 			}
 			else {
 				new ChooseItemsBasketGUI(client);

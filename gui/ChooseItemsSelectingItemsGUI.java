@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
@@ -42,15 +41,12 @@ public class ChooseItemsSelectingItemsGUI
 	{
 		this.client = client;
 		this.items = items;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setTitle("Sklep");
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setSize(1050, 400);
+		jFrame.setSize(1050, 440);
 		jFrame.setResizable(false);
 		
 		// Uzywamy GridBagLayout, zeby moc bezproblemowo stworzyc GUI
@@ -104,16 +100,8 @@ public class ChooseItemsSelectingItemsGUI
 			nextIndex = items.size()-2;
 		}
 		
-		// Chcemy aby JTextField pozwalal tylko na wpisanie intow
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(1);
-		formatter.setMaximum(Integer.MAX_VALUE);
-		formatter.setAllowsInvalid(false);
-		
 		gbc.gridy = 35;
-		selectIndexJTextField = new JFormattedTextField(formatter);
+		selectIndexJTextField = new JFormattedTextField(OnlyAllowNaturalNumbers());
 		selectIndexJTextField.setText(String.valueOf(nextIndex));
 		selectIndexJTextField.setColumns(20);
 		jPanel.add(selectIndexJTextField, gbc);
@@ -129,20 +117,43 @@ public class ChooseItemsSelectingItemsGUI
 		jPanel.add(goBackButton, gbc);
 		
 		gbc.gridy = 38;
-		String text = "";
+		
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,0,5));
+			jPanel.add(RegisteredClientJLabel, gbc);
+			
+			gbc.gridy = 39;
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel, gbc);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel, gbc);
 		}
-		JLabel Info = new JLabel(text);
-		Info.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(Info, gbc);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
 		jFrame.setVisible(true);
+	}
+	
+	private NumberFormatter OnlyAllowNaturalNumbers()
+	{
+		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(false); // Pozbywam sie dodatkowych spacji w outpucie
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(1);
+		formatter.setMaximum(Integer.MAX_VALUE);
+		formatter.setAllowsInvalid(false);
+		return formatter;
 	}
 	
 	class BuyItems implements ActionListener
@@ -164,6 +175,7 @@ public class ChooseItemsSelectingItemsGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
+			// JFormattedTextField daje dodatkowe spacje. Chce sie ich pozbyc
 			// Inna jest numeracja w ArrayList a inna wyswietla sie uzytkownikowi. Dlatego odejmujemy 1
 			int index = Integer.parseInt(selectIndexJTextField.getText()) - 1;
 			
@@ -183,7 +195,7 @@ public class ChooseItemsSelectingItemsGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ChooseItemsSelectingCategoryGUI(client, new ChooseItems());
+			new ChooseItemsSelectingCategoryGUI(client);
 			jFrame.dispose();
 		}
 	}

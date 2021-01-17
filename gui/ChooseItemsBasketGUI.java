@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,12 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
 
-//Klasa stworzona przez Wiktora Sadowego=
+//Klasa stworzona przez Wiktora Sadowego
 public class ChooseItemsBasketGUI
 {
 	private Client client;
@@ -32,12 +32,9 @@ public class ChooseItemsBasketGUI
 	private JButton giveBasicInfoJButton;
 	private JButton goBackButton;
 	
-	ChooseItemsBasketGUI(Client client)
+	public ChooseItemsBasketGUI(Client client)
 	{
 		this.client = client;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
@@ -92,7 +89,7 @@ public class ChooseItemsBasketGUI
 		
 		gbc.gridwidth = 7;
 		
-		JLabel priceJLabel = new JLabel(String.format("%.2f", this.client.getBasket().getPrice()));
+		JLabel priceJLabel = new JLabel("Cena koncowa: " + String.format("%.2f", this.client.getBasket().getPrice()) + " zl");
 		priceJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
 		priceJLabel.setFont(new Font("New Times Roman", Font.BOLD, 18));
 		jPanel.add(priceJLabel, gbc);
@@ -110,16 +107,26 @@ public class ChooseItemsBasketGUI
 		jPanel.add(goBackButton, gbc);
 		
 		gbc.gridy += 1;
-		String text = "";
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,0,5));
+			jPanel.add(RegisteredClientJLabel, gbc);
+			
+			gbc.gridy += 1;
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel, gbc);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel, gbc);
 		}
-		JLabel Info = new JLabel(text);
-		Info.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(Info, gbc);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
@@ -133,6 +140,7 @@ public class ChooseItemsBasketGUI
 			for (JButton jButton : eraseProductButtons.keySet()) 
 			{
 				if (event.getSource() == jButton) {
+					// Biore klienta, produkt z HashMapa oraz ilosc danego przedmiotu z koszyka klienta
 					new ChooseItemsEraseItemGUI(client, eraseProductButtons.get(jButton), client.getBasket().getProducts().get(eraseProductButtons.get(jButton)));
 					jFrame.dispose();
 				}
@@ -144,17 +152,16 @@ public class ChooseItemsBasketGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new WaysOfDeliverySelectingCategoryGUI(client);
+			new ClientSetClientInfoGUI(client);
 			jFrame.dispose();
 		}
 	}
-	
 	
 	class GoBack implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ChooseItemsSelectingCategoryGUI(client, new ChooseItems());
+			new ChooseItemsSelectingCategoryGUI(client);
 			jFrame.dispose();
 		}
 	}

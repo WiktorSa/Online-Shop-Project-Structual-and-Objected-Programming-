@@ -14,7 +14,7 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 		this.name="Odbior osobisty";
 		this.price=0f;
 	}
-	public static Date getDt()
+	public Date getDt()
 	{
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(dt); 

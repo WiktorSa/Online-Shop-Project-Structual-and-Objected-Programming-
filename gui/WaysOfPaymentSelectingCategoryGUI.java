@@ -19,8 +19,8 @@ import javax.swing.border.EmptyBorder;
 import client.Client;
 import client.RegisteredClient;
 import waysofpayments.WaysOfPayments;
-//Klasa zaimplementowana przez Szymona Sawczuka
 
+//Klasa zaimplementowana przez Szymona Sawczuka (jeszcze nieskonczona)
 public class WaysOfPaymentSelectingCategoryGUI {
 
 	private Client client;
@@ -125,7 +125,3 @@ public class WaysOfPaymentSelectingCategoryGUI {
 	}
 	
 }
-
-
-
-	

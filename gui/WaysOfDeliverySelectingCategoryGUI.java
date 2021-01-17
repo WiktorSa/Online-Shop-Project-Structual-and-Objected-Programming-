@@ -20,7 +20,7 @@ import client.Client;
 import client.RegisteredClient;
 import waysofdelivery.*;
 
-//Klasa stworzona przez Jana Skibinskiego
+//Klasa stworzona przez Jana Skibinskiego (jeszcze nieskonczona)
 public class WaysOfDeliverySelectingCategoryGUI
 {
 	private Client client;
@@ -100,7 +100,6 @@ public class WaysOfDeliverySelectingCategoryGUI
 						new WaysOfDeliveryOsobistyGUI(client);
 						jFrame.dispose();
 					}
-					
 				}
 			}
 		}
@@ -110,7 +109,7 @@ public class WaysOfDeliverySelectingCategoryGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ChooseItemsBasketGUI(client);
+			new ClientSetClientInfoGUI(client);
 			jFrame.dispose();
 		}
 	}

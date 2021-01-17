@@ -19,7 +19,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import chooseitems.Basket;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
@@ -41,9 +40,6 @@ public class ChooseItemsBuyItemGUI
 		this.client = client;
 		this.product = product;
 		this.items = items;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
@@ -67,15 +63,7 @@ public class ChooseItemsBuyItemGUI
 		inputingANumberJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(inputingANumberJLabel);
 		
-		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(1);
-		formatter.setMaximum(Integer.MAX_VALUE);
-		formatter.setAllowsInvalid(false);
-		
-		numberOfItems = new JFormattedTextField(formatter);
+		numberOfItems = new JFormattedTextField(onlyAllowNaturalNumbersUpTo999());
 		numberOfItems.setText("1");
 		numberOfItems.setMaximumSize(new Dimension(200, 30));
 		numberOfItems.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -96,21 +84,42 @@ public class ChooseItemsBuyItemGUI
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
 		
-		String text = "";
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
+			jPanel.add(RegisteredClientJLabel);
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel);
 		}
-		JLabel infoAboutClientStatelJLabel = new JLabel(text);
-		infoAboutClientStatelJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		infoAboutClientStatelJLabel.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(infoAboutClientStatelJLabel);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
 		jFrame.setVisible(true);
+	}
+	
+	public NumberFormatter onlyAllowNaturalNumbersUpTo999()
+	{
+		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
+		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(false);
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(1);
+		// Daje limit 999 sztuk dla pojedynczej akcji kupna dla bezpieczenstwa
+		formatter.setMaximum(999);
+		formatter.setAllowsInvalid(false);
+		return formatter;
 	}
 	
 	class BuyItem implements ActionListener
@@ -118,10 +127,12 @@ public class ChooseItemsBuyItemGUI
 		public void actionPerformed(ActionEvent event) 
 		{
 			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());
-			Basket basket = client.getBasket();
-			basket.addAProductToTheBasket(product, numberOfBoughtProducts);
-			client.setBasket(basket);
-			JOptionPane.showMessageDialog(new JFrame(), "Pomyslnie zakupiono przedmiot/-y");
+			client.changeContentOfTheBasket(true, product, numberOfBoughtProducts);
+			if (client instanceof RegisteredClient) {
+				((RegisteredClient) client).saveClient();
+			}
+			JOptionPane.showMessageDialog(null, "Pomyslnie zakupiono przedmiot w ilosci: " + numberOfBoughtProducts);
+			
 			new ChooseItemsSelectingItemsGUI(client, items, 0);
 			jFrame.dispose();
 		}

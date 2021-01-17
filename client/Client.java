@@ -1,9 +1,8 @@
 package client;
 
 import java.io.Serializable;
-import java.util.Scanner;
-
 import chooseitems.Basket;
+import chooseitems.Product;
 import waysofdelivery.WaysOfDelivery;
 import waysofpayments.WaysOfPayments;
 
@@ -86,7 +85,7 @@ public abstract class Client implements Serializable
 	
 	public String toString() 
 	{
-		return "Dane o kliencie: Imie: " + firstName + ", Nazwisko: " + lastName + ", Email: " + email + ", Numer telefonu: " + phoneNumber;
+		return "Imie: " + firstName + ", Nazwisko: " + lastName + ", Email: " + email + ", Numer telefonu: " + phoneNumber;
 	}
 	
 	public void setBasket(Basket basket) 
@@ -129,132 +128,15 @@ public abstract class Client implements Serializable
 		this.wasDeliveryChosen = wasDeliveryChosen;
 	}
 	
-	@SuppressWarnings("resource")
-	protected void setCorrectFirstName()
+	public void changeContentOfTheBasket(boolean didBuy, Product product, int numberOfProducts)
 	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Podaj imie");
-		while (!shouldStopSettingClientInfo)
-		{
-			String firstName = scanner.nextLine();
-			
-			// Sprawdzam czy nie ma zadnych dziwnych znakow w imieniu
-			char[] letters = firstName.toCharArray();
-			for (int i=0; i<letters.length; i++)
-			{
-				if (!Character.isLetter(letters[i])) {
-					System.out.println("Podaj poprawne imie");
-					break;
-				}
-				
-				// Sprawdzilismy cale imie i mozemy byc pewni, ze jest ono poprawne
-				if (i==letters.length-1) {
-					shouldStopSettingClientInfo = true;
-				}
-			}
-			
-			if (shouldStopSettingClientInfo) {
-				this.firstName = firstName;
-			}
+		if(didBuy) {
+			basket.addAProductToTheBasket(product, numberOfProducts);
+		}
+		else {
+			basket.eraseAProductFromTheBasket(product, numberOfProducts);
 		}
 	}
-	
-	@SuppressWarnings("resource")
-	protected void setCorrectLastName()
-	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Podaj nazwisko");
-		while (!shouldStopSettingClientInfo)
-		{
-			String lastName = scanner.nextLine();
-			
-			// Sprawdzam czy nie ma zadnych dziwnych znakow w imieniu
-			char[] letters = lastName.toCharArray();
-			for (int i=0; i<letters.length; i++)
-			{
-				if (!Character.isLetter(letters[i])) {
-					System.out.println("Podaj poprawne nazwisko");
-					break;
-				}
-				
-				// Sprawdzilismy cale nazwisko i mozemy byc pewni, ze jest ono poprawne
-				if (i==letters.length-1) {
-					shouldStopSettingClientInfo = true;
-				}
-			}
-			
-			if (shouldStopSettingClientInfo) {
-				this.lastName = lastName;
-			}
-		}
-	}
-	
-	@SuppressWarnings("resource")
-	protected void setCorrectEmail()
-	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-
-		System.out.println("Podaj adres email");
-		while (!shouldStopSettingClientInfo)
-		{
-			String email = scanner.nextLine();
-			
-			// Sprawdzam czy mail jest poprawny
-			String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-			if (email.matches(regex)) {
-				this.email = email;
-				shouldStopSettingClientInfo = true;
-			}
-			else {
-				System.out.println("Podaj poprawny adres email");
-			}
-		}
-	}
-	
-	@SuppressWarnings("resource")
-	protected void setCorrectPhoneNumber()
-	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Podaj numer telefonu");
-		while (!shouldStopSettingClientInfo)
-		{
-			String phoneNumber = scanner.nextLine();
-			
-			if (phoneNumber.length() == 9) {
-				char[] digits = phoneNumber.toCharArray();
-				for (int i=0; i<9; i++)
-				{
-					if (!Character.isDigit(digits[i])){
-						System.out.println("Podaj poprawny numer telefonu");
-						break;
-					}
-					
-					// Sprawdzilismy caly numer telefonu i mozemy byc pewni, ze to poprawny numer telefonu
-					if (i==8) {
-						shouldStopSettingClientInfo = true;
-					}
-				}
-				
-				if (shouldStopSettingClientInfo) {
-					this.phoneNumber = phoneNumber;
-				}
-				
-			}
-			
-			else {
-				System.out.println("Podaj poprawny numer telefonu");
-			}
-		}
-	}
-
-	public abstract void setClientInfo();
 	
 	public abstract void chooseWayOfDelivery();
 

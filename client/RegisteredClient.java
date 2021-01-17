@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Scanner;
 
 // Klasa stworzona przez Wiktora Sadowego uzywajac kodu Szymona Sawczuka
 public abstract class RegisteredClient extends Client implements Serializable
@@ -35,32 +34,6 @@ public abstract class RegisteredClient extends Client implements Serializable
 		this.password = password;
 	}
 
-	@SuppressWarnings("resource")
-	public void setCorrectPassword()
-	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Podaj haslo: ");
-		
-		while(!shouldStopSettingClientInfo) 
-		{
-			String password = scanner.nextLine();
-			
-			// Sprawdzam czy hasla sie zgadzaja
-			System.out.println("Potwierdz haslo: ");
-			String confirm = scanner.nextLine();
-				
-			if (password.equals(confirm)) {
-				shouldStopSettingClientInfo = true;
-			}
-		
-			if (shouldStopSettingClientInfo) {
-				this.password = password;
-			}
-		}
-	}
-
 	//NOTE(Szymon): Metoda zapisu klienta do pliku
 	public void saveClient() 
 	{
@@ -70,17 +43,13 @@ public abstract class RegisteredClient extends Client implements Serializable
 		} 
 		catch (FileNotFoundException e) 
 		{
-			System.out.println("Doszlo do krytycznego bledu programu");
 			System.exit(-1);
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Doszlo do krytycznego bledu programu");
 			System.exit(-1);
 		}
 	}
-	
-	public abstract void setClientInfo();
 	
 	public abstract void chooseWayOfDelivery();
 

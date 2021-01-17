@@ -52,12 +52,12 @@ public abstract class Product implements Serializable
 	{
 		String info = "";
 		info = info + "Nazwa: " + name + "\n"; 
-		info = info + "Cena: " + price + "\n";
+		info = info + "Cena: " + price + " zl\n";
 		return info;
 	}
 	
 	public String toStringOneLine()
 	{
-		return "Nazwa: " + name + ", Cena: " + price + ", ";
+		return "Nazwa: " + name + ", Cena: " + price + " zl, ";
 	}
 }

@@ -28,30 +28,6 @@ public class NormalClient extends RegisteredClient implements Serializable
 		super(client);
 	}
 
-	// Nie pozwalamy na zmiane adresu email uzytkownikowi, bo dzieki adresom jestesmy w stanie utrzymac baze klientow
-	@SuppressWarnings("resource")
-	public void setClientInfo() 
-	{
-		boolean shouldStopSettingClientInfo = false;
-		Scanner scanner = new Scanner(System.in);
-		
-		while (!shouldStopSettingClientInfo)
-		{
-			setCorrectFirstName();
-			setCorrectLastName();
-			setCorrectPhoneNumber();
-			
-			System.out.println(toString());
-			
-			System.out.println("Nacisnij 1 zeby potwierdzic swoje dane");
-			String decision = scanner.nextLine();
-			
-			if (decision.equals("1")){
-				shouldStopSettingClientInfo = true;
-			}
-		}
-	}
-
 	@SuppressWarnings("resource")
 	public void chooseWayOfDelivery() 
 	{

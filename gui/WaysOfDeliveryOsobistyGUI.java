@@ -17,11 +17,12 @@ import client.Client;
 import client.RegisteredClient;
 import waysofdelivery.*;
 
-//Klasa stworzona przez Jana Skibinskiego=
+//Klasa stworzona przez Jana Skibinskiego
 public class WaysOfDeliveryOsobistyGUI
 {
 	private Client client;
 	private JFrame jFrame;
+	private WaysOfDelivery wayOfDelivery;
 	// Zatwierdzanie lub cofanie
 	private JButton confimButton;
 	private JButton goBackButton;
@@ -29,6 +30,7 @@ public class WaysOfDeliveryOsobistyGUI
 	WaysOfDeliveryOsobistyGUI(Client client)
 	{
 		this.client = client;
+		this.wayOfDelivery = new Osobisty();
 		if (this.client instanceof RegisteredClient) {
 			((RegisteredClient) this.client).saveClient();
 		}
@@ -62,7 +64,7 @@ public class WaysOfDeliveryOsobistyGUI
 		
 		gbc.gridwidth = 7;
 		
-		JLabel dataJLabel = new JLabel(Osobisty.getDt() + " do konca dnia nastepnego w godzinach 8-20");
+		JLabel dataJLabel = new JLabel(((Osobisty) wayOfDelivery).getDt() + " do konca dnia nastepnego w godzinach 8-20");
 		dataJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
 		dataJLabel.setFont(new Font("New Times Roman", Font.BOLD, 16));
 		jPanel.add(dataJLabel, gbc);
@@ -118,7 +120,7 @@ public class WaysOfDeliveryOsobistyGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			client.setWayOfDelivery(new Osobisty());
+			client.setWayOfDelivery(wayOfDelivery);
 			new WaysOfPaymentSelectingCategoryGUI(client);
 			jFrame.dispose();
 		}
