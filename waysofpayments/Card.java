@@ -1,9 +1,6 @@
 package waysofpayments;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.ArrayList;
+
 
 import client.Client;
 
@@ -12,7 +9,7 @@ import client.Client;
 public class Card implements WaysOfPayments{
 
 	private boolean isPaymentDone = false;  //NOTE: Potrzebne aby moc poinformowac o dokonaniu platnosci
-	
+
 	@Override
 	public String getName() {
 		return "Platnosc karta";
@@ -23,188 +20,23 @@ public class Card implements WaysOfPayments{
 		return isPaymentDone;
 	}
 	
-	@SuppressWarnings("resource")
-	private Map<String,int[]> cardNumberInput(){
-		
-		Scanner input = new Scanner(System.in);
-		String cardNumber = null;
-		final int lengthOfCardNumber = 16;
-		int[] number = new int[lengthOfCardNumber];
-		String[] tmp;
-		Map<String, int[]> card = new HashMap<>();
-		
-		while(cardNumber == null) {
-			
-			System.out.print("Numer karty: ");
-			cardNumber = input.nextLine();
-			cardNumber = cardNumber.replaceAll("\\s+", ""); //NOTE: Usuwam wszystkie przerwy miedzy cyframi numeru
-			tmp = cardNumber.split("");
-
-			if(tmp.length != lengthOfCardNumber && !cardNumber.equals("-1")) {
-				
-				System.out.println("Blad: Bledny rozmiar numeru karty");
-				cardNumber = null;
-				
-			}
-			else if(!cardNumber.equals("-1")){
-				
-				try {
-	
-					for(int i = 0;i<number.length;i++) {
-						number[i] += Integer.parseInt(tmp[i]);
-	
-					}
-					
-				}catch(NumberFormatException e) { //NOTE: Jesli w numerze karty jest np.litera
-					
-					System.out.println("Blad: Podaj poprawny numer karty");
-					cardNumber = null;
-//					e.getStackTrace(); NOTE: Dostepne tylko dla programisty
-					
-				}
-			}
-		}
-		
-		StringBuilder builder = new StringBuilder();
-		if(cardNumber.equals("-1"))
-		{
-			number = new int[1];
-			number[0] = -1;
-			builder.append("-1");
-		}
-
-		if(!cardNumber.equals("-1")) { //NOTE: Gdy numer nie bedzie -1 to zmieniam wyglad numeru karty w postaci Stringa dodajac co 4 element spacje
-			
-			for(int i = 0;i<cardNumber.length();i+=4) {
-				builder.append(cardNumber.substring(i, i+4));
-				builder.append(" ");
-			}
-			
-		}
-		
-		card.put(builder.toString(), number);		
-		return card;
-		
-	}
-	
-	@SuppressWarnings("resource")
-	private int cvvInput(int cvv) {
-		
-		Scanner input = new Scanner(System.in);
-		while((cvv <100 || cvv>999) && cvv!=-1) {
-			
-			System.out.print("Numer CVV: ");
-			
-			try {
-				cvv = input.nextInt();
-				
-				if((cvv<100 || cvv>999) && cvv!= -1)
-					System.out.println("Blad: Podaj poprawny numer CVV");
-			
-			}catch(InputMismatchException e) {
-				
-				input.nextLine();
-				System.out.println("Blad: Podaj poprawny numer CVV");
-//				e.getStackTrace(); NOTE: Dostepne tylko dla programisty
-
-				
-			}
-			
-		}
-		
-		return cvv;
-		
-	}
-	
-
-	@SuppressWarnings("resource")
 	@Override
-	public void pay(Client client) {
+	public boolean pay(Client client, ArrayList<String> info) {
 		
-		Scanner input = new Scanner(System.in);
-		String expirationDate = null;
-		int cvv = 0;
-		boolean done = false;
-		Map<String,int[]> card; //NOTE: Chce miec numer karty w dwoch postaciach (String i int[]);
-	
+		int[] tmpNumber = new int[16];
 		
-		System.out.println("Podaj dane karty kredytowej/debetowej (Aby wrocic wpisz w ktoryms z pol (-1)):");
-		System.out.println("Przykladowa poprawna karta: 4556 7375 8689 9855");
-		
-		try {
-			while(!done) {
-				
-				System.out.println();
-			
-				done = false;
-				expirationDate = null; //NOTE: Wyzerowuje zmienne, aby moc zapetlic po odrzuceniu wpisanych danych
-				cvv = 0;
-				
-				card = cardNumberInput();
-				done = (card.get(card.keySet().toArray()[0])[0] == -1);
-				
-				if(!done && isValid(card.get(card.keySet().toArray()[0]))) {
-					
-					cvv = cvvInput(cvv);
-					done = (cvv == -1);
-	
-					while(!done && (expirationDate == null || !isValidDate(expirationDate))) {
-							
-						System.out.print("Data waznosci: ");
-						expirationDate = input.next();
-						
-						done = expirationDate.equals("-1");
+		for(int i = 0;i < info.get(0).length();i++) {
+			tmpNumber[i] = info.get(0).charAt(i) - '0';
+		}
 
-						if(!done && (expirationDate.length() != 5 || !isValidDate(expirationDate) ) ) {
-							
-							System.out.println("Blad: Podaj poprawna date(np. 01/21)");
-							expirationDate = null;
-								
-						}
-						
-					}
-	
-				}else if(!done) {
-					System.out.println("Blad: Podaj poprawny numer karty");
-				}
-				
-				if(expirationDate != null && !expirationDate.equals("-1") && card.entrySet().toArray()[0] != null && cvv != 0) {//NOTE: Wypisanie danych koncowych, aby moc zatwierdzic
-					
-					input.nextLine();
-					
-					System.out.printf("%nPodane dane:%n"
-							+ "Numer karty: %s%n"
-							+ "Numer CVV: %d%n"
-							+ "Data waznosci: %s%n%n"
-							+ "Kilkij cokolwiek, aby zatwierdzic%n"
-							+ "Wpisz N, aby wpisac od nowa dane%n", card.keySet().toArray()[0], cvv, expirationDate);
-					
-					if(!input.nextLine().equals("N")) {
-						
-						isPaymentDone = true;
-						done = true;
-						
-					}
-					
-				}
-			}
-	
-		}catch(NoSuchElementException e) {
-				
-			System.out.println("Blad: Doszlo do krytycznego bledu programu");
-			//e.getStackTrace(); NOTE: Tylko dla programisty
-			System.exit(-1);
-				
+		if(isValid(tmpNumber) && isValidDate(info.get(2))) {
+			isPaymentDone = true;
+			return true;
 		}
 		
-		
-		
-			System.out.println("Powrot na strone sklepu...");
-
-			
-		
+		return false;
 	}
-	
+
 	private boolean isValid(int[] number) {
 		
 		int sum = 0;

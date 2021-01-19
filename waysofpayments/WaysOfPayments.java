@@ -11,7 +11,7 @@ public interface WaysOfPayments{
 
 	public abstract String getName();
 	public abstract boolean isPaymentDone();
-	public abstract void pay(Client client); //NOTE: Metoda dokonywania platnosci
+	public abstract boolean pay(Client client,  ArrayList<String> t); //NOTE: Metoda dokonywania platnosci
 	public final ArrayList<String> TYPESOFPAYMENT = new ArrayList<String>(Arrays.asList("Blik","Platnosc karta","Paypal"));
 
 }
