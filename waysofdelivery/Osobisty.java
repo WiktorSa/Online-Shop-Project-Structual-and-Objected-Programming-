@@ -1,5 +1,4 @@
 package waysofdelivery;
-import java.util.Scanner;
 import java.util.Calendar;
 import java.util.Date;
 import client.Client;
@@ -7,53 +6,26 @@ import client.Client;
 public class Osobisty extends WaysOfDelivery implements Dostawa {
 
 	private static Date dt = new Date();
-	public Osobisty()
+	public Osobisty(Client client)
 	{
-		this.firstName="";
-		this.lastName="";
+		this.firstName=client.getFirstName();
+		this.lastName=client.getLastName();
 		this.name="Odbior osobisty";
 		this.price=0f;
 	}
+	public void setTomDt()
+	{
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 1);
+		dt = c.getTime();
+	}
 	public Date getDt()
 	{
-		Calendar c = Calendar.getInstance(); 
-		c.setTime(dt); 
-		c.add(Calendar.DATE, 1);
-		dt = c.getTime();
 		return dt;
 	}
-	@SuppressWarnings("resource")
-	public boolean provideDeliveryInformations(Client client)
-	{
-		//deklaracja zmiennych i ustawienie daty
-		String decision;
-		
-		Calendar c = Calendar.getInstance(); 
-		c.setTime(dt); 
-		c.add(Calendar.DATE, 1);
-		dt = c.getTime();
-		
-		setFirstName(client.getFirstName());
-		setLastName(client.getLastName());
-		
-		System.out.println("Odbior osobisty bedzie mozliwy od dnia i godziny: "+ dt + " do konca dnia nastepnego w godzinach 8-20");
-		//potwierdzenie
-		
-		Scanner scan2= new Scanner(System.in);
-		System.out.println("Wpisz 1 by zatwierdzic dostawe na dany adres, lub nie 1 by anulowac.");
-			decision=scan2.nextLine();
-		if (decision.equals("1"))
-		{
-			System.out.println("Odbior osobisty zostal ustawiony pomyslnie.");
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-		
-	}
-	public String deliveryInfo()
+
+	public String toString()
 	{
 		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbierajacego: "+ firstName +" "+lastName;
 	}	

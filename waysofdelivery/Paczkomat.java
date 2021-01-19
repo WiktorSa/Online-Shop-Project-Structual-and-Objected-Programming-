@@ -1,86 +1,64 @@
 package waysofdelivery;
-
-import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	
 	private String paczkomatCode;
-	private String [] paczkomatList={"WRO321","WRO412","WRO643","WAR312","WAR321"};
-	public Paczkomat()
+	private String miasto;
+	public ArrayList<String> PACZKOMATLIST;
+	public Paczkomat(Client client)
 	{
 		this.paczkomatCode="";
-		this.clientEmail="";
-		this.clientNumber="";
+		this.clientEmail=client.getEmail();
+		this.clientNumber=client.getPhoneNumber();
 		this.name="Paczkomat InPost";
 		this.price=10.5f;
 	}
-	@SuppressWarnings("resource")
-	public boolean provideDeliveryInformations(Client client)
-	{
-		//ustawianie+ deklaracja zmiennych
-		
-		setClientNumber(client.getPhoneNumber());
-		setClientEmail(client.getEmail());
-		String decision;
-		//Informacja o przykladowych paczkomatach oraz branie kodu od uzytkownika
-		
-		System.out.println("Oto przykladowe paczkomaty do ktorych dostarczamy:\n" +paczkomatList[0]+"\n"+paczkomatList[1]+"\n"+paczkomatList[4]+"\n");
-		System.out.println("Prosze podac kod paczkomatu do ktorego ma zostac dostarczony towar:");
-			Scanner scan= new Scanner(System.in);
-		paczkomatCode=scan.nextLine();
-		while(isCodeValid(paczkomatCode)==-1)
-		{
-			System.out.println("Prosze podac poprawny kod paczkomatu!");
-			paczkomatCode=scan.nextLine();
-		}
-		//Decyzja uzytownika
-		
-		System.out.println("Wpisz 1 by zatwierdzic dostawe do danego paczkomatu, lub nie 1 by anulowac.");
-			decision=scan.nextLine();
-		if (decision.equals("1"))
-		{
-			System.out.println("Dostawa do paczkomatu zostala ustawiona pomyslnie.");
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	public String deliveryInfo()
+
+	public String toString()
 	{
 		return "Dostawa zostala zamowiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" +clientEmail;
 	}
 	
-	private int isCodeValid(String code)
+	public String closeByPaczkomat()
 	{
-		//sprawdzamy czy kod podany znajduje sie na liscie paczkomatow
-		
-		for(int i=0;i<paczkomatList.length;i++)
-		{
-			if(paczkomatList[i].equals(code))
-			{
-				return 1;
-			}
-			if(i==paczkomatList.length-1)
-			{
-				return -1;
-			}
-		}
-		return 0;
+		int randomNum = ThreadLocalRandom.current().nextInt(100, 998 + 1);
+		String code=Character.toString(Character.toUpperCase(miasto.charAt(0)))+Character.toUpperCase((miasto.charAt(1)))+Character.toUpperCase(miasto.charAt(2));
+		return code+String.valueOf(randomNum);
 	}
+	 
 	//seter
 	
 	public void setPaczkomatCode(String kod)
 	{
 		paczkomatCode=kod;
 	}
+	public void setMiasto(String miasto)
+	{
+		this.miasto=miasto;
+	}
+	public void setPaczkomatList()
+	{
+		PACZKOMATLIST=null;
+		PACZKOMATLIST=new ArrayList<String>();
+		PACZKOMATLIST.add(closeByPaczkomat());
+		PACZKOMATLIST.add(closeByPaczkomat());
+		PACZKOMATLIST.add(closeByPaczkomat());
+	}
 	//geter
 	
 	public String getPaczkomatCode()
 	{
 		return paczkomatCode;
+	}
+	public String getMiasto()
+	{
+		return miasto;
+	}
+	public ArrayList <String> getPACZKOMATLIST()
+	{
+		return PACZKOMATLIST;
 	}
 }
