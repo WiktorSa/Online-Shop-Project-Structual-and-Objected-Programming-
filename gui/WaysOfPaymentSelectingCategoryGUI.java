@@ -25,21 +25,29 @@ public class WaysOfPaymentSelectingCategoryGUI {
 
 	private Client client;
 	private JFrame jFrame;
+	private JPanel mainPanel;
 	
 	
 	public WaysOfPaymentSelectingCategoryGUI(Client client) {
 		
-		
-		this.client = client;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
+		this.client = client; 
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setTitle("Wybor Platnosci");
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.setResizable(false);
+		
+		mainPanel = createPanel();
+		
+		jFrame.add(mainPanel);
+		jFrame.pack();
+		jFrame.setVisible(true);
+	
+		
+	}
+	
+	private JPanel createPanel() {
 		
 		JPanel jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -83,10 +91,7 @@ public class WaysOfPaymentSelectingCategoryGUI {
 		loggedLabel.setBorder(new EmptyBorder(5,10,20,10));	//top,left,bottom,right
 		jPanel.add(loggedLabel);
 		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
-	
+		return jPanel;
 		
 	}
 	
@@ -101,16 +106,15 @@ public class WaysOfPaymentSelectingCategoryGUI {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			
-			/*if(jButton.getText().equals("Blik")) {
+			if(jButton.getText().equals("Blik")) {
 				new BlikGUI(client);
 			}else if(jButton.getText().equals("Platnosc karta")) {
 				new CardGUI(client);
 			}else if(jButton.getText().equals("Paypal")) {
 				new PayPalGUI(client);
-			}*/
+			}
 			
-			jButton.setText("Jeszcze nie zaimplementowane");
-//			jFrame.dispose();
+			jFrame.dispose();
 			
 		}
 	}
@@ -120,6 +124,7 @@ public class WaysOfPaymentSelectingCategoryGUI {
 		public void actionPerformed(ActionEvent event) 
 		{
 			new WaysOfDeliverySelectingCategoryGUI(client);
+			client.setWayOfDelivery(null);
 			jFrame.dispose();
 		}
 	}
