@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
+import client.HelperFunctionsClient;
 import client.NormalClient;
 import client.RegisteredClient;
 
@@ -122,7 +123,7 @@ public class ClientRegisterGUI
 			String password = String.valueOf(passwordJPasswordField.getPassword());
 			String passwordConfirm = String.valueOf(passwordConfirmJPasswordField.getPassword());
 			
-			if (isCorrectEmail(email) && password.equals(passwordConfirm) && password.length() != 0) {
+			if (HelperFunctionsClient.isCorrectEmail(email) && password.equals(passwordConfirm) && password.length() != 0) {
 				File file = new File("Client_" + email + ".ser");
 				
 				if (file.exists()) {
@@ -134,7 +135,9 @@ public class ClientRegisterGUI
 					client.setEmail(email);
 					((RegisteredClient) client).setPassword(password);
 					((RegisteredClient) client).saveClient();
+					
 					JOptionPane.showMessageDialog(null, "Rejestracja przebiegla pomyslnie. Zostaniesz automatycznie zalogowany");
+					
 					new ShopRegisteredClientGUI(client);
 					jFrame.dispose();
 				}
@@ -143,13 +146,6 @@ public class ClientRegisterGUI
 			else {
 				JOptionPane.showMessageDialog(null, "Niepoprawne dane podane");
 			}
-		}
-		
-		private boolean isCorrectEmail(String email)
-		{
-			String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-			
-			return email.matches(regex);
 		}
 	}
 	

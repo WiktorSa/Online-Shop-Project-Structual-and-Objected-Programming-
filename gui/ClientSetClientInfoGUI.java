@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
+import client.HelperFunctionsClient;
 import client.RegisteredClient;
 
 
@@ -147,7 +148,9 @@ public class ClientSetClientInfoGUI
 			String email = emailJTextField.getText();
 			String phoneNumber = phoneNumberJTextField.getText();
 			
-			if (isCorrectName(firstName) && isCorrectName(lastName) && isCorrectEmail(email) && isCorrectPhoneNumber(phoneNumber)) {
+			if (HelperFunctionsClient.isCorrectName(firstName) && HelperFunctionsClient.isCorrectName(lastName) 
+					&& HelperFunctionsClient.isCorrectEmail(email) && HelperFunctionsClient.isCorrectPhoneNumber(phoneNumber)) {
+				
 				client.setFirstName(firstName);
 				client.setLastName(lastName);
 				client.setEmail(email);
@@ -165,54 +168,6 @@ public class ClientSetClientInfoGUI
 			else {
 				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
 			}
-		}
-		
-		private boolean isCorrectName(String name)
-		{
-			if (name.isEmpty()) {
-				return false;
-			}
-			
-			char[] letters = name.toCharArray();
-			
-			if (!Character.isUpperCase(letters[0])) {
-				return false;
-			}
-			
-			for (int i=0; i<letters.length; i++)
-			{
-				if (!Character.isLetter(letters[i])) {
-					return false;
-				}
-			}
-			
-			return true;
-		}
-		
-		private boolean isCorrectEmail(String email)
-		{
-			String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-			
-			return email.matches(regex);
-		}
-		
-		private boolean isCorrectPhoneNumber(String phoneNumber)
-		{
-			if (phoneNumber.length() == 9) {
-				char[] digits = phoneNumber.toCharArray();
-				for (int i=0; i<9; i++)
-				{
-					if (!Character.isDigit(digits[i])){
-						return false;
-					}
-				}
-				
-				return true;
-			}
-			
-			else {
-				return false;
-			}		
 		}
 	}
 	

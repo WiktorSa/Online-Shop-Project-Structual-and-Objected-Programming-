@@ -21,7 +21,7 @@ import client.RegisteredClient;
 
 //chooseOptionJLabel.setBorder(new EmptyBorder(25,0,10,0)); //top,left,bottom,right
 //Klasa stworzona przez Wiktora Sadowego 
-public class ShopUnregisteredClientGUI implements ActionListener
+public class ShopUnregisteredClientGUI
 {
 	private Client client;
 	private JFrame jFrame;
@@ -59,7 +59,7 @@ public class ShopUnregisteredClientGUI implements ActionListener
 		jPanel.add(chooseOptionJLabel);
 		
 		startShoppingButton = new JButton("Rozpocznij zakupy jako niezalogowany klient");
-		startShoppingButton.addActionListener(this);
+		startShoppingButton.addActionListener(new StartShopping());
 		startShoppingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(startShoppingButton);
 		
@@ -67,14 +67,14 @@ public class ShopUnregisteredClientGUI implements ActionListener
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		logInButton = new JButton("Zaloguj sie");
-		logInButton.addActionListener(this);
+		logInButton.addActionListener(new GoToLogIn());
 		logInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(logInButton);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		registerButton = new JButton("Zarejestruj sie");
-		registerButton.addActionListener(this);
+		registerButton.addActionListener(new GoToRegister());
 		registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(registerButton);
 		
@@ -88,19 +88,28 @@ public class ShopUnregisteredClientGUI implements ActionListener
 		jFrame.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent event) 
+	class StartShopping implements ActionListener
 	{
-		if (event.getSource() == startShoppingButton) {
+		public void actionPerformed(ActionEvent event) 
+		{
 			new ChooseItemsSelectingCategoryGUI(client);
 			jFrame.dispose(); 
 		}
-		
-		if (event.getSource() == logInButton) {
+	}
+	
+	class GoToLogIn implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event) 
+		{
 			new ClientLogInGUI(client);
 			jFrame.dispose();
 		}
-		
-		if (event.getSource() == registerButton) {
+	}
+	
+	class GoToRegister implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event) 
+		{
 			new ClientRegisterGUI(client);
 			jFrame.dispose();
 		}

@@ -51,8 +51,6 @@ public abstract class RegisteredClient extends Client implements Serializable
 		}
 	}
 	
-	public abstract void chooseWayOfDelivery();
-
 	public abstract boolean setDeliveryInfo();
 
 	public abstract void chooseWayOfPayment();

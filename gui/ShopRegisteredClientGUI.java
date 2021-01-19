@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,7 +18,7 @@ import client.Client;
 import client.RegisteredClient;
 import client.UnregisteredClient;
 
-public class ShopRegisteredClientGUI implements ActionListener
+public class ShopRegisteredClientGUI
 {
 	private Client client;
 	private JFrame jFrame;
@@ -56,7 +55,7 @@ public class ShopRegisteredClientGUI implements ActionListener
 		jPanel.add(chooseOptionJLabel);
 		
 		startShoppingButton = new JButton("Rozpocznij zakupy jako zalogowany klient");
-		startShoppingButton.addActionListener(this);
+		startShoppingButton.addActionListener(new StartShopping());
 		startShoppingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(startShoppingButton);
 		
@@ -64,7 +63,7 @@ public class ShopRegisteredClientGUI implements ActionListener
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		logOffButton = new JButton("Wyloguj sie");
-		logOffButton.addActionListener(this);
+		logOffButton.addActionListener(new LogOff());
 		logOffButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(logOffButton);
 		
@@ -83,14 +82,19 @@ public class ShopRegisteredClientGUI implements ActionListener
 		jFrame.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent event) 
+	class StartShopping implements ActionListener
 	{
-		if (event.getSource() == startShoppingButton) {
+		public void actionPerformed(ActionEvent event) 
+		{
 			new ChooseItemsSelectingCategoryGUI(client);
 			jFrame.dispose(); 
 		}
-		
-		if (event.getSource() == logOffButton) {
+	}
+	
+	class LogOff implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event) 
+		{
 			client = new UnregisteredClient(client);
 			new ShopUnregisteredClientGUI(client);
 			jFrame.dispose();

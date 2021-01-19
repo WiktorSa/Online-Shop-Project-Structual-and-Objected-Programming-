@@ -128,18 +128,16 @@ public abstract class Client implements Serializable
 		this.wasDeliveryChosen = wasDeliveryChosen;
 	}
 	
-	public void changeContentOfTheBasket(boolean didBuy, Product product, int numberOfProducts)
+	public void addAProductToClientBasket(Product product, int numberOfProducts)
 	{
-		if(didBuy) {
-			basket.addAProductToTheBasket(product, numberOfProducts);
-		}
-		else {
-			basket.eraseAProductFromTheBasket(product, numberOfProducts);
-		}
+		basket.addAProductToTheBasket(product, numberOfProducts);
 	}
 	
-	public abstract void chooseWayOfDelivery();
-
+	public void eraseAProductFromClientBasket(Product product, int numberOfProducts)
+	{
+		basket.eraseAProductFromTheBasket(product, numberOfProducts);
+	}
+	
 	public abstract boolean setDeliveryInfo();
 
 	public abstract void chooseWayOfPayment();

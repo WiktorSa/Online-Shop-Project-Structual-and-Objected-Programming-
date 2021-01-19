@@ -125,7 +125,6 @@ public class ChooseItemsSelectingCategoryGUI
 				JOptionPane.showMessageDialog(new JFrame(), "Pusty koszyk. Prosimy o wybranie produktow");
 			}
 			
-			// Na razie na potrzeby testowe to robimy
 			else {
 				new ChooseItemsBasketGUI(client);
 				jFrame.dispose();

@@ -84,7 +84,7 @@ public class ClientLogInGUI
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		logInButton = new JButton("Zaloguj sie");
-		logInButton.addActionListener(new Register());
+		logInButton.addActionListener(new LogIn());
 		logInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(logInButton);
 		
@@ -112,7 +112,7 @@ public class ClientLogInGUI
 		jFrame.setVisible(true);
 	}
 	
-	class Register implements ActionListener
+	class LogIn implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{

@@ -119,11 +119,12 @@ public class ChooseItemsEraseItemGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText().replaceAll("\\s+",""));
-			client.changeContentOfTheBasket(false, product, numberOfErasedProducts);
+			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText());
+			client.eraseAProductFromClientBasket(product, numberOfErasedProducts);
 			if (client instanceof RegisteredClient) {
 				((RegisteredClient) client).saveClient();
 			}
+			
 			JOptionPane.showMessageDialog(null, "Pomyslnie skasowano przedmiot w ilosci: " + numberOfErasedProducts);
 			
 			// Jezeli klient skasowal cala zawartosc koszyka to go cofamy do wyboru kategorii

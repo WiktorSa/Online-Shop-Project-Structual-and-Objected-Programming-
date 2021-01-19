@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 import waysofdelivery.Dostawa;
-import waysofdelivery.Kurier;
-import waysofdelivery.Osobisty;
-import waysofdelivery.Paczkomat;
-import waysofdelivery.WaysOfDelivery;
 import waysofpayments.Blik;
 import waysofpayments.Card;
 import waysofpayments.Paypal;
@@ -28,45 +24,6 @@ public class UnregisteredClient extends Client implements Serializable
 		super(client);
 	}
 
-	@SuppressWarnings("resource")
-	public void chooseWayOfDelivery() 
-	{
-		WaysOfDelivery[] waysOfDelivery = {new Paczkomat(), new Kurier(), new Osobisty()};
-		boolean wasWayOfDeliveryChosen = false;
-		Scanner scanner = new Scanner(System.in);
-		int chosenWayOfDelivery = 0;
-		
-		while (!wasWayOfDeliveryChosen)
-		{
-			for (int i=0; i<waysOfDelivery.length; i++)
-			{
-				System.out.println(i+1 + ". " + waysOfDelivery[i].getName() + " Cena: " + waysOfDelivery[i].getPrice());
-			}
-			System.out.println("Wybierz metode dostawy");
-			
-			try 
-			{
-				chosenWayOfDelivery = scanner.nextInt();
-				scanner.nextLine();
-				
-				if (chosenWayOfDelivery>0 && chosenWayOfDelivery<=waysOfDelivery.length) {
-					System.out.println("Wybrano metode dostawy");
-					wasWayOfDeliveryChosen = true;
-				}
-				else {
-					System.out.println("Nie ma takiej opcji dostawy");
-				}
-			} 
-			
-			catch (java.util.InputMismatchException e) 
-			{
-				System.out.println("Nie ma takiej opcji dostawy");
-			}
-		}
-		
-		this.wayOfDelivery = waysOfDelivery[chosenWayOfDelivery-1];
-	}
-	
 	public boolean setDeliveryInfo() 
 	{
 		return ((Dostawa) wayOfDelivery).provideDeliveryInformations(this);

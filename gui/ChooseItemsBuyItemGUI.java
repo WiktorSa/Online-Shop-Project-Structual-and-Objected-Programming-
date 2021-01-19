@@ -116,8 +116,8 @@ public class ChooseItemsBuyItemGUI
 		NumberFormatter formatter = new NumberFormatter(format);
 		formatter.setValueClass(Integer.class);
 		formatter.setMinimum(1);
-		// Daje limit 999 sztuk dla pojedynczej akcji kupna dla bezpieczenstwa
-		formatter.setMaximum(999);
+		// Daje limit 99 sztuk dla pojedynczej akcji kupna dla bezpieczenstwa
+		formatter.setMaximum(99);
 		formatter.setAllowsInvalid(false);
 		return formatter;
 	}
@@ -127,7 +127,7 @@ public class ChooseItemsBuyItemGUI
 		public void actionPerformed(ActionEvent event) 
 		{
 			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());
-			client.changeContentOfTheBasket(true, product, numberOfBoughtProducts);
+			client.addAProductToClientBasket(product, numberOfBoughtProducts);
 			if (client instanceof RegisteredClient) {
 				((RegisteredClient) client).saveClient();
 			}
