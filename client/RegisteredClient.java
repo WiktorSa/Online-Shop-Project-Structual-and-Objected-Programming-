@@ -50,12 +50,4 @@ public abstract class RegisteredClient extends Client implements Serializable
 			System.exit(-1);
 		}
 	}
-	
-	public abstract boolean setDeliveryInfo();
-
-	public abstract void chooseWayOfPayment();
-	
-	public abstract boolean initiatePay();
-	
-	public abstract String getTransactionInfo();
 }

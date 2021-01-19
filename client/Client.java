@@ -17,7 +17,6 @@ public abstract class Client implements Serializable
 	protected Basket basket;
 	transient protected WaysOfDelivery wayOfDelivery; //NOTE(Szymon): Nie zapisujemy
 	transient protected WaysOfPayments wayOfPayment;  //NOTE(Szymon): Nie zapisujemy
-	protected boolean wasDeliveryChosen;
 	
 	public Client() 
 	{
@@ -28,7 +27,6 @@ public abstract class Client implements Serializable
 		this.basket = new Basket();
 		this.wayOfDelivery = null;
 		this.wayOfPayment = null;
-		this.wasDeliveryChosen = false;
 	}
 	
 	public Client(Client client)
@@ -40,7 +38,6 @@ public abstract class Client implements Serializable
 		this.basket = client.getBasket();
 		this.wayOfDelivery = client.getWaysOfDelivery();
 		this.wayOfPayment = client.getWayOfPayment();
-		this.wasDeliveryChosen = client.getWasDeliveryChosen();
 	}
 	
 	public String getFirstName() 
@@ -118,16 +115,6 @@ public abstract class Client implements Serializable
 		return wayOfPayment;
 	}
 	
-	public boolean getWasDeliveryChosen()
-	{
-		return wasDeliveryChosen;
-	}
-	
-	public void setDeliveryChosen(boolean wasDeliveryChosen)
-	{
-		this.wasDeliveryChosen = wasDeliveryChosen;
-	}
-	
 	public void addAProductToClientBasket(Product product, int numberOfProducts)
 	{
 		basket.addAProductToTheBasket(product, numberOfProducts);
@@ -137,12 +124,20 @@ public abstract class Client implements Serializable
 	{
 		basket.eraseAProductFromTheBasket(product, numberOfProducts);
 	}
-	
-	public abstract boolean setDeliveryInfo();
 
-	public abstract void chooseWayOfPayment();
-	
-	public abstract boolean initiatePay();
-	
-	public abstract String getTransactionInfo();
+	public String getTransactionInfo() 
+	{
+		String transactionInfo = "Informacje o transakcji\n";
+		transactionInfo += getBasket().toString();
+		transactionInfo = transactionInfo + "Cena: " + String.format("%.2f", basket.getPrice() + wayOfDelivery.getPrice()) + " (z wliczona dostawa)\n";
+		transactionInfo += wayOfDelivery.toString() + "\n";
+		if (this instanceof RegisteredClient) {
+			transactionInfo += "Transakcja zostala wykonana przez zarejestrowanego klienta";
+		}
+		else {
+			transactionInfo += "Transakcja zostala wykonana przez niezarejestrowanego klienta";
+		}
+
+		return transactionInfo;
+	}
 }
