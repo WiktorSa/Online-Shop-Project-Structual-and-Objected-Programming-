@@ -21,16 +21,19 @@ import client.RegisteredClient;
 import waysofdelivery.*;
 
 //Klasa stworzona przez Jana Skibinskiego (jeszcze nieskonczona)
-public class WaysOfDeliverySelectingCategoryGUI
+public class WaysOfDeliveryPaczkomatSetInfo2
 {
 	private Client client;
-	private ArrayList<JButton> selectCategory = new ArrayList<JButton>();
+	private ArrayList<JButton> selectPaczkomat = new ArrayList<JButton>();
 	private JFrame jFrame;
 	private JButton goBackButton;
+	private Paczkomat paczkomat;
 	
-	public WaysOfDeliverySelectingCategoryGUI(Client client) 
+	public WaysOfDeliveryPaczkomatSetInfo2(Client client,Paczkomat paczkomat) 
 	{
+		paczkomat.setPaczkomatList();
 		this.client = client;
+		this.paczkomat=paczkomat;
 		if (this.client instanceof RegisteredClient) {
 			((RegisteredClient) this.client).saveClient();
 		}
@@ -50,13 +53,13 @@ public class WaysOfDeliverySelectingCategoryGUI
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
-		for (String category : WaysOfDelivery.getCategories())
+		for (String category : paczkomat.getPACZKOMATLIST())
 		{
 			JButton jButton = new JButton(category);
 			jButton.addActionListener(new SelectCategory());
 			jButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			jPanel.add(jButton);
-			selectCategory.add(jButton);
+			selectPaczkomat.add(jButton);
 			
 			// Zeby guziki na siebie nie nachodzily
 			jPanel.add(Box.createRigidArea(new Dimension(0,7))); 
@@ -88,38 +91,27 @@ public class WaysOfDeliverySelectingCategoryGUI
 		jFrame.setVisible(true);
 	}
 	
+
 	class SelectCategory implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			for (JButton jButton : selectCategory)
+			for (JButton jButton : selectPaczkomat)
 			{
-				if (event.getSource() == jButton) {
-					if(jButton.getText().equals("Odbior osobisty"))
-					{
-						new WaysOfDeliveryOsobistyGUI(client);
-						jFrame.dispose();
-					}
-					if(jButton.getText().equals("Kurier"))
-					{
-						new WaysOfDeliveryKurierSetInfo(client);
-						jFrame.dispose();
-					}
-					if(jButton.getText().equals("Paczkomat"))
-					{
-						new WaysOfDeliveryPaczkomatSetInfo1(client);
-						jFrame.dispose();
-					}
-				}
+				paczkomat.setPaczkomatCode(jButton.getText());
+				client.setWayOfDelivery(paczkomat);
+				new WaysOfPaymentSelectingCategoryGUI(client);
+				jFrame.dispose();
 			}
 		}
 	}
+
 	
 	class GoBack implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ClientSetClientInfoGUI(client);
+			new WaysOfDeliveryPaczkomatSetInfo1(client);
 			jFrame.dispose();
 		}
 	}
