@@ -35,15 +35,13 @@ public class CardGUI {
 	
 	private Client client;
 	private JFrame jFrame;
-	private JPanel titlePanel, cardPanel, buttonPanel;
+	private JPanel titlePanel, cardPanel, buttonPanel, southPanel;
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
 	private JSpinner monthSpinner, yearSpinner;
 	
 	public CardGUI(Client client) {
 		
-		System.out.println("Poprawna przykladowa karta 4556 7375 8689 9855");//NOTE: Czysto do pomocy w prezentacji
-
 		this.client = client; 
 		client.setWayOfPayment(new Card());
 		
@@ -56,10 +54,15 @@ public class CardGUI {
 		titlePanel = createTitleForm();
 		cardPanel = createCardForm();
 		buttonPanel = createButtonPanel();
+		southPanel = createSouthPanel();
+		southPanel.add(buttonPanel);
+		southPanel.add(createHelper());
+
 		
 		jFrame.getContentPane().add(BorderLayout.NORTH,titlePanel);
 		jFrame.getContentPane().add(BorderLayout.CENTER,cardPanel);
-		jFrame.getContentPane().add(BorderLayout.SOUTH,buttonPanel);
+		jFrame.getContentPane().add(BorderLayout.SOUTH, southPanel);
+	
 		
 		jFrame.pack();
 		jFrame.setVisible(true);
@@ -151,6 +154,15 @@ public class CardGUI {
 		
 	}
 	
+	private JPanel createSouthPanel() {
+		
+		JPanel southPanel = new JPanel();
+		BoxLayout boxLayout = new BoxLayout(southPanel, BoxLayout.Y_AXIS);
+		southPanel.setLayout(boxLayout);
+		
+		return southPanel;
+	}
+	
 	private JPanel createButtonPanel() {
 		
 		JPanel buttonPanel = new JPanel();
@@ -166,6 +178,14 @@ public class CardGUI {
 		buttonPanel.add(submitButton);
 		
 		return buttonPanel;
+	}
+	
+	private JLabel createHelper() {
+		
+		JLabel helper = new JLabel("Poprawna przykladowa karta 4556 7375 8689 9855");
+		helper.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		return helper;
 	}
 	
 	public NumberFormatter onlyAllowNaturalNumbersUpTo4Digits()

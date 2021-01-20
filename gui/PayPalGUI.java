@@ -41,9 +41,7 @@ public class PayPalGUI {
 	private JPasswordField passwordForm;
 	
 	public PayPalGUI(Client client) {
-		
-		System.out.println("Poprawne haslo: haslo");//NOTE: Czysto do pomocy w prezentacji
-		
+				
 		mistakesCounter = 0;
 
 		this.client = client; 
@@ -81,6 +79,7 @@ public class PayPalGUI {
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		titlePanel.add(titleJLabel);
 		
+		
 		return titlePanel;
 		
 	}
@@ -105,7 +104,7 @@ public class PayPalGUI {
 		gridBag.gridwidth = 1;
 		logginForm.add(emailForm, gridBag);
 
-		JLabel passwordLabel = new JLabel("Haslo: ");
+		JLabel passwordLabel = new JLabel("Haslo:");
 		gridBag.gridx = 1;
 		gridBag.gridy = 1;
 		gridBag.gridwidth = 1;
@@ -119,10 +118,15 @@ public class PayPalGUI {
 		gridBag.gridwidth = 1;
 		logginForm.add(passwordForm, gridBag);
 		
+		JLabel helper = new JLabel("(Poprawne haslo: haslo)");
+		gridBag.gridx = 1;
+		gridBag.gridy = 2;
+		gridBag.gridwidth = 1;
+		logginForm.add(helper, gridBag);
 			
 		captchaLabel = new JLabel();
 		gridBag.gridx = 1;
-		gridBag.gridy = 2;
+		gridBag.gridy = 3;
 		gridBag.gridwidth = 1;
 		captchaLabel.setVisible(false);;
 		logginForm.add(captchaLabel, gridBag);
@@ -130,7 +134,7 @@ public class PayPalGUI {
 		captchaForm = new JTextField();
 		captchaForm.setColumns(20);
 		gridBag.gridx = 2;
-		gridBag.gridy = 2;
+		gridBag.gridy = 3;
 		gridBag.gridwidth = 1;
 		captchaForm.setVisible(false);
 		logginForm.add(captchaForm, gridBag);

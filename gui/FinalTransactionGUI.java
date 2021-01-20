@@ -49,11 +49,13 @@ public class FinalTransactionGUI {
 		jFrame.pack();
 		jFrame.setVisible(true);
 		
-		client.setBasket(new Basket());
-		this.client = client;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
+		if(client.getWayOfPayment().isPaymentDone()) {
+			client.setBasket(new Basket());
+			if (this.client instanceof RegisteredClient) {
+				((RegisteredClient) this.client).saveClient();
+			}
 		}
+		
 	}
 
 	
