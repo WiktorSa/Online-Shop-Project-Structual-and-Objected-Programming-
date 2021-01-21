@@ -16,7 +16,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-import client.RegisteredClient;
 
 
 //chooseOptionJLabel.setBorder(new EmptyBorder(25,0,10,0)); //top,left,bottom,right
@@ -32,9 +31,6 @@ public class ShopUnregisteredClientGUI
 	public ShopUnregisteredClientGUI(Client client) 
 	{
 		this.client = client;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null); // Pseudo-centrowanie. Zamiast w lewym gornym oknie frame pojawi sie mniej wiecej na srodku ekranu

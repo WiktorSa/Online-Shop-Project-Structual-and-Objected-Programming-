@@ -15,7 +15,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-import client.RegisteredClient;
 import client.UnregisteredClient;
 
 public class ShopRegisteredClientGUI
@@ -28,9 +27,6 @@ public class ShopRegisteredClientGUI
 	public ShopRegisteredClientGUI(Client client) 
 	{
 		this.client = client;
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null); // Pseudo-centrowanie. Zamiast w lewym gornym oknie frame pojawi sie mniej wiecej na srodku ekranu
