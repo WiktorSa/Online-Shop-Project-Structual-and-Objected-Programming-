@@ -7,7 +7,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	
 	private String paczkomatCode;
 	private String miasto;
-	public ArrayList<String> PACZKOMATLIST;
+	private ArrayList<String> PACZKOMATLIST;
 	public Paczkomat(Client client)
 	{
 		this.paczkomatCode="";
