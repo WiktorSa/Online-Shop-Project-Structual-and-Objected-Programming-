@@ -41,7 +41,7 @@ public class ShopRegisteredClientGUI
 		jPanel.setLayout(boxLayout);
 		
 		JLabel welcomeJLabel = new JLabel("Witamy w sklepie", SwingConstants.CENTER);
-		welcomeJLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		welcomeJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		welcomeJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(welcomeJLabel);
 		

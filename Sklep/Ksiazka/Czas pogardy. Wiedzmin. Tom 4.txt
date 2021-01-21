@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Czas pogardy. Wiedzmin. Tom 4
+Price:32.19
+Author:Sapkowski Andrzej
+Subcategory:Fantastyka
+Publisher:SUPERNOWA-Niezalezna Oficyna Wydawnicza Nowa
+premiereDate:2014-10-28
+numberOfPages:368

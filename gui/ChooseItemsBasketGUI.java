@@ -57,7 +57,7 @@ public class ChooseItemsBasketGUI
 		
 		JLabel titileJLabel = new JLabel("Zawartosc koszyka");
 		titileJLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		titileJLabel.setFont(new Font("New Times Roman", Font.BOLD, 24));
+		titileJLabel.setFont(new Font("New Times Roman", Font.BOLD, 40));
 		jPanel.add(titileJLabel, gbc);
 		
 		gbc.gridwidth = 5;
@@ -91,7 +91,7 @@ public class ChooseItemsBasketGUI
 		
 		JLabel priceJLabel = new JLabel("Cena koncowa: " + String.format("%.2f", this.client.getBasket().getPrice()) + " zl");
 		priceJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
-		priceJLabel.setFont(new Font("New Times Roman", Font.BOLD, 18));
+		priceJLabel.setFont(new Font("New Times Roman", Font.BOLD, 27));
 		jPanel.add(priceJLabel, gbc);
 		
 		gbc.gridy += 3;

@@ -32,7 +32,6 @@ public class BlikCodeGUI {
 		jFrame = new JFrame();
 		jFrame.setLocation(200,200);
 		jFrame.setTitle("Kod BLIK");
-		jFrame.setResizable(false);
 		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		northPanel = createNorthPanel();

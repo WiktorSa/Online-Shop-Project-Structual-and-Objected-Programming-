@@ -47,7 +47,7 @@ public class ChooseItemsSelectingCategoryGUI
 		jPanel.setLayout(boxLayout);
 		
 		JLabel titleJLabel = new JLabel("Wybierz kategorie", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);

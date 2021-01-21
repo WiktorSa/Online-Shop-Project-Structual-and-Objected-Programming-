@@ -49,7 +49,7 @@ public class ClientSetClientInfoGUI
 		jPanel.setLayout(boxLayout);
 		
 		JLabel titleJLabel = new JLabel("Wpisz swoje podstawowe dane", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,15,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
@@ -62,7 +62,7 @@ public class ClientSetClientInfoGUI
 		firstNameJTextField = new JTextField(client.getFirstName()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		firstNameJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		firstNameJTextField.setHorizontalAlignment(JTextField.CENTER);
-		firstNameJTextField.setMaximumSize(new Dimension(200, 60));
+		firstNameJTextField.setMaximumSize(new Dimension(250, 90));
 		jPanel.add(firstNameJTextField);
 		
 		JLabel lastNameJLabel = new JLabel("Wpisz swoje nazwisko", SwingConstants.CENTER);
@@ -73,7 +73,7 @@ public class ClientSetClientInfoGUI
 		lastNameJTextField = new JTextField(client.getLastName()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		lastNameJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lastNameJTextField.setHorizontalAlignment(JTextField.CENTER);
-		lastNameJTextField.setMaximumSize(new Dimension(200, 60));
+		lastNameJTextField.setMaximumSize(new Dimension(250, 90));
 		jPanel.add(lastNameJTextField);
 		
 		JLabel adresEmailJLabel = new JLabel("Wpisz swoj adres email", SwingConstants.CENTER);
@@ -84,7 +84,7 @@ public class ClientSetClientInfoGUI
 		emailJTextField = new JTextField(client.getEmail()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
-		emailJTextField.setMaximumSize(new Dimension(200, 60));
+		emailJTextField.setMaximumSize(new Dimension(250, 90));
 		if (client instanceof RegisteredClient) {
 			emailJTextField.setEditable(false); // Jak uzytkownik jest zalogowany to nie moze zmienic swojego adresu email
 		}
@@ -98,7 +98,7 @@ public class ClientSetClientInfoGUI
 		phoneNumberJTextField = new JTextField(client.getPhoneNumber()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		phoneNumberJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberJTextField.setHorizontalAlignment(JTextField.CENTER);
-		phoneNumberJTextField.setMaximumSize(new Dimension(200, 60));
+		phoneNumberJTextField.setMaximumSize(new Dimension(250, 90));
 		jPanel.add(phoneNumberJTextField);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));

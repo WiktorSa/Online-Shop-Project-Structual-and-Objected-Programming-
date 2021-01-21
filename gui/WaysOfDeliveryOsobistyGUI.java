@@ -55,7 +55,7 @@ public class WaysOfDeliveryOsobistyGUI
 		
 		JLabel titileJLabel = new JLabel("Odbior osobisty bedzie dostepny od:");
 		titileJLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		titileJLabel.setFont(new Font("New Times Roman", Font.BOLD, 24));
+		titileJLabel.setFont(new Font("New Times Roman", Font.BOLD, 40));
 		jPanel.add(titileJLabel, gbc);
 		
 		gbc.gridwidth = 5;
@@ -65,7 +65,7 @@ public class WaysOfDeliveryOsobistyGUI
 		
 		JLabel dataJLabel = new JLabel(osobisty.getDt() + " do konca dnia nastepnego w godzinach 8-20");
 		dataJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
-		dataJLabel.setFont(new Font("New Times Roman", Font.BOLD, 16));
+		dataJLabel.setFont(new Font("New Times Roman", Font.BOLD, 24));
 		jPanel.add(dataJLabel, gbc);
 		
 		gbc.gridy += 3;
@@ -73,7 +73,7 @@ public class WaysOfDeliveryOsobistyGUI
 		
 		JLabel adresJLabel = new JLabel("Adres sklepu: Wroclaw  ul. Teczowa 3");
 		adresJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
-		adresJLabel.setFont(new Font("New Times Roman", Font.BOLD, 16));
+		adresJLabel.setFont(new Font("New Times Roman", Font.BOLD, 24));
 		jPanel.add(adresJLabel, gbc);
 		
 		gbc.gridy += 3;

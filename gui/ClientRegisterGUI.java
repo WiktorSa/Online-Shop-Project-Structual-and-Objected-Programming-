@@ -51,7 +51,7 @@ public class ClientRegisterGUI
 		jPanel.setLayout(boxLayout);
 		
 		JLabel giveInstructionsJLabel = new JLabel("Zarejestruj sie", SwingConstants.CENTER);
-		giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		giveInstructionsJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(giveInstructionsJLabel);
 		

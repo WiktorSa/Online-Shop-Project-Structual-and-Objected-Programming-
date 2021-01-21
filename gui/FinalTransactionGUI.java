@@ -66,7 +66,7 @@ public class FinalTransactionGUI {
 		infoPanel.setLayout(boxLayout);
 		
 		JLabel titleJLabel = new JLabel("<html>" + client.getTransactionInfo().replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\n", "<br/>" )+ "</html>", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		titleJLabel.setFont(new Font("Arial", Font.BOLD, 30));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		infoPanel.add(titleJLabel);
