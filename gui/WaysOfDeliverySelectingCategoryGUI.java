@@ -102,7 +102,7 @@ public class WaysOfDeliverySelectingCategoryGUI
 					}
 					if(jButton.getText().equals("Kurier"))
 					{
-						//new WaysOfDeliveryKurierSetInfo(client);
+						new WaysOfDeliveryKurierSetInfo(client);
 						jFrame.dispose();
 					}
 					if(jButton.getText().equals("Paczkomat"))
