@@ -68,7 +68,6 @@ public abstract class WaysOfDelivery {
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Nastapil krytyczny blad w dzialaniu aplikacji.");
 			System.exit(-1);
 		}
 		finally 
@@ -79,7 +78,6 @@ public abstract class WaysOfDelivery {
 			} 
 			catch (IOException e) 
 			{
-				System.out.println("Krytyczny blad w dzialaniu aplikacji");
 				System.exit(-1);
 			}
 		}

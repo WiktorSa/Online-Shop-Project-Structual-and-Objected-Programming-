@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,9 +33,6 @@ public class WaysOfDeliveryOsobistyGUI
 		this.client = client;
 		osobisty = new Osobisty(client);
 		osobisty.setTomDt();
-		if (this.client instanceof RegisteredClient) {
-			((RegisteredClient) this.client).saveClient();
-		}
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
@@ -91,16 +89,26 @@ public class WaysOfDeliveryOsobistyGUI
 		jPanel.add(goBackButton, gbc);
 		
 		gbc.gridy += 1;
-		String text = "";
 		if (client instanceof RegisteredClient) {
-			text = "Jestes zalogowany pod adresem email: " + client.getEmail();
+			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
+			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,0,5));
+			jPanel.add(RegisteredClientJLabel, gbc);
+			
+			gbc.gridy += 1;
+			
+			JLabel emailJLabel = new JLabel(client.getEmail());
+			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
+			jPanel.add(emailJLabel, gbc);
 		}
+		
 		else {
-			text = "Jestes niezalogowany";
+			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
+			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
+			jPanel.add(unregisteredClientJLabel, gbc);
 		}
-		JLabel Info = new JLabel(text);
-		Info.setBorder(new EmptyBorder(10,0,10,0));
-		jPanel.add(Info, gbc);
 		
 		jFrame.add(jPanel);
 		jFrame.pack();
