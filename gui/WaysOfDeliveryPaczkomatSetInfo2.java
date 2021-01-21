@@ -98,10 +98,12 @@ public class WaysOfDeliveryPaczkomatSetInfo2
 		{
 			for (JButton jButton : selectPaczkomat)
 			{
-				paczkomat.setPaczkomatCode(jButton.getText());
-				client.setWayOfDelivery(paczkomat);
-				new WaysOfPaymentSelectingCategoryGUI(client);
-				jFrame.dispose();
+				if (event.getSource() == jButton) {
+					paczkomat.setPaczkomatCode(jButton.getText());
+					client.setWayOfDelivery(paczkomat);
+					new WaysOfPaymentSelectingCategoryGUI(client);
+					jFrame.dispose();
+				}
 			}
 		}
 	}
