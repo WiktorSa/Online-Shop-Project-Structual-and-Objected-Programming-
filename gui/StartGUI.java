@@ -29,11 +29,11 @@ public class StartGUI
 	public static void main(String[] args) 
 	{
 		// Ustawianie czcionki calego programu przed jego rozpoczeciem
-		setUIFont (new javax.swing.plaf.FontUIResource("Dialog",Font.BOLD,20));
+		setUIFont (new javax.swing.plaf.FontUIResource("Dialog",Font.PLAIN,14));
 		
 		// Klient na poczatku nie jest zalogowany
 		Client client = new UnregisteredClient();
-		new ShopUnregisteredClientGUI(client);
+		new MainGUI(client);
 	}
 	
 	// Kilka uwag dla programisty

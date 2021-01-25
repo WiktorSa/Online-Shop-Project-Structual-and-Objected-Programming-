@@ -109,7 +109,7 @@ public class ChooseItemsSelectingCategoryGUI
 			for (JButton jButton : selectCategory)
 			{
 				if (event.getSource() == jButton) {
-					new ChooseItemsSelectingItemsGUI(client, chooseItems.getListOfProducts().get(jButton.getText()), 0);
+					//new ChooseItemsSelectingItemsGUI(client, chooseItems.getListOfProducts().get(jButton.getText()), 0);
 					jFrame.dispose();
 				}
 			}

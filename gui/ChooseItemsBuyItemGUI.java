@@ -133,7 +133,7 @@ public class ChooseItemsBuyItemGUI
 			}
 			JOptionPane.showMessageDialog(null, "Pomyslnie zakupiono przedmiot w ilosci: " + numberOfBoughtProducts);
 			
-			new ChooseItemsSelectingItemsGUI(client, items, 0);
+			//new ChooseItemsSelectingItemsGUI(client, items, 0);
 			jFrame.dispose();
 		}
 	}
@@ -142,7 +142,7 @@ public class ChooseItemsBuyItemGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ChooseItemsSelectingItemsGUI(client, items, 0);
+			//new ChooseItemsSelectingItemsGUI(client, items, 0);
 			jFrame.dispose();
 		}
 	}

@@ -97,7 +97,7 @@ public class ShopUnregisteredClientGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ClientLogInGUI(client);
+			//new ClientLogInGUI(client);
 			jFrame.dispose();
 		}
 	}
@@ -106,7 +106,7 @@ public class ShopUnregisteredClientGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new ClientRegisterGUI(client);
+			//new ClientRegisterGUI(client);
 			jFrame.dispose();
 		}
 	}

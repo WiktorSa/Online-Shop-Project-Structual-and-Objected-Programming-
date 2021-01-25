@@ -20,7 +20,7 @@ import client.Client;
 import client.RegisteredClient;
 import waysofpayments.WaysOfPayments;
 
-//Klasa zaimplementowana przez Szymona Sawczuka (jeszcze nieskonczona)
+//Klasa zaimplementowana przez Szymona Sawczuka 
 public class WaysOfPaymentSelectingCategoryGUI {
 
 	private Client client;

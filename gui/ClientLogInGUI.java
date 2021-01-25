@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,30 +29,28 @@ import client.RegisteredClient;
 
 public class ClientLogInGUI 
 {
-	private Client client;
-	private JFrame jFrame;
+
+	private JPanel jPanel;
 	private JTextField emailJTextField;
 	private JPasswordField passwordJPasswordField;
 	private JButton logInButton;
 	private JButton remindPasswrodButton;
-	private JButton goBackButton;
+	private MainGUI main;
 	
-	public ClientLogInGUI(Client client) 
+	public JPanel getjPanel() {
+		return jPanel;
+	}
+	
+	public ClientLogInGUI(MainGUI main) 
 	{
-		this.client = client;
-		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Sklep");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setSize(350, 350);
-		jFrame.setResizable(false);
+		this.main = main;
 		
 		// Tekst bedzie sie wyswietlal od gory do dolu
-		JPanel jPanel = new JPanel();
+		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
 		
+		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
 		JLabel giveInstructionsJLabel = new JLabel("Zaloguj sie", SwingConstants.CENTER);
 		giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		giveInstructionsJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -66,7 +65,7 @@ public class ClientLogInGUI
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
 		emailJTextField.setPreferredSize(new Dimension(300, 25));
-		emailJTextField.setSize(new Dimension(300, 25));
+		emailJTextField.setMaximumSize(new Dimension(300, 25));
 		jPanel.add(emailJTextField);
 		
 		JLabel passswordJLabel = new JLabel("Wpisz haslo", SwingConstants.CENTER);
@@ -95,21 +94,12 @@ public class ClientLogInGUI
 		remindPasswrodButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(remindPasswrodButton);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(0,20)));
+		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
+		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
 		
-		goBackButton = new JButton("Cofnij sie");
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton);
+	
 		
-		JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-		unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		unregisteredClientJLabel.setBorder(new EmptyBorder(20,5,10,5));
-		jPanel.add(unregisteredClientJLabel);
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
+
 	}
 	
 	class LogIn implements ActionListener
@@ -131,11 +121,11 @@ public class ClientLogInGUI
 					Client clientFromFile = (RegisteredClient) outputStream.readObject();
 					
 					if (((RegisteredClient) clientFromFile).getPassword().equals(password)) {
-						client = clientFromFile;
-						((RegisteredClient) client).saveClient();
+						main.setClient(clientFromFile);
+						((RegisteredClient) main.getClient()).saveClient();
 						JOptionPane.showMessageDialog(null, "Poprawnie zalogowales sie");
-						new ShopRegisteredClientGUI(client);
-						jFrame.dispose();
+						main.getCardLayout().show(main.getCardPanel(), "Home Page");
+						main.resetNorthPanel();
 					}
 					
 					else {
@@ -192,12 +182,5 @@ public class ClientLogInGUI
 		}
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			new ShopUnregisteredClientGUI(client);
-			jFrame.dispose();
-		}
-	}
+	
 }

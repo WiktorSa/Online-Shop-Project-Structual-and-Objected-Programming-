@@ -1,6 +1,9 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,14 +14,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
+import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import client.RegisteredClient;
@@ -26,179 +33,99 @@ import client.RegisteredClient;
 //Klasa stworzona przez Wiktora Sadowego 
 public class ChooseItemsSelectingItemsGUI
 {
-	private Client client;
-	private ArrayList<Product> items;
+
+	private ArrayList<Product> items ;
 	// Integer to numer w indeksie
 	private HashMap<JButton, Integer> selectItems = new LinkedHashMap<JButton, Integer>(); 
-	private JFrame jFrame;
-	private JFormattedTextField selectIndexJTextField;
-	private JButton selectOtherItemsButton; 
-	private JButton goBackButton;
+	private JPanel jPanel;
+	private MainGUI main;
+	
+	public JPanel getPanel() {
+		return jPanel;
+	}
 	
 	// Uzywamy starting index, bo nie moge wyswietlic wszystkich produktow.
 	// Uzytkownik wiec bedzie sobie wybieral jakie 3 produkty chce zobaczyc
-	public ChooseItemsSelectingItemsGUI(Client client, ArrayList<Product> items, int startingIndex) 
+	public ChooseItemsSelectingItemsGUI(MainGUI main) 
 	{
-		this.client = client;
-		this.items = items;
-		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Sklep");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setSize(1050, 440);
-		jFrame.setResizable(false);
-		
+		this.main = main;
+		this.items = this.main.getChooseItems().getListOfProducts().get("Ksiazka");
+
 		// Uzywamy GridBagLayout, zeby moc bezproblemowo stworzyc GUI
-		JPanel jPanel = new JPanel();
+		jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.CENTER;
+		
+	
+		int k = 0;
+	
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.gridwidth = 10;
-		gbc.gridheight = 30;
+		gbc.gridwidth = 1;
+		gbc.gridheight = 3;
 		gbc.insets = new Insets(5, 5, 5, 0); // Odleglosc pomiedzy przedmiotami
 		gbc.weightx = 0;
 		gbc.weighty = 0;
 		
-		for (int i=startingIndex; i<startingIndex+3; i++) 
+		for (int i=0; i<items.size()/3; i++) 
 		{
-			JLabel jLabel = new JLabel("<html><div style='text-align: center;'>" + ((i+1) + "." + "\n" + items.get(i).toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
-			jLabel.setBorder(new EmptyBorder(10,10,10,10));
-			jPanel.add(jLabel, gbc);
+	
+			gbc.gridx = 0;
+			for(int j = 0;j<3;j++) {
+				JPanel tmp = new JPanel();
+				tmp.setPreferredSize(new Dimension(130,150));
+				tmp.setLayout(new BoxLayout(tmp, BoxLayout.Y_AXIS));
+//				tmp.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+				
+				JLabel jLabel = new JLabel("<html><div style='text-align: center;'>" + ((k+1) + "." + "\n" + items.get(k).toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
+				jLabel.setBorder(new EmptyBorder(10,10,10,10));
+				jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				tmp.add(jLabel);
+				
+				JButton buyButton = new JButton("Kup Produkt");
+				buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+				buyButton.addActionListener(new BuyItems(buyButton));
+				selectItems.put(buyButton, k);
+				
+				tmp.add(buyButton); // buyButton ma inna wysokosc niz jLabel
+				jPanel.add(tmp, gbc);
+				gbc.gridheight = 3;
+				
+				k++;	
+				gbc.gridx += 1;
+			}
+			gbc.gridy+=3;
 			
-			gbc.gridy = 31;
-			gbc.gridheight = 2;
 			
-			JButton buyButton = new JButton("Kup Produkt");
-			buyButton.addActionListener(new BuyItems());
-			buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			selectItems.put(buyButton, i);
-			
-			jPanel.add(buyButton, gbc); // buyButton ma inna wysokosc niz jLabel
-			
-			gbc.gridheight = 30;
-			gbc.gridy = 0;
-		
-			gbc.gridx += 10;
 		}
+
 		
-		// Reszta guzikow
-		gbc.gridx = 0;
-		gbc.gridwidth = 30;
-		gbc.gridheight = 1;
 		
-		gbc.gridy = 34;
-		JLabel filler1 = new JLabel("");
-		filler1.setBorder(new EmptyBorder(15,0,10,0));
-		jPanel.add(filler1, gbc);
-		
-		// Nie proponujemy indeksow ktore nie istnieja
-		int nextIndex = startingIndex + 4;
-		if (nextIndex > items.size()) {
-			nextIndex = items.size()-2;
-		}
-		
-		gbc.gridy = 35;
-		selectIndexJTextField = new JFormattedTextField(OnlyAllowNaturalNumbers());
-		selectIndexJTextField.setText(String.valueOf(nextIndex));
-		selectIndexJTextField.setColumns(20);
-		jPanel.add(selectIndexJTextField, gbc);
-		
-		gbc.gridy = 36;
-		selectOtherItemsButton = new JButton("Przegladaj produkty od podanego indeksu");
-		selectOtherItemsButton.addActionListener(new SelectIndexOfItems());
-		jPanel.add(selectOtherItemsButton, gbc);
-		
-		gbc.gridy = 37;
-		goBackButton = new JButton("Cofnij sie");
-		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton, gbc);
-		
-		gbc.gridy = 38;
-		
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,0,5));
-			jPanel.add(RegisteredClientJLabel, gbc);
-			
-			gbc.gridy = 39;
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel, gbc);
-		}
-		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel, gbc);
-		}
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
 	}
 	
-	private NumberFormatter OnlyAllowNaturalNumbers()
-	{
-		NumberFormat format = NumberFormat.getInstance();
-		format.setGroupingUsed(false); // Pozbywam sie dodatkowych spacji w outpucie
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(1);
-		formatter.setMaximum(Integer.MAX_VALUE);
-		formatter.setAllowsInvalid(false);
-		return formatter;
-	}
 	
 	class BuyItems implements ActionListener
 	{
+		private JButton button;
+		public BuyItems(JButton button) {
+			this.button = button;
+		}
+		
 		public void actionPerformed(ActionEvent event) 
 		{
-			for (JButton jButton : selectItems.keySet())
-			{
-				if (event.getSource() == jButton) {
-					new ChooseItemsBuyItemGUI(client, items.get(selectItems.get(jButton)), items);
-					jFrame.dispose();
-				}
+//			new ChooseItemsBuyItemGUI(client, items.get(selectItems.get(button)), items);
+			main.getClient().addAProductToClientBasket(items.get(selectItems.get(button)), 1);
+			if (main.getClient() instanceof RegisteredClient) {
+				((RegisteredClient) main.getClient()).saveClient();
 			}
+			//jFrame.dispose();		
+				
 		}
 	}
 	
-	// Zawsze wyswietlamy 3 przedmioty na ekranie
-	class SelectIndexOfItems implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			// JFormattedTextField daje dodatkowe spacje. Chce sie ich pozbyc
-			// Inna jest numeracja w ArrayList a inna wyswietla sie uzytkownikowi. Dlatego odejmujemy 1
-			int index = Integer.parseInt(selectIndexJTextField.getText()) - 1;
-			
-			// Dla indeksu powyzej limitu przedmiotow wyswietlamy 3 ostatnie przedmioty
-			if (index+3 > items.size()) {
-				new ChooseItemsSelectingItemsGUI(client, items, items.size()-3);
-				jFrame.dispose();
-			}
-			else {
-				new ChooseItemsSelectingItemsGUI(client, items, index);
-				jFrame.dispose();
-			}
-		}
-	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			new ChooseItemsSelectingCategoryGUI(client);
-			jFrame.dispose();
-		}
-	}
+	
+
 }
 
 
