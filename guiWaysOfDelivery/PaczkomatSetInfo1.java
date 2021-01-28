@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -99,14 +100,14 @@ public class PaczkomatSetInfo1
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		confirmCode = new JButton("Potwierdz");
+		confirmCode = new JButton(new ImageIcon("Ikony/forward.png"));
 		confirmCode.addActionListener(new ConfirmCode());
 		confirmCode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(confirmCode);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		goBack = new JButton("Cofnij sie");
+		goBack = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBack.addActionListener(new GoBack());
 		goBack.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(goBack);
