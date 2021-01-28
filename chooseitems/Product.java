@@ -60,4 +60,9 @@ public abstract class Product implements Serializable
 	{
 		return "Nazwa: " + name + ", Cena: " + price + " zl, ";
 	}
+	
+	public String toStringBasicInfo()
+	{
+		return name + "\n" + price + " zl";
+	}
 }

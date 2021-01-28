@@ -1,17 +1,24 @@
 package chooseitems;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
+
+import javax.imageio.ImageIO;
 
 // Klasa zaimplementowana przez Wiktora Sadowego oraz Szymona Sawczuka
 public class ChooseItems 
 {
 	private String locationOfShopCatalog;
 	private ArrayList<String> categories;
-	private TreeMap<String, ArrayList<Product>> listOfProducts; // String - kategoria, reszta to informacje o produktach
+	// String - kategoria, reszta to informacje o produktach
+	private TreeMap<String, ArrayList<Product>> listOfProducts;
+	// Each product has an image attached to it. If we cannot find the picture we post a default one
+	private HashMap<Product, Image> imagesOfProducts = new HashMap<Product, Image>();
 	
 	public ChooseItems()
 	{
@@ -48,6 +55,16 @@ public class ChooseItems
 	public void setListOfProducts(TreeMap<String, ArrayList<Product>> listOfProducts) 
 	{
 		this.listOfProducts = listOfProducts;
+	}
+
+	public HashMap<Product, Image> getImagesOfProducts() 
+	{
+		return imagesOfProducts;
+	}
+
+	public void setImagesOfProducts(HashMap<Product, Image> imagesOfProducts) 
+	{
+		this.imagesOfProducts = imagesOfProducts;
 	}
 
 	private ArrayList<String> obtaincategories()
@@ -111,9 +128,35 @@ public class ChooseItems
 		if (files != null) {
 			for (int i=0; i<files.length; i++)
 			{
-				Product product = obtainProduct(category, files[i]);
-				if (product != null) {
-					products.add(product);
+				if (files[i].getName().substring(files[i].getName().length() - 3).equals("txt")) {
+					
+					Product product = obtainProduct(category, files[i]);
+					if (product != null) {
+						// Adding a product to the list of products
+						products.add(product);
+						
+						// Trying to find the image for the given product
+						String imageLocation = locationOfShopCatalog + category + "/" + files[i].getName().substring(0, files[i].getName().length() - 3) + "jpg";
+						Image image = null;
+						try 
+						{
+							image = ImageIO.read(new File(imageLocation));
+						} 
+						
+						catch (IOException e) 
+						{
+							try 
+							{
+								image = ImageIO.read(new File(locationOfShopCatalog + category + "/notfound.jpg"));
+							} 
+							catch (IOException e2) 
+							{
+								System.exit(-1);
+							}
+						}
+						
+						imagesOfProducts.put(product, image);
+					}
 				}
 			}
 		}
@@ -170,14 +213,6 @@ public class ChooseItems
 			{
 				case "Ksiazka":
 					product = new Ksiazka(information);
-					break;
-
-				case "Plyta":
-					product = new Plyta(information);
-					break;
-					
-				case "Gra":
-					product = new Gra(information);
 					break;
 					
 				default:

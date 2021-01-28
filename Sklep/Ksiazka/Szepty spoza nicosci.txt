@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Szepty spoza nicosci
+Price:26.11
+Author:Mroz Remigiusz
+Subcategory:Kryminal
+Publisher:Wydawnictwo Filia
+premiereDate:2021-01-27
+numberOfPages:215

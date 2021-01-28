@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Gambit krolowej
+Price:27.65
+Author:Tevis Walter
+Subcategory:Literatura piekna obca
+Publisher:Wydawnictwo Czarne
+premiereDate:2020-10-23
+numberOfPages:360

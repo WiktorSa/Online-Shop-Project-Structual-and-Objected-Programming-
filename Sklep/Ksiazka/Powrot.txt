@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Powrot
+Price:27.65
+Author:Sparks Nicholas
+Subcategory:Literatura obyczajowa
+Publisher:Wydawnictwo Albatros
+premiereDate:2021-01-27
+numberOfPages:416

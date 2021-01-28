@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Pokusa Gangstera
+Price:25.08
+Author:Wolf Anna
+Subcategory:Literatura obyczajowa
+Publisher:Wydawnictwo NieZwykle
+premiereDate:2021-01-20
+numberOfPages:251

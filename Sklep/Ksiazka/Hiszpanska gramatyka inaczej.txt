@@ -1,0 +1,9 @@
+Category:Ksiazka
+Name:Hiszpanska gramatyka inaczej
+Price:25.74
+Author:Srokowska Aleksandra
+Subcategory:Nauka jezykow
+Publisher:Preston Publishing
+premiereDate:2016-11-08
+numberOfPages:206
+

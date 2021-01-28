@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Zatracenie
+Price:19.94 
+Author:Dazai Osamu
+Subcategory:Literatura piekna
+Publisher:Spoldzielnia wydawnicza Czytelnik
+premiereDate:2020-06-01
+numberOfPages:132

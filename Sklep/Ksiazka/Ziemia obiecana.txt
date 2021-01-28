@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Ziemia obiecana
+Price:41.23
+Author:Obama Barack
+Subcategory:Biografie
+Publisher:Agora
+premiereDate:2021-03-17
+numberOfPages:880

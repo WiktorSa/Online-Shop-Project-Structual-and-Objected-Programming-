@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Chrzest ognia. Wiedzmin. Tom 5
+Price:32.19
+Author:Sapkowski Andrzej
+Subcategory:Fantastyka
+Publisher:SUPERNOWA-Niezalezna Oficyna Wydawnicza Nowa
+premiereDate:2014-10-28
+numberOfPages:382

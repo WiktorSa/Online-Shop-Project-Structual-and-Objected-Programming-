@@ -1,0 +1,8 @@
+Category:Ksiazka
+Name:Firefly Lane
+Price:34.58
+Author:Hannah Kristin
+Subcategory:Literatura obyczajowa
+Publisher:Swiat Ksiazki
+premiereDate:2021-01-13
+numberOfPages:592
