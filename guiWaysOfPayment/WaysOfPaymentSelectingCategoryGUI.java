@@ -61,11 +61,12 @@ public class WaysOfPaymentSelectingCategoryGUI {
 		for(String way : WaysOfPayments.TYPESOFPAYMENT) {
 			
 			
-			JButton button = new JButton(new ImageIcon("Ikony/" + way + ".png"));
+			JButton button = new JButton(new ImageIcon("Ikony/" + way + "64.png"));
 			button.setName(way);
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addActionListener(new SelectWay(button));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
 			switch(way)
 			{
 			case "Blik":
@@ -81,26 +82,29 @@ public class WaysOfPaymentSelectingCategoryGUI {
 				button.setToolTipText("Cos sie popsulo");
 				break;
 			}
-			choicePanel.add(button);
-
+			
 			if(way.equals("Blik")) {
-				button.setBorder(new EmptyBorder(0,0,0,0));
+			
 			}
-			button.setSize(36, 36);
 			
-			// Zeby guziki na siebie nie nachodzily
-			choicePanel.add(Box.createRigidArea(new Dimension(7,0))); 
-			
+			choicePanel.add(button);
 		}
+		choicePanel.setMaximumSize(new Dimension(400,36));
 		jPanel.add(choicePanel);
 		
+		JPanel goBackPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
+		goBackButton.addActionListener(new GoBack());
+		goBackPanel.add(goBackButton);
+		jPanel.add(goBackPanel);
 		
+		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
 		
 		return jPanel;
 		
 	}
 	
-	class SelectWay implements ActionListener{
+	private class SelectWay implements ActionListener{
 		
 		private JButton jButton;
 		
@@ -127,6 +131,22 @@ public class WaysOfPaymentSelectingCategoryGUI {
 			
 			
 		}
+	}
+	private class GoBack implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			main.getClient().setWayOfDelivery(null);
+			WaysOfDeliverySelectingCategoryGUI deliveryCategory=new WaysOfDeliverySelectingCategoryGUI(main);
+			JPanel deliveryPanel=deliveryCategory.getjPanel();
+			main.getCardPanel().add(deliveryPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			
+		}
+		
+		
+		
 	}
 	
 	

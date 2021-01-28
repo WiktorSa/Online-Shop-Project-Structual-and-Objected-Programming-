@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import gui.FinalTransactionGUI;
 import guiShop.MainGUI;
@@ -189,7 +191,7 @@ public class BlikGUI {
 		progressBar = new JProgressBar(JProgressBar.HORIZONTAL,0,MAXTIME);
 		progressBar.setValue(MAXTIME);
 		progressBar.setPreferredSize(new Dimension(160,10));
-		progressBar.setBorder(new EmptyBorder(0,10,0,0));
+		
 		
 		innerPanel.add(northPanel);
 		innerPanel.add(timerLabelPanel);
@@ -209,7 +211,7 @@ public class BlikGUI {
 		
 		JPanel blikFormInnerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		blikForm = new JFormattedTextField(new MaskFormatter("### ###"));
+		blikForm = new JFormattedTextField(onlyAllowNaturalNumbersUpTo9Digits());
 		blikForm.setPreferredSize(new Dimension(120,45));;
 		blikForm.setFont(new Font(blikForm.getFont().getName(),Font.PLAIN,25));
 		
@@ -231,6 +233,18 @@ public class BlikGUI {
 		blikFormPanel.add(innerPanel);
 		
 		
+	}
+	
+	public NumberFormatter onlyAllowNaturalNumbersUpTo9Digits()
+	{
+		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
+		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(false);
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMaximum(999999);
+		formatter.setAllowsInvalid(false);
+		return formatter;
 	}
 	
 	class WindowClose extends WindowAdapter{

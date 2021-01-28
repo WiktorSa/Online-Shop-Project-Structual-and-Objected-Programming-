@@ -1,6 +1,5 @@
 package guiWaysOfPayment;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,8 +10,11 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -28,61 +30,61 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import client.Client;
-import guiShop.FinalTransactionGUI;
 import guiShop.MainGUI;
 import waysofpayments.Card;
 
 public class CardGUI {
 	
 	private Client client;
-	private JPanel mainPanel;
-	private JPanel titlePanel, cardPanel, buttonPanel, southPanel;
+	private JPanel jPanel;
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
 	private JSpinner monthSpinner, yearSpinner;
 	private MainGUI main;
 	
-	public JPanel getMainPanel() {
-		return mainPanel;
+	public JPanel getjPanel() {
+		return jPanel;
 	}
 	
 	public CardGUI(MainGUI main) {
+		
 		this.main = main;
 		this.client = main.getClient(); 
 		client.setWayOfPayment(new Card());
 		
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
+		jPanel = new JPanel();
+		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
 		
-		
-		titlePanel = createTitleForm();
-		cardPanel = createCardForm();
-		buttonPanel = createButtonPanel();
-		southPanel = createSouthPanel();
-		southPanel.add(buttonPanel);
-		southPanel.add(createHelper());
+		JPanel normalPanel = new JPanel();
+		JPanel innerPanel = new JPanel();
+
+		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
 
 		
-		mainPanel.add(titlePanel, BorderLayout.NORTH);
-		mainPanel.add(cardPanel,BorderLayout.CENTER);
-		mainPanel.add(southPanel, BorderLayout.SOUTH);
+		jPanel.add(Box.createVerticalGlue());
+		innerPanel.add(createTitleForm());
+		innerPanel.add(createCardForm());
+		innerPanel.add(createSouthPanel());
+		normalPanel.add(innerPanel);
+		jPanel.add(normalPanel);
+		jPanel.add(Box.createVerticalGlue());
+	
+		
+
 	
 		
 	}
 	
-	private JPanel createTitleForm() {
+	private JLabel createTitleForm() {
 
-		JPanel titlePanel = new JPanel();
-		BoxLayout boxLayout = new BoxLayout(titlePanel, BoxLayout.Y_AXIS);
-		titlePanel.setLayout(boxLayout);
+		
 		
 		JLabel titleJLabel = new JLabel("Wpisz dane karty kredytowej", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		titleJLabel.setFont(new Font(titleJLabel.getFont().getName(), Font.BOLD, 40));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
-		titlePanel.add(titleJLabel);
 		
-		return titlePanel;
+		return titleJLabel;
 	}
 	
 	private JPanel createCardForm() {
@@ -131,6 +133,7 @@ public class CardGUI {
 		String[] months = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 		SpinnerListModel monthModel = new SpinnerListModel(months);
 		monthSpinner = new JSpinner(monthModel);
+		monthSpinner.setValue(String.format("0%d", Calendar.getInstance().get(Calendar.MONTH)+1));
 		gridBag.gridx = 2;
 		gridBag.gridy = 3;
 		gridBag.gridwidth = 1;
@@ -138,8 +141,8 @@ public class CardGUI {
 		((JSpinner.DefaultEditor)editor).getTextField().setHorizontalAlignment(JTextField.RIGHT); //NOTE: Ustawienie do prawej tekstu
 		cardForm.add(monthSpinner, gridBag);
 		
-		final int MAXYEAR = 27;
-		final int CURRENTYEAR = 21;
+		final int CURRENTYEAR = Calendar.getInstance().get(Calendar.YEAR)%100;
+		final int MAXYEAR = CURRENTYEAR + 6;
 		
 		SpinnerNumberModel yearModel = new SpinnerNumberModel(CURRENTYEAR, CURRENTYEAR, MAXYEAR, 1);
 		yearSpinner = new JSpinner(yearModel);
@@ -162,33 +165,28 @@ public class CardGUI {
 		BoxLayout boxLayout = new BoxLayout(southPanel, BoxLayout.Y_AXIS);
 		southPanel.setLayout(boxLayout);
 		
-		return southPanel;
-	}
-	
-	private JPanel createButtonPanel() {
-		
 		JPanel buttonPanel = new JPanel();
 		
-		JButton goBackButton = new JButton("Anuluj platnosc");
+		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.addActionListener(new GoBack());
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttonPanel.add(goBackButton);
 		
-		JButton submitButton = new JButton("Zaplac");
+		JButton submitButton = new JButton(new ImageIcon("Ikony/forward.png"));
 		submitButton.addActionListener(new SubmitCardInfo());
 		submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttonPanel.add(submitButton);
 		
-		return buttonPanel;
-	}
-	
-	private JLabel createHelper() {
-		
 		JLabel helper = new JLabel("Poprawna przykladowa karta 4556 7375 8689 9855");
 		helper.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		return helper;
+		southPanel.add(buttonPanel);
+		southPanel.add(helper);
+		
+		return southPanel;
 	}
+	
+
 	
 	public NumberFormatter onlyAllowNaturalNumbersUpTo4Digits()
 	{
@@ -218,7 +216,10 @@ public class CardGUI {
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-//			new WaysOfPaymentSelectingCategoryGUI(client);
+			WaysOfPaymentSelectingCategoryGUI goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
+			JPanel paymentPanel=goToPayment.getjPanel();
+			main.getCardPanel().add(paymentPanel,"Payment Page");
+			main.getCardLayout().show(main.getCardPanel(), "Payment Page");
 			client.setWayOfPayment(null);
 		
 		}
