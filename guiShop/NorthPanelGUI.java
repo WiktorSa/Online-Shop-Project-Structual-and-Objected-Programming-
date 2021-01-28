@@ -21,7 +21,6 @@ public class NorthPanelGUI
 {
 	private MainGUI mainGUI;
 	private JPanel jPanel;
-	private JButton logOutButton;
 	
 	public JPanel getjPanel() 
 	{
