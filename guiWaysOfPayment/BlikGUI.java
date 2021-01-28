@@ -162,7 +162,7 @@ public class BlikGUI {
 		
 		JPanel codeLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		codeLabel = new JLabel("");
-		codeLabel.setFont(new Font(codeLabel.getFont().getName(),Font.BOLD,25));
+		codeLabel.setFont(new Font(codeLabel.getFont().getName(),Font.BOLD,24));
 		codeLabelPanel.add(codeLabel);
 		
 		
@@ -177,10 +177,11 @@ public class BlikGUI {
 		
 		refreshButton = new JButton(new ImageIcon("Ikony/refresh.png"));
 		refreshButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		refreshButton.setBorder(new EmptyBorder(10,0,0,0));
+		refreshButton.setBorder(new EmptyBorder(8,0,0,0));
+		refreshPanel.setOpaque(true);
 		refreshButton.addActionListener(generator);
 		refreshButton.setVisible(false);
-		
+		refreshButton.setContentAreaFilled(false);
 		refreshPanel.add(refreshButton);
 		refreshPanel.setPreferredSize(new Dimension(40,31));
 
@@ -198,7 +199,7 @@ public class BlikGUI {
 
 		progressBar = new JProgressBar(JProgressBar.HORIZONTAL,0,MAXTIME);
 		progressBar.setValue(MAXTIME);
-		progressBar.setPreferredSize(new Dimension(160,10));
+		progressBar.setPreferredSize(new Dimension(170,10));
 		
 		
 		innerPanel.add(northPanel);
@@ -225,7 +226,7 @@ public class BlikGUI {
 		blikForm.addMouseListener(new ClickDetector());
 		
 		blikForm.setPreferredSize(new Dimension(120,45));;
-		blikForm.setFont(new Font(blikForm.getFont().getName(),Font.PLAIN,25));
+		blikForm.setFont(new Font(blikForm.getFont().getName(),Font.PLAIN,23));
 		
 		blikFormInnerPanel.add(blikForm);
 		
@@ -247,30 +248,25 @@ public class BlikGUI {
 		
 	}
 	
-	public NumberFormatter onlyAllowNaturalNumbersUpTo9Digits()
-	{
-		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
-		NumberFormat format = NumberFormat.getInstance();
-		format.setGroupingUsed(false);
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(0);
-		formatter.setMaximum(999999);
-		formatter.setAllowsInvalid(false);
-		return formatter;
-	}
 	
 	private class ClickDetector implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			blikForm.setCaretPosition(0);
+			
 			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			if(blikForm.getText().substring(0, blikForm.getCaretPosition()).replaceAll("\\s+", "").equals("")) {
+				blikForm.setCaretPosition(0);
+			}else if(blikForm.getCaretPosition() >= 4 && blikForm.getText().substring(0, blikForm.getCaretPosition()).replaceAll("\\s+", "").length() >=4 ){
+				blikForm.setCaretPosition(blikForm.getText().substring(0, blikForm.getCaretPosition()).replaceAll("\\s+", "").length() + 1);
+			}else {
+				blikForm.setCaretPosition(blikForm.getText().substring(0, blikForm.getCaretPosition()).replaceAll("\\s+", "").length());
+			}
+			
 			
 		}
 
@@ -377,7 +373,7 @@ public class BlikGUI {
 		        	 seconds--;
 		        	 time--;
 		        	 
-		        	 progressBar.setValue(time);
+		        	 progressBar.setValue(time+4);//plus 4 bo progressBar zeruje sie za szybko w tym theme
 		        	 timerLabel.setText(String.format("%dm %02ds", minutes,seconds));
 		        	 
 			        if(time == 0) {
