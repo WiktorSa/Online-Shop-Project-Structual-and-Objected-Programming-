@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -113,17 +114,19 @@ public class SetClientInfoGUI
 		
 		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
 		
-		confirmDataButton = new JButton("Potwierdz dane");
-		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		confirmDataButton.addActionListener(new ConfirmData());
-		jPanel.add(confirmDataButton);
+		JPanel buttonPanel = new JPanel();
 		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 20)));
-		
-		goBackButton = new JButton("Cofnij sie");
+		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton);
+		buttonPanel.add(goBackButton);
+		
+		confirmDataButton = new JButton(new ImageIcon("Ikony/forward.png"));
+		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		confirmDataButton.addActionListener(new ConfirmData());
+		buttonPanel.add(confirmDataButton);
+	
+		jPanel.add(buttonPanel);
 		jPanel.add(Box.createVerticalGlue());
 	}
 	
@@ -144,7 +147,7 @@ public class SetClientInfoGUI
 				client.setEmail(email);
 				client.setPhoneNumber(phoneNumber);
 				
-				if(JOptionPane.showConfirmDialog(null, "Czy to s¹ twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(null, "Czy to sï¿½ twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
