@@ -2,13 +2,13 @@ package guiShop;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import chooseitems.ChooseItems;
 import chooseitems.Product;
 import client.Client;
 import guiChooseItems.BasketGUI;
@@ -19,12 +19,12 @@ import guiClient.RegisterGUI;
 
 /*
  * Informacje programistyczne
- * Ja bêdê próbowa³ zaimplementowaæ controllera
- * Jak obs³ugiwaæ to GUI
- * Tworzycie oddzieln¹ klasê 
- * Tam powinien byæ Jpanel oraz metoda, która pozwala na uzyskanie Jpanela
+ * Ja bede probowal zaimplementowac controllera
+ * Jak obs�ugiwa� to GUI
+ * Tworzycie oddzielna klase 
+ * Tam powinien by� Jpanel oraz metoda, ktora pozwala na uzyskanie Jpanela
  * Do tej klasy przekazujecie MainGUI
- * Wewn¹trz tej klasy jest Jbutton, który ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
+ * Wewn�trz tej klasy jest Jbutton, kt�ry ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
  * Praktycznie w tej metodzie wystarczy skopiowac kod z innej metody i podmienic nazwy i klasy
  * To chyba wszystko wyjasnia
  */
@@ -32,6 +32,7 @@ import guiClient.RegisterGUI;
 public class MainGUI 
 {
 	private JFrame jFrame;
+	private ChooseItems chooseItems;
 	private Client client;
 	private JPanel northPanel = new JPanel();
 	private JPanel cardPanel = new JPanel();
@@ -39,6 +40,7 @@ public class MainGUI
 	
 	public MainGUI(Client client) 
 	{
+		chooseItems = new ChooseItems();
 		this.client = client;
 
 		jFrame = new JFrame();
@@ -91,7 +93,7 @@ public class MainGUI
 	
 	public void changeToBasket()
 	{
-		BasketGUI basketGUI = new BasketGUI(MainGUI.this);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
+		BasketGUI basketGUI = new BasketGUI(client);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
 		JPanel basketPanel = basketGUI.getJPanel();//NOTE: ustawiamy basketPanel na panel utworzony w klasie dalej tak samo ja w createCardPanel()
 		cardPanel.add(basketPanel, "Basket Page");
 		cardLayout.show(cardPanel, "Basket Page");
@@ -118,7 +120,7 @@ public class MainGUI
 	
 	public void changeLayoutToSelectingItems()
 	{
-		SelectingItemsGUI selectItems = new SelectingItemsGUI(MainGUI.this);
+		SelectingItemsGUI selectItems = new SelectingItemsGUI(MainGUI.this, chooseItems);
 		JPanel selectItemsPanel = selectItems.getPanel();
 		cardPanel.add(selectItemsPanel,"Home Page");
 		cardLayout.show(cardPanel,"Home Page");
@@ -133,4 +135,6 @@ public class MainGUI
 		cardLayout.show(cardPanel, "Buy Item");
 		jFrame.revalidate();
 	}
+
+
 }
