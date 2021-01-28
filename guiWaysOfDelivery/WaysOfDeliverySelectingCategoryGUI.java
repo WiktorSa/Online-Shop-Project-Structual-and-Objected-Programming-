@@ -1,6 +1,7 @@
 package guiWaysOfDelivery;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -54,12 +55,30 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		jPanel.add(titleJLabel);
 		
 		for(String way : WaysOfDelivery.getCategories()) {
-			
-			JButton button = new JButton(way);
+			JButton button = new JButton(new ImageIcon("Ikony/" + way + ".png"));
+			button.setName(way);
+			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addActionListener(new SelectWay(button));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
-			jPanel.add(button);
 			
+			switch(way)
+			{
+			case "Odbior osobisty":
+				button.setToolTipText("Odbior osobisty cena: 0 PLN");
+				break;
+			case "Paczkomat":
+				button.setToolTipText("Paczkomat cena: 10.5 PLN");
+				break;
+			case "Kurier":
+				button.setToolTipText("Kurier cena: 12.5 PLN");
+				break;
+			default:
+				button.setToolTipText("Cos sie popsulo");
+				break;
+				
+			}
+			
+			jPanel.add(button);
 			// Zeby guziki na siebie nie nachodzily
 			jPanel.add(Box.createRigidArea(new Dimension(0,7))); 
 			
@@ -67,7 +86,7 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,20))); 
 		
-		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
+		JButton goBackButton = new JButton("Cofnij sie");
 		goBackButton.addActionListener(new GoBack());
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(goBackButton);
@@ -85,21 +104,21 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			
-			if(jButton.getText().equals("Odbior osobisty")) {
+			if(jButton.getName().equals("Odbior osobisty")) {
 				
 				osobistyCategory=new OsobistyGUI(main);
 				deliveryOption=osobistyCategory.getjPanel();
 				main.getCardPanel().add(deliveryOption,"Delivery Page");
 				main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 				
-			}else if(jButton.getText().equals("Paczkomat")) {
+			}else if(jButton.getName().equals("Paczkomat")) {
 				
 				paczkomatCategory=new PaczkomatSetInfo1(main);
 				deliveryOption=paczkomatCategory.getjPanel();
 				main.getCardPanel().add(deliveryOption,"Delivery Page");
 				main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 				
-			}else if(jButton.getText().equals("Kurier")) {
+			}else if(jButton.getName().equals("Kurier")) {
 				kurierCategory=new KurierSetInfo(main);
 				deliveryOption=kurierCategory.getjPanel();
 				main.getCardPanel().add(deliveryOption,"Delivery Page");
