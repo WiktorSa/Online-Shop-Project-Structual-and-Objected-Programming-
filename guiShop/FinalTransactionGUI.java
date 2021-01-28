@@ -17,39 +17,32 @@ import javax.swing.border.EmptyBorder;
 import chooseitems.Basket;
 import client.Client;
 import client.RegisteredClient;
-import guiClient.ShopRegisteredClientGUI;
-import guiClient.ShopUnregisteredClientGUI;
+
 
 
 public class FinalTransactionGUI {
 	
 	private Client client;
-	private JFrame jFrame;
-	private JPanel infoPanel, buttonPanel;
+	private JPanel jPanel, infoPanel;
 	private BoxLayout boxLayout;
+	
+	public JPanel getjPanel() {
+		return jPanel;
+	}
 	
 	public FinalTransactionGUI(Client client) {
 		
 		this.client = client;
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Informacje o transakcji");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setResizable(false);
+		jPanel = new JPanel(new BorderLayout());
 		
 		
 		infoPanel = createInfoPanel();
-		buttonPanel = createButtonPanel();
 
-		
 	
-		jFrame.getContentPane().add(BorderLayout.CENTER,infoPanel);
-		jFrame.getContentPane().add(BorderLayout.SOUTH,buttonPanel);
-	
+		jPanel.add(infoPanel, BorderLayout.CENTER);
 
-		jFrame.pack();
-		jFrame.setVisible(true);
+
 		
 		if(client.getWayOfPayment().isPaymentDone()) {
 			client.setBasket(new Basket());
@@ -76,31 +69,8 @@ public class FinalTransactionGUI {
 		return infoPanel;
 	}
 	
-	private JPanel createButtonPanel() {
-		
-		JPanel buttonPanel = new JPanel();
-		
-		JButton goBackButton = new JButton("Wroc na strone glowna");
-		goBackButton.addActionListener(new GoBack());
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		buttonPanel.add(goBackButton);
-		
-		
-		return buttonPanel;
-	}
-	
-	private class GoBack implements ActionListener{
-		
-		public void actionPerformed(ActionEvent event) 
-		{
-			if (client instanceof RegisteredClient) {
-				new ShopRegisteredClientGUI(client);
-			}else {
-				new ShopUnregisteredClientGUI(client);
-			}
 
-			jFrame.dispose();
-		}
-	}
+	
+
 
 }
