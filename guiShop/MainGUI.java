@@ -140,7 +140,7 @@ public class MainGUI
 	public void changeLayoutToCardPayment() {
 		
 		CardGUI cardGUI = new CardGUI(this);
-		JPanel cardPaymentPanel = cardGUI.getMainPanel();
+		JPanel cardPaymentPanel = cardGUI.getjPanel();
 		cardPanel.add(cardPaymentPanel, "Card Payment Page");
 		cardLayout.show(cardPanel,"Card Payment Page");
 		jFrame.setEnabled(true);
