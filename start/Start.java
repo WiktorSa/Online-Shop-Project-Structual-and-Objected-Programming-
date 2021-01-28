@@ -3,6 +3,9 @@ package start;
 import java.awt.Font;
 
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
 
 import client.Client;
 import client.UnregisteredClient;
@@ -11,6 +14,8 @@ import guiShop.MainGUI;
 // Klasa stworzona przez Wiktora Sadowego 
 public class Start
 {
+	final static String LOOKANDFEEL = "Metal";
+	final static String THEME = "Ocean";
 	// Ten kod pozwala na ustawienie domyslnej czcionki calego programu
 	public static void setUIFont (javax.swing.plaf.FontUIResource f)
 	{
@@ -30,6 +35,13 @@ public class Start
 	{
 		// Ustawianie czcionki calego programu przed jego rozpoczeciem
 		setUIFont (new javax.swing.plaf.FontUIResource("Dialog",Font.PLAIN,14));
+		
+		try {
+				UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel"); 
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 		// Klient na poczatku nie jest zalogowany
 		Client client = new UnregisteredClient();
