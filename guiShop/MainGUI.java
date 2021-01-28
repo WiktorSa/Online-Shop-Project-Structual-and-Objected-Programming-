@@ -15,6 +15,7 @@ import guiChooseItems.EraseItemGUI;
 import guiChooseItems.SelectingItemsGUI;
 import guiClient.LogInGUI;
 import guiClient.RegisterGUI;
+import guiWaysOfPayment.CardGUI;	
 
 public class MainGUI 
 {
@@ -47,6 +48,10 @@ public class MainGUI
 		jFrame.setResizable(true);
 		jFrame.pack();
 		jFrame.setVisible(true);
+	}
+	
+	public JFrame getjFrame() {
+		return jFrame;
 	}
 	
 	public JPanel getCardPanel() 
