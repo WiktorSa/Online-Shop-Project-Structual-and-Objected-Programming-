@@ -124,7 +124,7 @@ public class BlikGUI {
 		
 		JPanel pricePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		JLabel priceLabel = new JLabel(String.format("%.2f zł", main.getClient().getBasket().getPrice() + main.getClient().getWaysOfDelivery().getPrice()));
+		JLabel priceLabel = new JLabel(String.format("%.2f zl", main.getClient().getBasket().getPrice() + main.getClient().getWaysOfDelivery().getPrice()));
 		priceLabel.setBorder(new EmptyBorder(11,0,0, 10));
 		priceLabel.setFont(new Font(priceLabel.getFont().getName(),Font.BOLD,30));
 		pricePanel.add(priceLabel);
