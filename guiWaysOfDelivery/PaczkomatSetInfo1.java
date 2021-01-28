@@ -2,6 +2,7 @@ package guiWaysOfDelivery;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 import client.Client;
 import client.RegisteredClient;
 import guiShop.MainGUI;
+import guiWaysOfDelivery.PaczkomatSetInfo1.ConfirmCode;
+import guiWaysOfDelivery.PaczkomatSetInfo1.GoBack;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;
 
@@ -100,17 +103,20 @@ public class PaczkomatSetInfo1
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		confirmCode = new JButton(new ImageIcon("Ikony/forward.png"));
-		confirmCode.addActionListener(new ConfirmCode());
-		confirmCode.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jPanel.add(confirmCode);
-		
-		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
-		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
 		goBack = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBack.addActionListener(new GoBack());
 		goBack.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jPanel.add(goBack);
+		buttonPanel.add(goBack);
+		
+		confirmCode = new JButton(new ImageIcon("Ikony/forward.png"));
+		confirmCode.addActionListener(new ConfirmCode());
+		confirmCode.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonPanel.add(confirmCode);
+
+		jPanel.add(buttonPanel);
+		
 		
 		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
 		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 

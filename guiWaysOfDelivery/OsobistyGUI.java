@@ -1,5 +1,6 @@
 package guiWaysOfDelivery;
 
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 import client.Client;
 import guiShop.MainGUI;
+import guiWaysOfDelivery.OsobistyGUI.Confirm;
+import guiWaysOfDelivery.OsobistyGUI.GoBack;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;
 
@@ -86,15 +89,19 @@ public class OsobistyGUI
 		gbc.gridy += 3;
 		gbc.gridheight = 1;
 		
-		confimButton = new JButton(new ImageIcon("Ikony/forward.png"));
-		confimButton.addActionListener(new Confirm());
-		jPanel.add(confimButton, gbc);
-		
-		gbc.gridy += 1;
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
 		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton, gbc);
-		gbc.gridy += 1;
+		buttonPanel.add(goBackButton);
+		
+		confimButton = new JButton(new ImageIcon("Ikony/forward.png"));
+		confimButton.addActionListener(new Confirm());
+		buttonPanel.add(confimButton);
+		
+
+		jPanel.add(buttonPanel,gbc);
+		
 		jPanel.add(Box.createVerticalGlue());
 	}
 	

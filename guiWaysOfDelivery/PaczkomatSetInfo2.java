@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -73,7 +74,7 @@ public class PaczkomatSetInfo2
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
-		goBackButton = new JButton("Cofnij sie");
+		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);

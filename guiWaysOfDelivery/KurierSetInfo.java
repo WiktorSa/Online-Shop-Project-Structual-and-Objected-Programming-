@@ -2,6 +2,7 @@ package guiWaysOfDelivery;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import guiShop.MainGUI;
+import guiWaysOfDelivery.KurierSetInfo.ConfirmData;
+import guiWaysOfDelivery.KurierSetInfo.GoBack;
 import client.Client;
 import client.RegisteredClient;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
@@ -100,17 +103,20 @@ public class KurierSetInfo
 		
 		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
 		
-		confirmDataButton = new JButton(new ImageIcon("Ikony/forward.png"));
-		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		confirmDataButton.addActionListener(new ConfirmData());
-		jPanel.add(confirmDataButton);
-		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 20)));
-		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
 		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton);
+		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonPanel.add(goBackButton);
+		
+		confirmDataButton = new JButton(new ImageIcon("Ikony/forward.png"));
+		confirmDataButton.addActionListener(new ConfirmData());
+		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonPanel.add(confirmDataButton);
+
+		jPanel.add(buttonPanel);
+		
 		jPanel.add(Box.createVerticalGlue());
 	}
 	

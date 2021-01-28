@@ -86,7 +86,7 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,20))); 
 		
-		JButton goBackButton = new JButton("Cofnij sie");
+		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.addActionListener(new GoBack());
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(goBackButton);
