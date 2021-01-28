@@ -147,7 +147,7 @@ public class SetClientInfoGUI
 				client.setEmail(email);
 				client.setPhoneNumber(phoneNumber);
 				
-				if(JOptionPane.showConfirmDialog(null, "Czy to s� twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(null, "Czy to sa twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
