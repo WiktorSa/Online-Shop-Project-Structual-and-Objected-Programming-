@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import chooseitems.Product;
+import chooseitems.Basket;
 import client.Client;
 import client.RegisteredClient;
 import guiShop.MainGUI;
@@ -117,9 +116,13 @@ public class LogInGUI
 				try(ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(file)))
 				{
 					Client clientFromFile = (RegisteredClient) outputStream.readObject();
-					HashMap<Product, Integer> oldBasket = main.getClient().getBasket().getProducts();
+					Basket oldBasket = main.getClient().getBasket();
 					
-					clientFromFile.getBasket().getProducts().putAll(oldBasket);
+					// Jezeli klient wypelnil towar produktami i potem sie zaloguje to kasujemy zawartosc z koszyka zalogowanego klienta i zastepujemy nowym koszykiem
+					if (oldBasket.getProducts().size() != 0) {
+						clientFromFile.setBasket(oldBasket);
+					}
+					
 					
 					if (((RegisteredClient) clientFromFile).getPassword().equals(password)) {
 						main.setClient(clientFromFile);
