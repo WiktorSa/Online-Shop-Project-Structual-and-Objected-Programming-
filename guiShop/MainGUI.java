@@ -19,12 +19,12 @@ import guiClient.RegisterGUI;
 
 /*
  * Informacje programistyczne
- * Ja bêdê próbowa³ zaimplementowaæ controllera
- * Jak obs³ugiwaæ to GUI
- * Tworzycie oddzieln¹ klasê 
- * Tam powinien byæ Jpanel oraz metoda, która pozwala na uzyskanie Jpanela
+ * Ja bÃªdÃª prÃ³bowaÂ³ zaimplementowaÃ¦ controllera
+ * Jak obsÂ³ugiwaÃ¦ to GUI
+ * Tworzycie oddzielnÂ¹ klasÃª 
+ * Tam powinien byÃ¦ Jpanel oraz metoda, ktÃ³ra pozwala na uzyskanie Jpanela
  * Do tej klasy przekazujecie MainGUI
- * Wewn¹trz tej klasy jest Jbutton, który ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
+ * WewnÂ¹trz tej klasy jest Jbutton, ktÃ³ry ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
  * Praktycznie w tej metodzie wystarczy skopiowac kod z innej metody i podmienic nazwy i klasy
  * To chyba wszystko wyjasnia
  */
@@ -91,7 +91,7 @@ public class MainGUI
 	
 	public void changeToBasket()
 	{
-		BasketGUI basketGUI = new BasketGUI(client);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
+		BasketGUI basketGUI = new BasketGUI(MainGUI.this);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
 		JPanel basketPanel = basketGUI.getJPanel();//NOTE: ustawiamy basketPanel na panel utworzony w klasie dalej tak samo ja w createCardPanel()
 		cardPanel.add(basketPanel, "Basket Page");
 		cardLayout.show(cardPanel, "Basket Page");
