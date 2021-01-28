@@ -131,4 +131,24 @@ public class MainGUI
 		cardLayout.show(cardPanel, "Buy Item");
 		jFrame.revalidate();
 	}
+	
+	public void changeLayoutToCardPayment() {
+		
+		CardGUI cardGUI = new CardGUI(this);
+		JPanel cardPaymentPanel = cardGUI.getMainPanel();
+		cardPanel.add(cardPaymentPanel, "Card Payment Page");
+		cardLayout.show(cardPanel,"Card Payment Page");
+		jFrame.setEnabled(true);
+		
+		
+	}
+	public void changeLayoutToFinalTransaction() {
+		
+		FinalTransactionGUI finalGUI = new FinalTransactionGUI(client);
+		JPanel finalGUIPanel = finalGUI.getjPanel();
+		cardPanel.add(finalGUIPanel, "Final Page");
+		cardLayout.show(cardPanel,"Final Page");
+		jFrame.setEnabled(true);
+		
+	}
 }
