@@ -18,7 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import chooseitems.Product;
 import client.Client;
-import guiClient.SetClientInfoGUI;
+import guiShop.MainGUI;
+import guiClient.ClientSetClientInfoGUI;
 
 //Klasa stworzona przez Wiktora Sadowego
 public class BasketGUI
@@ -28,14 +29,18 @@ public class BasketGUI
 	// Bedziemy przekazywac informacje o produkcie i jego ilosci potem, zeby klient mogl skasowac produkty z koszyka
 	private HashMap<JButton, Product> eraseProductButtons = new LinkedHashMap<JButton, Product>();
 	private JButton giveBasicInfoJButton;
+	private MainGUI main;
+	private ClientSetClientInfoGUI setInfoCategory;
+	private JPanel setInfoPanel;
 	
 	public JPanel getJPanel() {
 		return jPanel;
 	}
 	
-	public BasketGUI(Client client)
+	public BasketGUI(MainGUI main)
 	{
-		this.client = client;
+		this.main=main;
+		client =main.getClient();
 
 		jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
@@ -116,8 +121,10 @@ public class BasketGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new SetClientInfoGUI(client);
-		
+			setInfoCategory=new ClientSetClientInfoGUI(main);
+			setInfoPanel=setInfoCategory.getjPanel();
+			main.getCardPanel().add(setInfoPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 }
