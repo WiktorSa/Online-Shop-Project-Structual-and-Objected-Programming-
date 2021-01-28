@@ -140,7 +140,15 @@ public class KurierSetInfo
 			}
 			
 			else {
-				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
+				if(!isCorrectMiasto(miasto)) {
+					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne miasto, na pewno zawiera tylko litery?");
+				}
+				else if(!isCorrectUlica(ulica)) {
+					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawna ulica, wypadaloby cos tam wpisac.");
+				}
+				else if(!isCorrectKodPocztowy(kodPocztowy)) {
+					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawny kod pocztowy, powinien zawierac 5 cyfr bez spacji.");
+				}
 			}
 		}
 		
