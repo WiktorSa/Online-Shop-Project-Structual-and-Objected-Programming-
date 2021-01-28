@@ -20,11 +20,11 @@ import guiClient.RegisterGUI;
 /*
  * Informacje programistyczne
  * Ja bede probowal zaimplementowac controllera
- * Jak obs³ugiwaæ to GUI
+ * Jak obsÂ³ugiwaÃ¦ to GUI
  * Tworzycie oddzielna klase 
- * Tam powinien byæ Jpanel oraz metoda, ktora pozwala na uzyskanie Jpanela
+ * Tam powinien byÃ¦ Jpanel oraz metoda, ktora pozwala na uzyskanie Jpanela
  * Do tej klasy przekazujecie MainGUI
- * Wewn¹trz tej klasy jest Jbutton, który ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
+ * WewnÂ¹trz tej klasy jest Jbutton, ktÃ³ry ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
  * Praktycznie w tej metodzie wystarczy skopiowac kod z innej metody i podmienic nazwy i klasy
  * To chyba wszystko wyjasnia
  */
@@ -134,6 +134,17 @@ public class MainGUI
 		cardPanel.add(buyItemPanel, "Buy Item");
 		cardLayout.show(cardPanel, "Buy Item");
 		jFrame.revalidate();
+	}
+	
+	public void changeLayoutToCardPayment() 
+	{
+		
+		CardGUI cardGUI = new CardGUI(client);
+		JPanel cardPaymentPanel = cardGUI.getMainPanel();
+		cardPanel.add(cardPaymentPanel, "Card Payment Page");
+		cardLayout.show(cardPanel,"Card Payment Page");
+		jFrame.setEnabled(true);
+		
 	}
 
 
