@@ -144,7 +144,7 @@ public class SetClientInfoGUI
 				client.setEmail(email);
 				client.setPhoneNumber(phoneNumber);
 				
-				if(JOptionPane.showConfirmDialog(null, "Czy to sa twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(null, "Czy to s¹ twoje dane: " + client.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
@@ -156,8 +156,19 @@ public class SetClientInfoGUI
 			}
 			
 			else {
-				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
-			}
+					if(!HelperFunctionsClient.isCorrectName(firstName)) {
+						JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne imie, na pewno jest z duzej litery?");
+					}
+					else if(!HelperFunctionsClient.isCorrectName(lastName)) {
+						JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne nazwisko, na pewno jest z duzej litery?");
+					}
+					else if(!HelperFunctionsClient.isCorrectEmail(email)) {
+						JOptionPane.showMessageDialog(new JFrame(), "Niepoprawny email, pamietaj o @ i .");
+					}
+					else if(!HelperFunctionsClient.isCorrectPhoneNumber(phoneNumber)) {
+						JOptionPane.showMessageDialog(new JFrame(), "Niepoprawny numer telefonu, czy na pewno ma 9 cyfr bez spacji?");
+					}
+				}
 		}
 	}
 	
