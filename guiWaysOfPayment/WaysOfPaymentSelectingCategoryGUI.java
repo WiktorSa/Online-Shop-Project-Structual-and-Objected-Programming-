@@ -66,6 +66,21 @@ public class WaysOfPaymentSelectingCategoryGUI {
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addActionListener(new SelectWay(button));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
+			switch(way)
+			{
+			case "Blik":
+				button.setToolTipText("Blik");
+				break;
+			case "Platnosc karta":
+				button.setToolTipText("Platnosc karta");
+				break;
+			case "Paypal":
+				button.setToolTipText("Paypal");
+				break;
+			default:
+				button.setToolTipText("Cos sie popsulo");
+				break;
+			}
 			choicePanel.add(button);
 
 			if(way.equals("Blik")) {
