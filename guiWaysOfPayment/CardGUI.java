@@ -16,7 +16,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,22 +34,24 @@ import waysofpayments.Card;
 public class CardGUI {
 	
 	private Client client;
-	private JFrame jFrame;
+	private JPanel mainPanel;
 	private JPanel titlePanel, cardPanel, buttonPanel, southPanel;
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
 	private JSpinner monthSpinner, yearSpinner;
+	
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
 	
 	public CardGUI(Client client) {
 		
 		this.client = client; 
 		client.setWayOfPayment(new Card());
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Platnosc karta");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setResizable(false);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		
 		
 		titlePanel = createTitleForm();
 		cardPanel = createCardForm();
@@ -60,13 +61,11 @@ public class CardGUI {
 		southPanel.add(createHelper());
 
 		
-		jFrame.getContentPane().add(BorderLayout.NORTH,titlePanel);
-		jFrame.getContentPane().add(BorderLayout.CENTER,cardPanel);
-		jFrame.getContentPane().add(BorderLayout.SOUTH, southPanel);
+		mainPanel.add(titlePanel, BorderLayout.NORTH);
+		mainPanel.add(cardPanel,BorderLayout.CENTER);
+		mainPanel.add(southPanel, BorderLayout.SOUTH);
 	
 		
-		jFrame.pack();
-		jFrame.setVisible(true);
 	}
 	
 	private JPanel createTitleForm() {
@@ -217,9 +216,9 @@ public class CardGUI {
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new WaysOfPaymentSelectingCategoryGUI(client);
+//			new WaysOfPaymentSelectingCategoryGUI(client);
 			client.setWayOfPayment(null);
-			jFrame.dispose();
+		
 		}
 	}
 	
@@ -248,7 +247,7 @@ public class CardGUI {
 				if(((Card)client.getWayOfPayment()).pay(client, new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
 					
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
-					jFrame.dispose();
+					
 					new FinalTransactionGUI(client);
 					
 				}else {
