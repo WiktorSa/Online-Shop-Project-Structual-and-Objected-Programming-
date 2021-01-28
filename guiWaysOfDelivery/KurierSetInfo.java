@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -99,14 +100,14 @@ public class KurierSetInfo
 		
 		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
 		
-		confirmDataButton = new JButton("Potwierdz dane");
+		confirmDataButton = new JButton(new ImageIcon("Ikony/forward.png"));
 		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		confirmDataButton.addActionListener(new ConfirmData());
 		jPanel.add(confirmDataButton);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(5, 20)));
 		
-		goBackButton = new JButton("Cofnij sie");
+		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -85,12 +86,12 @@ public class OsobistyGUI
 		gbc.gridy += 3;
 		gbc.gridheight = 1;
 		
-		confimButton = new JButton("Potwierdz");
+		confimButton = new JButton(new ImageIcon("Ikony/forward.png"));
 		confimButton.addActionListener(new Confirm());
 		jPanel.add(confimButton, gbc);
 		
 		gbc.gridy += 1;
-		goBackButton = new JButton("Cofnij sie");
+		goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton, gbc);
 		gbc.gridy += 1;
