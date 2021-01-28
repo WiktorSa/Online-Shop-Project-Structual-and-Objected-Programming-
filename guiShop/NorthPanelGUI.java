@@ -118,7 +118,7 @@ public class NorthPanelGUI
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			mainGUI.changeToBasket();
+			mainGUI.changeLayoutToBasket();
 		}
 		
 	}
@@ -128,7 +128,7 @@ public class NorthPanelGUI
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			mainGUI.changeToLogIn();
+			mainGUI.changeLayoutToLogIn();
 		}
 		
 	}
@@ -138,7 +138,7 @@ public class NorthPanelGUI
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			mainGUI.changeToRegister();
+			mainGUI.changeLayoutToRegister();
 		}
 		
 	}

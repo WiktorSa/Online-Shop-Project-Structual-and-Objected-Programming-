@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -27,12 +25,6 @@ import guiShop.MainGUI;
 //Klasa stworzona przez Wiktora Sadowego 
 public class SelectingItemsGUI
 {
-	// Lista wszystkich produktow
-	private ArrayList<Product> items;
-	// Lista obrazow do produktow
-	private HashMap<Product, Image> images;
-	// Do kazdego guzika jest przypisany przedmiot
-	private HashMap<JButton, Product> selectItems = new LinkedHashMap<JButton, Product>();
 	private JPanel outsidejPanel;
 	private MainGUI main;
 	
@@ -41,12 +33,13 @@ public class SelectingItemsGUI
 		return outsidejPanel;
 	}
 	
-	public SelectingItemsGUI(MainGUI main) 
+	public SelectingItemsGUI(MainGUI main, ChooseItems chooseItems) 
 	{
 		this.main = main;
-		ChooseItems chooseItems = new ChooseItems();
-		this.items = chooseItems.getListOfProducts().get("Ksiazka");
-		this.images = chooseItems.getImagesOfProducts();
+		// Lista wszystkich produktow
+		ArrayList<Product> items = chooseItems.getListOfProducts().get("Ksiazka");
+		// Lista obrazow do produktow
+		HashMap<Product, Image> images = chooseItems.getImagesOfProducts();
 		
 		outsidejPanel = new JPanel();
 		outsidejPanel.setLayout(new BoxLayout(outsidejPanel, BoxLayout.X_AXIS));
@@ -67,12 +60,13 @@ public class SelectingItemsGUI
 			for(int j = 0; j<5; j++) 
 			{
 				Product product = productsIterator.next();
+				Image image = images.get(product);
 				
 				// The simple description of the item is in the column
 				JPanel singleItemJPanel = new JPanel();
 				singleItemJPanel.setLayout(new BoxLayout(singleItemJPanel, BoxLayout.Y_AXIS));
 				
-				JLabel imageJLabel = new JLabel(new ImageIcon(images.get(product).getScaledInstance(190, 280, Image.SCALE_SMOOTH)));
+				JLabel imageJLabel = new JLabel(new ImageIcon(image.getScaledInstance(190, 280, Image.SCALE_SMOOTH)));
 				imageJLabel.setBorder(new EmptyBorder(5, 25, 5, 25));
 				imageJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				singleItemJPanel.add(imageJLabel);
@@ -94,8 +88,7 @@ public class SelectingItemsGUI
 				
 				JButton buyButton = new JButton("Kup");
 				buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-				buyButton.addActionListener(new BuyItems(buyButton));
-				selectItems.put(buyButton, product);
+				buyButton.addActionListener(new BuyItems(product, image));
 				singleItemJPanel.add(buyButton); 
 				
 				itemsJPanel.add(singleItemJPanel);
@@ -120,17 +113,17 @@ public class SelectingItemsGUI
 	
 	class BuyItems implements ActionListener
 	{
-		private JButton button;
-		
-		// In this way we can easily assign a button to a product
-		public BuyItems(JButton button) 
+		private Product product;
+	
+		// Zeby potem moc latwo przekazac product i image do kupna pojedynczego przedmiotu
+		public BuyItems(Product product, Image image) 
 		{
-			this.button = button;
+			this.product = product;
 		}
 		
 		public void actionPerformed(ActionEvent event) 
 		{
-			main.changeLayoutToBuyItem(selectItems.get(button), images.get(selectItems.get(button)));
+			main.changeLayoutToBuyItem(product);
 		}
 	}
 }

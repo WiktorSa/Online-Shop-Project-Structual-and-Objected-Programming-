@@ -6,9 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
@@ -17,30 +15,23 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import chooseitems.Product;
-import client.Client;
+import guiClient.SetClientInfoGUI;
 import guiShop.MainGUI;
-import guiClient.ClientSetClientInfoGUI;
 
 //Klasa stworzona przez Wiktora Sadowego
 public class BasketGUI
 {
-	private Client client;
 	private JPanel jPanel;
-	// Bedziemy przekazywac informacje o produkcie i jego ilosci potem, zeby klient mogl skasowac produkty z koszyka
-	private HashMap<JButton, Product> eraseProductButtons = new LinkedHashMap<JButton, Product>();
-	private JButton giveBasicInfoJButton;
 	private MainGUI main;
-	private ClientSetClientInfoGUI setInfoCategory;
-	private JPanel setInfoPanel;
 	
-	public JPanel getJPanel() {
+	public JPanel getJPanel() 
+	{
 		return jPanel;
 	}
 	
 	public BasketGUI(MainGUI main)
 	{
-		this.main=main;
-		client =main.getClient();
+		this.main = main;
 
 		jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
@@ -63,7 +54,7 @@ public class BasketGUI
 		gbc.gridy = 3;
 		
 		// Zdobywamy liste produktow, zeby moc ja wypisac na ekran
-		Iterator<Entry<Product, Integer>> listOfBoughtItems = this.client.getBasket().getProducts().entrySet().iterator();
+		Iterator<Entry<Product, Integer>> listOfBoughtItems = this.main.getClient().getBasket().getProducts().entrySet().iterator();
 		
 		while(listOfBoughtItems.hasNext())
 		{
@@ -77,8 +68,7 @@ public class BasketGUI
 			gbc.gridwidth = 2;
 			
 			JButton jButton = new JButton("Skasuj produkt z koszyka");
-			jButton.addActionListener(new EraseItems());
-			eraseProductButtons.put(jButton, entry.getKey());
+			jButton.addActionListener(new EraseItems(entry.getKey(), entry.getValue()));
 			jPanel.add(jButton, gbc);
 			
 			gbc.gridx = 0;
@@ -88,7 +78,7 @@ public class BasketGUI
 		
 		gbc.gridwidth = 7;
 		
-		JLabel priceJLabel = new JLabel("Cena koncowa: " + String.format("%.2f", this.client.getBasket().getPrice()) + " zl");
+		JLabel priceJLabel = new JLabel("Cena koncowa: " + String.format("%.2f", this.main.getClient().getBasket().getPrice()) + " zl");
 		priceJLabel.setBorder(new EmptyBorder(15, 10, 15, 10));
 		priceJLabel.setFont(new Font("New Times Roman", Font.BOLD, 27));
 		jPanel.add(priceJLabel, gbc);
@@ -96,24 +86,29 @@ public class BasketGUI
 		gbc.gridy += 3;
 		gbc.gridheight = 1;
 		
-		giveBasicInfoJButton = new JButton("Zakoncz transakcje");
+		JButton giveBasicInfoJButton = new JButton("Zakoncz transakcje");
 		giveBasicInfoJButton.addActionListener(new GiveBasicInfo());
+		if (this.main.getClient().getBasket().getProducts().size() == 0) {
+			giveBasicInfoJButton.setEnabled(false);
+		}
 		jPanel.add(giveBasicInfoJButton, gbc);
 	
 	}
 	
 	class EraseItems implements ActionListener
 	{
+		private Product product;
+		private int maxNumberToErase;
+		
+		public EraseItems(Product product, int maxNumberToErase) 
+		{
+			this.product = product;
+			this.maxNumberToErase = maxNumberToErase;
+		}
+		
 		public void actionPerformed(ActionEvent event) 
 		{
-			for (JButton jButton : eraseProductButtons.keySet()) 
-			{
-				if (event.getSource() == jButton) {
-					// Biore klienta, produkt z HashMapa oraz ilosc danego przedmiotu z koszyka klienta
-					new EraseItemGUI(client, eraseProductButtons.get(jButton), client.getBasket().getProducts().get(eraseProductButtons.get(jButton)));
-				
-				}
-			}
+			main.changeLayoutToEraseItem(product, maxNumberToErase);
 		}
 	}
 	
@@ -121,8 +116,8 @@ public class BasketGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			setInfoCategory=new ClientSetClientInfoGUI(main);
-			setInfoPanel=setInfoCategory.getjPanel();
+			SetClientInfoGUI setInfoCategory = new SetClientInfoGUI(main);
+			JPanel setInfoPanel = setInfoCategory.getjPanel();
 			main.getCardPanel().add(setInfoPanel,"Delivery Page");
 			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}

@@ -25,10 +25,8 @@ import guiShop.MainGUI;
 //Klasa stworzona przez Wiktora Sadowego 
 public class BuyItemGUI
 {
-	private Product product;
 	private JPanel jPanel;
 	private JFormattedTextField numberOfItems;
-	private JButton buyButton;
 	private MainGUI mainGUI;
 	
 	public JPanel getPanel()
@@ -40,7 +38,6 @@ public class BuyItemGUI
 	public BuyItemGUI(MainGUI mainGUI, Product product, Image image)
 	{
 		this.mainGUI = mainGUI;
-		this.product = product;
 		
 		jPanel = new JPanel();
 		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.X_AXIS));
@@ -50,15 +47,17 @@ public class BuyItemGUI
 		imageJLabel.setBorder(new EmptyBorder(10, 30, 10, 10));
 		jPanel.add(imageJLabel);
 		
+		JPanel insideJPanel = new JPanel();
+		insideJPanel.setLayout(new BoxLayout(insideJPanel, BoxLayout.Y_AXIS));
+		
 		// Polecenie w HTML-u na ladne wyswietlanie tekstu (wstawiam entery we wlasciwych miejsach i umieszczam tekst na srodku)
-		JLabel itemLabel = new JLabel("<html>" + (this.product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>", SwingConstants.CENTER);
+		JLabel itemLabel = new JLabel("<html>" + (product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>", SwingConstants.CENTER);
 		itemLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		itemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		itemLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		jPanel.add(itemLabel);
+		insideJPanel.add(itemLabel);
 		
-		JPanel insideJPanel = new JPanel();
-		insideJPanel.setLayout(new BoxLayout(insideJPanel, BoxLayout.Y_AXIS));
+		insideJPanel.add(Box.createRigidArea(new Dimension(0, 25)));
 		
 		numberOfItems = new JFormattedTextField(onlyAllowNaturalNumbersUpTo999());
 		numberOfItems.setText("1");
@@ -69,10 +68,10 @@ public class BuyItemGUI
 		// chce miec wolne miejsce pomiedzy JTextField a JButton
 		insideJPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
-		buyButton = new JButton("KUP");
+		JButton buyButton = new JButton("KUP");
 		buyButton.setPreferredSize(new Dimension(200, 30));
 		buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		buyButton.addActionListener(new BuyItem());
+		buyButton.addActionListener(new BuyItem(product));
 		insideJPanel.add(buyButton);
 		
 		jPanel.add(insideJPanel);
@@ -96,6 +95,13 @@ public class BuyItemGUI
 	
 	class BuyItem implements ActionListener
 	{
+		private Product product;
+		
+		public BuyItem(Product product) 
+		{
+			this.product = product;
+		}
+		
 		public void actionPerformed(ActionEvent event) 
 		{
 			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());

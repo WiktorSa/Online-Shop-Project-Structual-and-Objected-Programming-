@@ -3,8 +3,6 @@ package guiShop;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.Image;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,21 +11,10 @@ import chooseitems.Product;
 import client.Client;
 import guiChooseItems.BasketGUI;
 import guiChooseItems.BuyItemGUI;
+import guiChooseItems.EraseItemGUI;
 import guiChooseItems.SelectingItemsGUI;
 import guiClient.LogInGUI;
 import guiClient.RegisterGUI;
-
-/*
- * Informacje programistyczne
- * Ja bede probowal zaimplementowac controllera
- * Jak obs³ugiwaæ to GUI
- * Tworzycie oddzielna klase 
- * Tam powinien byæ Jpanel oraz metoda, ktora pozwala na uzyskanie Jpanela
- * Do tej klasy przekazujecie MainGUI
- * Wewn¹trz tej klasy jest Jbutton, który ma actionlistenera a ten actionlistener odsyla do wlasciwej metody w MainGUI
- * Praktycznie w tej metodzie wystarczy skopiowac kod z innej metody i podmienic nazwy i klasy
- * To chyba wszystko wyjasnia
- */
 
 public class MainGUI 
 {
@@ -91,16 +78,16 @@ public class MainGUI
 		jFrame.revalidate();//NOTE: odswieza frame'a
 	}
 	
-	public void changeToBasket()
+	public void changeLayoutToBasket()
 	{
-		BasketGUI basketGUI = new BasketGUI(client);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
+		BasketGUI basketGUI = new BasketGUI(MainGUI.this);//NOTE: pozniej trzeba bedzie zmienic client na MainGUI.this, aby moc zmienic cardLayout aby pokazywal odpowiedni panel 
 		JPanel basketPanel = basketGUI.getJPanel();//NOTE: ustawiamy basketPanel na panel utworzony w klasie dalej tak samo ja w createCardPanel()
 		cardPanel.add(basketPanel, "Basket Page");
 		cardLayout.show(cardPanel, "Basket Page");
 		jFrame.revalidate();
 	}
 	
-	public void changeToLogIn()
+	public void changeLayoutToLogIn()
 	{
 		LogInGUI logInGUI = new LogInGUI(MainGUI.this);
 		JPanel logInPanel = logInGUI.getjPanel();
@@ -109,7 +96,7 @@ public class MainGUI
 		jFrame.revalidate();
 	}
 	
-	public void changeToRegister()
+	public void changeLayoutToRegister()
 	{
 		RegisterGUI registerGUI = new RegisterGUI(MainGUI.this);
 		JPanel registerPanel = registerGUI.getjPanel();
@@ -127,25 +114,21 @@ public class MainGUI
 		jFrame.revalidate();
 	}
 
-	public void changeLayoutToBuyItem(Product product, Image image)
+	public void changeLayoutToBuyItem(Product product)
 	{
-		BuyItemGUI buyItemGUI = new BuyItemGUI(MainGUI.this, product, image);
+		BuyItemGUI buyItemGUI = new BuyItemGUI(MainGUI.this, product, chooseItems.getImagesOfProducts().get(product));
 		JPanel buyItemPanel = buyItemGUI.getPanel();
 		cardPanel.add(buyItemPanel, "Buy Item");
 		cardLayout.show(cardPanel, "Buy Item");
 		jFrame.revalidate();
 	}
-	
-	public void changeLayoutToCardPayment() 
+
+	public void changeLayoutToEraseItem(Product product, int maxNumberToErase)
 	{
-		
-		CardGUI cardGUI = new CardGUI(client);
-		JPanel cardPaymentPanel = cardGUI.getMainPanel();
-		cardPanel.add(cardPaymentPanel, "Card Payment Page");
-		cardLayout.show(cardPanel,"Card Payment Page");
-		jFrame.setEnabled(true);
-		
+		EraseItemGUI eraseItemGUI = new EraseItemGUI(MainGUI.this, product, chooseItems.getImagesOfProducts().get(product), maxNumberToErase);
+		JPanel buyItemPanel = eraseItemGUI.getPanel();
+		cardPanel.add(buyItemPanel, "Buy Item");
+		cardLayout.show(cardPanel, "Buy Item");
+		jFrame.revalidate();
 	}
-
-
 }

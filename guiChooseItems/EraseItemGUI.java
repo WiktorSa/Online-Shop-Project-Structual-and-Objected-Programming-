@@ -2,105 +2,79 @@ package guiChooseItems;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import chooseitems.Product;
-import client.Client;
-import client.RegisteredClient;
+import guiShop.MainGUI;
 
 public class EraseItemGUI 
 {
-	private Client client;
-	private Product product;
-	private JFrame jFrame;
+	private MainGUI mainGUI;
+	private JPanel jPanel;
 	private JFormattedTextField numberOfItems;
-	private JButton eraseButton;
-	private JButton goBackButton;
 	
-	public EraseItemGUI(Client client, Product product, int maxNumberToErase) // ArrayList jest uzywany tylko do cofniecia sie do listy produktow
+	public JPanel getPanel()
 	{
-		this.client = client;
-		this.product = product;
+		return jPanel;
+	}
+	
+	public EraseItemGUI(MainGUI mainGUI, Product product, Image image, int maxNumberToErase)
+	{
+		this.mainGUI = mainGUI;
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Sklep");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setSize(500, 350);
-		jFrame.setResizable(false);
+		jPanel = new JPanel();
+		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.X_AXIS));
 		
-		JPanel jPanel = new JPanel();
-		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
-		jPanel.setLayout(boxLayout);
+		JLabel imageJLabel = new JLabel(new ImageIcon(image.getScaledInstance(300, 450, Image.SCALE_SMOOTH)));
+		imageJLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+		imageJLabel.setBorder(new EmptyBorder(10, 30, 10, 10));
+		jPanel.add(imageJLabel);
+		
+		JPanel insideJPanel = new JPanel();
+		insideJPanel.setLayout(new BoxLayout(insideJPanel, BoxLayout.Y_AXIS));
 		
 		// Polecenie w HTML-u na ladne wyswietlanie tekstu (wstawiam entery we wlasciwych miejsach i umieszczam tekst na srodku)
-		JLabel itemLabel = new JLabel("<html><div style='text-align: center;'>" + (this.product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>", SwingConstants.CENTER);
+		JLabel itemLabel = new JLabel("<html>" + (product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>", SwingConstants.CENTER);
+		itemLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		itemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		itemLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		jPanel.add(itemLabel);
+		insideJPanel.add(itemLabel);
 		
-		JLabel inputingANumberJLabel = new JLabel("Wpisz ile sztuk powyzszego produktu chcesz usunac z koszyka");
-		inputingANumberJLabel.setBorder(new EmptyBorder(0, 10, 5, 10));
-		inputingANumberJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jPanel.add(inputingANumberJLabel);
+		insideJPanel.add(Box.createRigidArea(new Dimension(0, 25)));
 		
 		numberOfItems = new JFormattedTextField(onlyAllowNaturalNumbersUpToNumberOfItems(maxNumberToErase));
 		numberOfItems.setText("1");
 		numberOfItems.setMaximumSize(new Dimension(200, 30));
 		numberOfItems.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jPanel.add(numberOfItems);
+		insideJPanel.add(numberOfItems);
 		
 		// chce miec wolne miejsce pomiedzy JTextField a JButton
-		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		insideJPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
-		eraseButton = new JButton("Usun z koszyka");
-		eraseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		eraseButton.addActionListener(new EraseItem());
-		jPanel.add(eraseButton);
+		JButton buyButton = new JButton("Skasuj z koszyka");
+		buyButton.setPreferredSize(new Dimension(200, 30));
+		buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buyButton.addActionListener(new EraseItem(product));
+		insideJPanel.add(buyButton);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		jPanel.add(insideJPanel);
 		
-		goBackButton = new JButton("Cofnij sie");
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton);
-		
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
-			jPanel.add(RegisteredClientJLabel);
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel);
-		}
-		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel);
-		}
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
+		jPanel.add(Box.createRigidArea(new Dimension(50,10)));
 	}
 	
 	public NumberFormatter onlyAllowNaturalNumbersUpToNumberOfItems(int maxNumberToErase)
@@ -117,34 +91,21 @@ public class EraseItemGUI
 	
 	class EraseItem implements ActionListener
 	{
+		private Product product;
+		
+		public EraseItem(Product product) 
+		{
+			this.product = product;
+		}
+		
 		public void actionPerformed(ActionEvent event) 
 		{
-			int numberOfErasedProducts = Integer.parseInt(numberOfItems.getText());
-			client.eraseAProductFromClientBasket(product, numberOfErasedProducts);
-			if (client instanceof RegisteredClient) {
-				((RegisteredClient) client).saveClient();
-			}
+			int numberOfProducts = Integer.parseInt(numberOfItems.getText());
 			
-			JOptionPane.showMessageDialog(null, "Pomyslnie skasowano przedmiot w ilosci: " + numberOfErasedProducts);
+			mainGUI.getClient().eraseAProductFromClientBasket(product, numberOfProducts);
 			
-			// Jezeli klient skasowal cala zawartosc koszyka to go cofamy do wyboru kategorii
-			if (client.getBasket().getProducts().size() == 0) {
-				new ChooseItemsSelectingCategoryGUI(client);
-			}
-			else {
-				new BasketGUI(client);
-			}
-			
-			jFrame.dispose();
+			mainGUI.changeLayoutToBasket();
 		}
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			new BasketGUI(client);
-			jFrame.dispose();
-		}
-	}
 }
