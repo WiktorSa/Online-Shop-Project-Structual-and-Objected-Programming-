@@ -13,135 +13,131 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
 import client.RegisteredClient;
+import guiShop.MainGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;
 
-
-
-// Klasa stworzona przez Jana Skibinskiego
 public class PaczkomatSetInfo1
 {
-	private Client client;
-	private JFrame jFrame;
-	private JTextField paczkomatCodeJTextField;
-	private JTextField miastoJTextField;
-	private JButton confirmDataButton;
-	private JButton confirmMiastoButton;
-	private JButton goBackButton;
+
+	private JPanel jPanel;
+	private JTextField miasto;
+	private JTextField paczkomatCode;
+	private JButton confirmMiasto;
+	private JButton confirmCode;
+	private JButton goBack;
+	private MainGUI main;
 	private Paczkomat paczkomat;
+	private Client client;
 	
-	public PaczkomatSetInfo1(Client client) 
+	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
+	private JPanel backPanel;
+	private WaysOfPaymentSelectingCategoryGUI goToPayment;
+	private JPanel paymentPanel;
+	private PaczkomatSetInfo2 goToPaczkomat2;
+	private JPanel paczkomat2Panel;
+	
+	public JPanel getjPanel() {
+		return jPanel;
+	}
+	
+	public PaczkomatSetInfo1(MainGUI main) 
 	{
-		this.client = client;
-		paczkomat=new Paczkomat(client);
-		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Paczkomat");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setResizable(false);
-		
-		JPanel jPanel = new JPanel();
+		this.main = main;
+		client=main.getClient();
+		paczkomat=new Paczkomat(main.getClient());
+		// Tekst bedzie sie wyswietlal od gory do dolu
+		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
+		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
 		
-		JLabel titleJLabel = new JLabel("Wybierz paczkomat do ktorego dostarczymy paczke.", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
-		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		titleJLabel.setBorder(new EmptyBorder(5,10,15,10)); //top,left,bottom,right
-		jPanel.add(titleJLabel);
+		JLabel giveInstructionsJLabel = new JLabel("Podaj informacje do wysylki paczkomatem.", SwingConstants.CENTER);
+		giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		giveInstructionsJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jPanel.add(giveInstructionsJLabel);
 		
-		JLabel miastoJLabel = new JLabel("Wpisz swoje miasto, a znajdziemy paczkomaty blisko Ciebie.", SwingConstants.CENTER);
+		JLabel miastoJLabel = new JLabel("Podaj swoje miasto a znajdziemy paczkomaty blisko Ciebie.", SwingConstants.CENTER);
 		miastoJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		miastoJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(miastoJLabel);
 		
-		miastoJTextField = new JTextField(paczkomat.getMiasto()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
-		miastoJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-		miastoJTextField.setHorizontalAlignment(JTextField.CENTER);
-		miastoJTextField.setMaximumSize(new Dimension(200, 60));
-		jPanel.add(miastoJTextField);
+		miasto = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		miasto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		miasto.setHorizontalAlignment(JTextField.CENTER);
+		miasto.setPreferredSize(new Dimension(300, 25));
+		miasto.setMaximumSize(new Dimension(300, 25));
+		jPanel.add(miasto);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
+		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		confirmMiastoButton = new JButton("Potwierdz dane");
-		confirmMiastoButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		confirmMiastoButton.addActionListener(new ConfirmMiastoButton());
-		jPanel.add(confirmMiastoButton);
+		confirmMiasto = new JButton("Potwierdz");
+		confirmMiasto.addActionListener(new ConfirmMiasto());
+		confirmMiasto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jPanel.add(confirmMiasto);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
+		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		JLabel kodPaczkomatu = new JLabel("Albo podaj kod paczkomatu do ktorego dostarczymy przesylke.", SwingConstants.CENTER);
-		kodPaczkomatu.setAlignmentX(Component.CENTER_ALIGNMENT);
-		kodPaczkomatu.setBorder(new EmptyBorder(15, 0, 5, 0));
-		jPanel.add(kodPaczkomatu);
+		JLabel kodJlabel = new JLabel("Podaj kod paczkomatu.", SwingConstants.CENTER);
+		kodJlabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		kodJlabel.setBorder(new EmptyBorder(15, 0, 5, 0));
+		jPanel.add(kodJlabel);
 		
-		paczkomatCodeJTextField = new JTextField(paczkomat.getPaczkomatCode()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
-		paczkomatCodeJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-		paczkomatCodeJTextField.setHorizontalAlignment(JTextField.CENTER);
-		paczkomatCodeJTextField.setMaximumSize(new Dimension(200, 60));
-		jPanel.add(paczkomatCodeJTextField);
+		paczkomatCode = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		paczkomatCode.setAlignmentX(Component.CENTER_ALIGNMENT);
+		paczkomatCode.setHorizontalAlignment(JTextField.CENTER);
+		paczkomatCode.setPreferredSize(new Dimension(300, 25));
+		paczkomatCode.setMaximumSize(new Dimension(300, 25));
+		jPanel.add(paczkomatCode);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
+		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		confirmDataButton = new JButton("Potwierdz dane");
-		confirmDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		confirmDataButton.addActionListener(new ConfirmData());
-		jPanel.add(confirmDataButton);
+		confirmCode = new JButton("Potwierdz");
+		confirmCode.addActionListener(new ConfirmCode());
+		confirmCode.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jPanel.add(confirmCode);
 		
-		jPanel.add(Box.createRigidArea(new Dimension(5, 20)));
+		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
-		goBackButton = new JButton("Cofnij sie");
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		goBackButton.addActionListener(new GoBack());
-		jPanel.add(goBackButton);
+		goBack = new JButton("Cofnij sie");
+		goBack.addActionListener(new GoBack());
+		goBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+		jPanel.add(goBack);
 		
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
-			jPanel.add(RegisteredClientJLabel);
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel);
-		}
+		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
+		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
 		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel);
-		}
+	
 		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
+
 	}
-	class ConfirmData implements ActionListener
+	
+	class ConfirmCode implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			String paczkomatCode = paczkomatCodeJTextField.getText();
+			String code = paczkomatCode.getText();
 			
-			if (isCorrectPaczkomatCode(paczkomatCode))
+			if (isCorrectPaczkomatCode(code))
 			{
-				paczkomat.setPaczkomatCode(paczkomatCode);
+				paczkomat.setPaczkomatCode(code);
 				if(JOptionPane.showConfirmDialog(null, "Czy to twoje dane do dostawy: " + paczkomat.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
-					client.setWayOfDelivery(paczkomat);
-					new WaysOfPaymentSelectingCategoryGUI(client);
-					jFrame.dispose();
-				}
+					main.getClient().setWayOfDelivery(paczkomat);
+					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
+					paymentPanel=goToPayment.getjPanel();
+					main.getCardPanel().add(paymentPanel,"Delivery Page");
+					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+					}
 			}
 			
 			else {
@@ -181,21 +177,23 @@ public class PaczkomatSetInfo1
 			}
 		}
 	}
-	class ConfirmMiastoButton implements ActionListener
+	class ConfirmMiasto implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			String miasto = miastoJTextField.getText();
+			String miast = miasto.getText();
 			
-			if (isCorrectMiasto(miasto)) {
-				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miasto, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			if (isCorrectMiasto(miast)) {
+				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					client.setWayOfDelivery(paczkomat);
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
-					paczkomat.setMiasto(miasto);
-					new PaczkomatSetInfo2(client,paczkomat);
-					jFrame.dispose();
+					paczkomat.setMiasto(miast);
+					goToPaczkomat2=new PaczkomatSetInfo2(main,paczkomat);
+					paczkomat2Panel=goToPaczkomat2.getjPanel();
+					main.getCardPanel().add(paczkomat2Panel,"Delivery Page");
+					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 				}
 			}
 			
@@ -229,8 +227,10 @@ public class PaczkomatSetInfo1
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new WaysOfDeliverySelectingCategoryGUI(client);
-			jFrame.dispose();
+			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
+			backPanel=goBackCategory.getjPanel();
+			main.getCardPanel().add(backPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 }

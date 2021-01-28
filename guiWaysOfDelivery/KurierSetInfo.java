@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import guiShop.MainGUI;
 import client.Client;
 import client.RegisteredClient;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
@@ -26,29 +27,36 @@ import waysofdelivery.*;
 // Klasa stworzona przez Jana Skibinskiego
 public class KurierSetInfo
 {
-	private Client client;
-	private JFrame jFrame;
+	private MainGUI main;
+	private JPanel jPanel;
 	private JTextField miastoJTextField;
 	private JTextField ulicaJTextField;
 	private JTextField kodPocztowyJTextField;
 	private JButton confirmDataButton;
 	private JButton goBackButton;
+	private Client client;
 	private Kurier kurier;
 	
-	public KurierSetInfo(Client client) 
+	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
+	private JPanel backPanel;
+	private WaysOfPaymentSelectingCategoryGUI goToPayment;
+	private JPanel paymentPanel;
+
+	
+	public JPanel getjPanel() {
+		return jPanel;
+	}
+	
+	public KurierSetInfo(MainGUI main) 
 	{
-		this.client = client;
+		this.main=main;
+		client = main.getClient();
 		kurier=new Kurier(client);
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Kurier");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setResizable(false);
-		
-		JPanel jPanel = new JPanel();
+		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
+		jPanel.add(Box.createVerticalGlue());
 		
 		JLabel titleJLabel = new JLabel("Wpisz dane potrzebne do dostawy kurierskiej", SwingConstants.CENTER);
 		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -102,29 +110,7 @@ public class KurierSetInfo
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
-		
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
-			jPanel.add(RegisteredClientJLabel);
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel);
-		}
-		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel);
-		}
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
+		jPanel.add(Box.createVerticalGlue());
 	}
 	
 	class ConfirmData implements ActionListener
@@ -145,8 +131,10 @@ public class KurierSetInfo
 					if (client instanceof RegisteredClient) {
 						((RegisteredClient) client).saveClient();
 					}
-					new WaysOfPaymentSelectingCategoryGUI(client);
-					jFrame.dispose();
+					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
+					paymentPanel=goToPayment.getjPanel();
+					main.getCardPanel().add(paymentPanel,"Delivery Page");
+					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");;
 				}
 			}
 			
@@ -204,8 +192,10 @@ public class KurierSetInfo
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new WaysOfDeliverySelectingCategoryGUI(client);
-			jFrame.dispose();
+			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
+			backPanel=goBackCategory.getjPanel();
+			main.getCardPanel().add(backPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 }

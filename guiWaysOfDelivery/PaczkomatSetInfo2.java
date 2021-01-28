@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -18,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 import client.Client;
 import client.RegisteredClient;
+import guiShop.MainGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;
 
@@ -26,25 +26,31 @@ public class PaczkomatSetInfo2
 {
 	private Client client;
 	private ArrayList<JButton> selectPaczkomat = new ArrayList<JButton>();
-	private JFrame jFrame;
+	private JPanel jPanel;
 	private JButton goBackButton;
 	private Paczkomat paczkomat;
+	private MainGUI main;
 	
-	public PaczkomatSetInfo2(Client client,Paczkomat paczkomat) 
+	private PaczkomatSetInfo1 goBackCategory;
+	private JPanel backPanel;
+	private WaysOfPaymentSelectingCategoryGUI goToPayment;
+	private JPanel paymentPanel;
+	
+	public JPanel getjPanel() {
+		return jPanel;
+	}
+	
+	public PaczkomatSetInfo2(MainGUI main,Paczkomat paczkomat) 
 	{
-		paczkomat.setPaczkomatList();
-		this.client = client;
+		this.main=main;
 		this.paczkomat=paczkomat;
+		paczkomat.setPaczkomatList();
+		client=main.getClient();
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Wybor Dostawy");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setResizable(false);
-		
-		JPanel jPanel = new JPanel();
+		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
+		jPanel.add(Box.createVerticalGlue());
 		
 		JLabel titleJLabel = new JLabel("Wybierz sposob dostawy", SwingConstants.CENTER);
 		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -71,6 +77,7 @@ public class PaczkomatSetInfo2
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
+		jPanel.add(Box.createVerticalGlue());
 		
 		if (client instanceof RegisteredClient) {
 			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
@@ -90,10 +97,6 @@ public class PaczkomatSetInfo2
 			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
 			jPanel.add(unregisteredClientJLabel);
 		}
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
 	}
 	
 
@@ -106,8 +109,10 @@ public class PaczkomatSetInfo2
 				if (event.getSource() == jButton) {
 					paczkomat.setPaczkomatCode(jButton.getText());
 					client.setWayOfDelivery(paczkomat);
-					new WaysOfPaymentSelectingCategoryGUI(client);
-					jFrame.dispose();
+					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
+					paymentPanel=goToPayment.getjPanel();
+					main.getCardPanel().add(paymentPanel,"Delivery Page");
+					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 				}
 			}
 		}
@@ -118,8 +123,10 @@ public class PaczkomatSetInfo2
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new PaczkomatSetInfo1(client);
-			jFrame.dispose();
+			goBackCategory=new PaczkomatSetInfo1(main);
+			backPanel=goBackCategory.getjPanel();
+			main.getCardPanel().add(backPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 }

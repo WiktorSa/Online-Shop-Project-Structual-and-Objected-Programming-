@@ -1,6 +1,5 @@
 package guiWaysOfDelivery;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,43 +7,48 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-import client.RegisteredClient;
+import guiShop.MainGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;
 
 //Klasa stworzona przez Jana Skibinskiego
 public class OsobistyGUI
 {
-	private Client client;
-	private JFrame jFrame;
+	private JPanel jPanel;
 	private Osobisty osobisty;
 	// Zatwierdzanie lub cofanie
 	private JButton confimButton;
 	private JButton goBackButton;
+	private Client client;
+	private MainGUI main;
 	
-	OsobistyGUI(Client client)
+	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
+	private JPanel backPanel;
+	private WaysOfPaymentSelectingCategoryGUI goToPayment;
+	private JPanel paymentPanel;
+	
+	public JPanel getjPanel() {
+		return jPanel;
+	}
+	
+	OsobistyGUI(MainGUI main)
 	{
-		this.client = client;
+		this.main=main;
+		client=main.getClient();
 		osobisty = new Osobisty(client);
 		osobisty.setTomDt();
 		
-		jFrame = new JFrame();
-		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("Odbior Osobisty");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jFrame.setSize(650, 600);
-		jFrame.setResizable(false);
-		
-		JPanel jPanel = new JPanel();
+		jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		jPanel.add(Box.createVerticalGlue());
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -53,6 +57,7 @@ public class OsobistyGUI
 		gbc.weightx = 0;
 		gbc.weighty = 0;
 		gbc.insets = new Insets(5, 5, 5, 5);
+		
 		
 		JLabel titileJLabel = new JLabel("Odbior osobisty bedzie dostepny od:");
 		titileJLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -88,40 +93,18 @@ public class OsobistyGUI
 		goBackButton = new JButton("Cofnij sie");
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton, gbc);
-		
 		gbc.gridy += 1;
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,0,5));
-			jPanel.add(RegisteredClientJLabel, gbc);
-			
-			gbc.gridy += 1;
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel, gbc);
-		}
-		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel, gbc);
-		}
-		
-		jFrame.add(jPanel);
-		jFrame.pack();
-		jFrame.setVisible(true);
+		jPanel.add(Box.createVerticalGlue());
 	}
 	
 	class GoBack implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			new WaysOfDeliverySelectingCategoryGUI(client);
-			jFrame.dispose();
+			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
+			backPanel=goBackCategory.getjPanel();
+			main.getCardPanel().add(backPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 
@@ -130,8 +113,10 @@ public class OsobistyGUI
 		public void actionPerformed(ActionEvent event) 
 		{
 			client.setWayOfDelivery(osobisty);
-			new WaysOfPaymentSelectingCategoryGUI(client);
-			jFrame.dispose();
+			goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
+			paymentPanel=goToPayment.getjPanel();
+			main.getCardPanel().add(paymentPanel,"Delivery Page");
+			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
 		}
 	}
 }
