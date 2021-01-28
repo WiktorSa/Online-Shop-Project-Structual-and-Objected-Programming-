@@ -11,8 +11,13 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -29,8 +34,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
+
 
 import gui.FinalTransactionGUI;
 import guiShop.MainGUI;
@@ -211,7 +219,11 @@ public class BlikGUI {
 		
 		JPanel blikFormInnerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		blikForm = new JFormattedTextField(onlyAllowNaturalNumbersUpTo9Digits());
+		MaskFormatter format = new MaskFormatter("### ###");
+		
+		blikForm = new JFormattedTextField(format);
+		blikForm.addMouseListener(new ClickDetector());
+		
 		blikForm.setPreferredSize(new Dimension(120,45));;
 		blikForm.setFont(new Font(blikForm.getFont().getName(),Font.PLAIN,25));
 		
@@ -242,9 +254,46 @@ public class BlikGUI {
 		format.setGroupingUsed(false);
 		NumberFormatter formatter = new NumberFormatter(format);
 		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(0);
 		formatter.setMaximum(999999);
 		formatter.setAllowsInvalid(false);
 		return formatter;
+	}
+	
+	private class ClickDetector implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			blikForm.setCaretPosition(0);
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		
+		
 	}
 	
 	class WindowClose extends WindowAdapter{
