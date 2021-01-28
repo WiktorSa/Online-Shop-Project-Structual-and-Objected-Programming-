@@ -90,7 +90,7 @@ public class PaczkomatSetInfo1
 		kodJlabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(kodJlabel);
 		
-		paczkomatCode = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		paczkomatCode = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		paczkomatCode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		paczkomatCode.setHorizontalAlignment(JTextField.CENTER);
 		paczkomatCode.setPreferredSize(new Dimension(300, 25));
