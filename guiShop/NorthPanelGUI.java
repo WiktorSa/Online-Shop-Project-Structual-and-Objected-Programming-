@@ -21,6 +21,7 @@ public class NorthPanelGUI
 {
 	private MainGUI mainGUI;
 	private JPanel jPanel;
+	private JButton logOutButton;
 	
 	public JPanel getjPanel() 
 	{
@@ -150,6 +151,7 @@ public class NorthPanelGUI
 		{
 			mainGUI.setClient(new UnregisteredClient(mainGUI.getClient()));
 			mainGUI.changeLayoutOfNorthPanel();
+			mainGUI.changeLayoutToSelectingItems();
 		}
 		
 	}
