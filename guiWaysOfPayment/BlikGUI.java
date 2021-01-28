@@ -30,6 +30,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import gui.FinalTransactionGUI;
 import guiShop.MainGUI;
 import waysofpayments.Blik;
 import waysofpayments.WaysOfPayments;
@@ -264,7 +265,7 @@ public class BlikGUI {
 					((Blik)main.getClient().getWayOfPayment()).destroyTimer();
 					main.getjFrame().setEnabled(true);
 					jFrame.dispose();
-					//new FinalTransactionGUI(main.getClient());
+					main.changeLayoutToFinalTransaction();
 					
 					
 				}else {

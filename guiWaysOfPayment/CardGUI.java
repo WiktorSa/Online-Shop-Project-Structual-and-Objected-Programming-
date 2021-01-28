@@ -29,6 +29,7 @@ import javax.swing.text.NumberFormatter;
 
 import client.Client;
 import guiShop.FinalTransactionGUI;
+import guiShop.MainGUI;
 import waysofpayments.Card;
 
 public class CardGUI {
@@ -39,14 +40,15 @@ public class CardGUI {
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
 	private JSpinner monthSpinner, yearSpinner;
+	private MainGUI main;
 	
 	public JPanel getMainPanel() {
 		return mainPanel;
 	}
 	
-	public CardGUI(Client client) {
-		
-		this.client = client; 
+	public CardGUI(MainGUI main) {
+		this.main = main;
+		this.client = main.getClient(); 
 		client.setWayOfPayment(new Card());
 		
 		mainPanel = new JPanel();
@@ -248,7 +250,7 @@ public class CardGUI {
 					
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 					
-					new FinalTransactionGUI(client);
+					main.changeLayoutToFinalTransaction();
 					
 				}else {
 					JOptionPane.showMessageDialog(null,"Bledne dane");

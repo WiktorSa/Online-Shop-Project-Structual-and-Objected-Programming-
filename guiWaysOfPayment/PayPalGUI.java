@@ -185,7 +185,7 @@ public class PayPalGUI {
 						JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 						jFrame.dispose();
 						main.getjFrame().setEnabled(true);
-						new FinalTransactionGUI(main.getClient());
+						main.changeLayoutToFinalTransaction();
 						
 					}else {
 						
