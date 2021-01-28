@@ -78,25 +78,6 @@ public class PaczkomatSetInfo2
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
 		jPanel.add(Box.createVerticalGlue());
-		
-		if (client instanceof RegisteredClient) {
-			JLabel RegisteredClientJLabel = new JLabel("Jestes zalogowany pod adresem email");
-			RegisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			RegisteredClientJLabel.setBorder(new EmptyBorder(10,5,8,5));
-			jPanel.add(RegisteredClientJLabel);
-			
-			JLabel emailJLabel = new JLabel(client.getEmail());
-			emailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			emailJLabel.setBorder(new EmptyBorder(0,5,10,5));
-			jPanel.add(emailJLabel);
-		}
-		
-		else {
-			JLabel unregisteredClientJLabel = new JLabel("Jestes niezalogowany");
-			unregisteredClientJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			unregisteredClientJLabel.setBorder(new EmptyBorder(10,5,10,5));
-			jPanel.add(unregisteredClientJLabel);
-		}
 	}
 	
 
