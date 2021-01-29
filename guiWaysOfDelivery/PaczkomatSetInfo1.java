@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -23,10 +22,8 @@ import javax.swing.border.EmptyBorder;
 import client.Client;
 import client.RegisteredClient;
 import guiShop.MainGUI;
-import guiWaysOfDelivery.PaczkomatSetInfo1.ConfirmCode;
-import guiWaysOfDelivery.PaczkomatSetInfo1.GoBack;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
-import waysofdelivery.*;
+import waysofdelivery.Paczkomat;
 
 public class PaczkomatSetInfo1
 {

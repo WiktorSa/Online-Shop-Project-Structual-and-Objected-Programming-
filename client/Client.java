@@ -131,13 +131,6 @@ public abstract class Client implements Serializable
 		transactionInfo += getBasket().toString();
 		transactionInfo = transactionInfo + "Do zaplaty: " + String.format("%.2f", basket.getPrice() + wayOfDelivery.getPrice()) + " (z wliczona dostawa)\n";
 		transactionInfo += wayOfDelivery.toString() + "\n";
-		if (this instanceof RegisteredClient) {
-			transactionInfo += "Transakcja zostala wykonana przez zarejestrowanego klienta";
-		}
-		else {
-			transactionInfo += "Transakcja zostala wykonana przez niezarejestrowanego klienta";
-		}
-
 		return transactionInfo;
 	}
 }

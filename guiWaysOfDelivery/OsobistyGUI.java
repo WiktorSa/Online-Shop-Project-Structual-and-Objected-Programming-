@@ -17,10 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 import client.Client;
 import guiShop.MainGUI;
-import guiWaysOfDelivery.OsobistyGUI.Confirm;
-import guiWaysOfDelivery.OsobistyGUI.GoBack;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
-import waysofdelivery.*;
+import waysofdelivery.Osobisty;
 
 //Klasa stworzona przez Jana Skibinskiego
 public class OsobistyGUI

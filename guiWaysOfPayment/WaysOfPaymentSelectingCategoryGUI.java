@@ -1,6 +1,5 @@
 package guiWaysOfPayment;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -8,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,8 +26,6 @@ public class WaysOfPaymentSelectingCategoryGUI {
 
 	private JPanel jPanel;
 	private MainGUI main;
-	private JPanel cardPaymentPanel;
-	private CardGUI cardGUI;
 	
 	public JPanel getjPanel() {
 		return jPanel;

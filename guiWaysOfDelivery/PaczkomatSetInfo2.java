@@ -17,7 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import client.Client;
-import client.RegisteredClient;
 import guiShop.MainGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.*;

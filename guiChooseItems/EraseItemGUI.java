@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import chooseitems.Product;
+import client.RegisteredClient;
 import guiShop.MainGUI;
 
 public class EraseItemGUI 
@@ -103,7 +104,9 @@ public class EraseItemGUI
 			int numberOfProducts = Integer.parseInt(numberOfItems.getText());
 			
 			mainGUI.getClient().eraseAProductFromClientBasket(product, numberOfProducts);
-			
+			if (mainGUI.getClient() instanceof RegisteredClient) {
+				((RegisteredClient) mainGUI.getClient()).saveClient();
+			}
 			mainGUI.changeLayoutToBasket();
 		}
 	}

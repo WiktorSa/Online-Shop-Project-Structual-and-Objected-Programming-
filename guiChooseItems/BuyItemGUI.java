@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import chooseitems.Product;
+import client.RegisteredClient;
 import guiShop.MainGUI;
 
 //Klasa stworzona przez Wiktora Sadowego 
@@ -106,6 +107,9 @@ public class BuyItemGUI
 		{
 			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());
 			mainGUI.getClient().addAProductToClientBasket(product, numberOfBoughtProducts);
+			if (mainGUI.getClient() instanceof RegisteredClient) {
+				((RegisteredClient) mainGUI.getClient()).saveClient();
+			}
 			mainGUI.changeLayoutToSelectingItems();
 		}
 	}

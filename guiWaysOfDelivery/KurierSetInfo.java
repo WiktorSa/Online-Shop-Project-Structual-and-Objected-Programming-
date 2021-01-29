@@ -19,13 +19,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import guiShop.MainGUI;
-import guiWaysOfDelivery.KurierSetInfo.ConfirmData;
-import guiWaysOfDelivery.KurierSetInfo.GoBack;
 import client.Client;
 import client.RegisteredClient;
+import guiShop.MainGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
-import waysofdelivery.*;
+import waysofdelivery.Kurier;
 
 
 // Klasa stworzona przez Jana Skibinskiego

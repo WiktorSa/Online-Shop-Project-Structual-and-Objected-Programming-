@@ -26,7 +26,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import guiShop.FinalTransactionGUI;
 import guiShop.MainGUI;
 import waysofpayments.Paypal;
 
