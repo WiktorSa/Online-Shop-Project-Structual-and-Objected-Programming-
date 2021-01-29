@@ -101,6 +101,7 @@ public class OsobistyGUI
 		jPanel.add(buttonPanel,gbc);
 		
 		jPanel.add(Box.createVerticalGlue());
+		this.main.setButtonCursor(jPanel);
 	}
 	
 	class GoBack implements ActionListener

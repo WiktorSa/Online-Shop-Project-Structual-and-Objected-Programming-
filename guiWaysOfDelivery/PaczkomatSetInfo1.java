@@ -119,7 +119,7 @@ public class PaczkomatSetInfo1
 		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
 		
 	
-		
+		this.main.setButtonCursor(jPanel);
 
 	}
 	

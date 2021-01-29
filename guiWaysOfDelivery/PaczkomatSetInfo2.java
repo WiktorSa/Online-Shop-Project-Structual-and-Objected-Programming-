@@ -78,6 +78,7 @@ public class PaczkomatSetInfo2
 		goBackButton.addActionListener(new GoBack());
 		jPanel.add(goBackButton);
 		jPanel.add(Box.createVerticalGlue());
+		this.main.setButtonCursor(jPanel);
 	}
 	
 

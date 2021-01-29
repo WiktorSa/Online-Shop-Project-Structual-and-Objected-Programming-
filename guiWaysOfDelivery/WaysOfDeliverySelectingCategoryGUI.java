@@ -91,6 +91,7 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(goBackButton);
 		jPanel.add(Box.createVerticalGlue());
+		this.main.setButtonCursor(jPanel);
 	}
 	
 	class SelectWay implements ActionListener{

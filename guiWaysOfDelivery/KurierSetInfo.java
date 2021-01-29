@@ -116,6 +116,7 @@ public class KurierSetInfo
 		jPanel.add(buttonPanel);
 		
 		jPanel.add(Box.createVerticalGlue());
+		this.main.setButtonCursor(jPanel);
 	}
 	
 	class ConfirmData implements ActionListener
