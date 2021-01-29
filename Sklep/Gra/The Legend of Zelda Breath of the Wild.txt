@@ -1,8 +1,0 @@
-Category:Gra
-Name:The Legend of Zelda Breath of the Wild
-Price:270.90
-Subcategory:Przygodowa gra akcji
-Author:Nintendo
-Publisher:Nintendo
-premiereDate:2017-03-03
-Platform:Nintendo Switch
