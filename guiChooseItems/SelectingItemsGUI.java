@@ -6,8 +6,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeMap;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -39,7 +40,7 @@ public class SelectingItemsGUI
 		// Lista wszystkich produktow
 		ArrayList<Product> items = chooseItems.getListOfProducts().get("Ksiazka");
 		// Lista obrazow do produktow
-		HashMap<Product, Image> images = chooseItems.getImagesOfProducts();
+		TreeMap<Product, Image> images = chooseItems.getImagesOfProducts();
 		
 		outsidejPanel = new JPanel();
 		outsidejPanel.setLayout(new BoxLayout(outsidejPanel, BoxLayout.X_AXIS));

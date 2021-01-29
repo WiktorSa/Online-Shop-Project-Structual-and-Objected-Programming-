@@ -3,9 +3,6 @@ package start;
 import java.awt.Font;
 
 import javax.swing.UIManager;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
 
 import client.Client;
 import client.UnregisteredClient;

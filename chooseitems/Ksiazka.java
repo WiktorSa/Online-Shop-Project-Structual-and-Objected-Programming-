@@ -3,7 +3,7 @@ package chooseitems;
 import java.util.ArrayList;
 
 // Klasa stworzona przez Wiktora Sadowego
-public class Ksiazka extends Product
+public class Ksiazka extends Product implements Comparable<Ksiazka>
 {
 	private static final long serialVersionUID = 1L;
 	private String author;
@@ -88,5 +88,10 @@ public class Ksiazka extends Product
 		info = info + "Data premiery: " + premiereDate + "\n";
 		info = info + "Liczba stron: " + numberOfPages + "\n";
 		return info;
+	}
+
+	public int compareTo(Ksiazka ksiazka) 
+	{
+		return getName().compareTo(ksiazka.getName());
 	}
 }

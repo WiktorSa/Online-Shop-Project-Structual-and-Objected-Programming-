@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
@@ -18,7 +17,7 @@ public class ChooseItems
 	// String - kategoria, reszta to informacje o produktach
 	private TreeMap<String, ArrayList<Product>> listOfProducts;
 	// Each product has an image attached to it. If we cannot find the picture we post a default one
-	private HashMap<Product, Image> imagesOfProducts = new HashMap<Product, Image>();
+	private TreeMap<Product, Image> imagesOfProducts = new TreeMap<Product, Image>();
 	
 	public ChooseItems()
 	{
@@ -57,12 +56,12 @@ public class ChooseItems
 		this.listOfProducts = listOfProducts;
 	}
 
-	public HashMap<Product, Image> getImagesOfProducts() 
+	public TreeMap<Product, Image> getImagesOfProducts() 
 	{
 		return imagesOfProducts;
 	}
 
-	public void setImagesOfProducts(HashMap<Product, Image> imagesOfProducts) 
+	public void setImagesOfProducts(TreeMap<Product, Image> imagesOfProducts) 
 	{
 		this.imagesOfProducts = imagesOfProducts;
 	}

@@ -15,7 +15,7 @@ import guiChooseItems.EraseItemGUI;
 import guiChooseItems.SelectingItemsGUI;
 import guiClient.LogInGUI;
 import guiClient.RegisterGUI;
-import guiWaysOfPayment.CardGUI;	
+import guiWaysOfPayment.CardGUI;
 
 public class MainGUI 
 {
@@ -147,6 +147,7 @@ public class MainGUI
 		
 		
 	}
+	
 	public void changeLayoutToFinalTransaction() {
 		
 		FinalTransactionGUI finalGUI = new FinalTransactionGUI(client);
