@@ -16,25 +16,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import client.Client;
 import guiShop.MainGUI;
-import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
-import waysofdelivery.*;
+import waysofdelivery.Paczkomat;
 
 //Klasa stworzona przez Jana Skibinskiego
 public class PaczkomatSetInfo2
 {
-	private Client client;
 	private ArrayList<JButton> selectPaczkomat = new ArrayList<JButton>();
 	private JPanel jPanel;
 	private JButton goBackButton;
 	private Paczkomat paczkomat;
 	private MainGUI main;
-	
-	private PaczkomatSetInfo1 goBackCategory;
-	private JPanel backPanel;
-	private WaysOfPaymentSelectingCategoryGUI goToPayment;
-	private JPanel paymentPanel;
 	
 	public JPanel getjPanel() {
 		return jPanel;
@@ -45,7 +37,6 @@ public class PaczkomatSetInfo2
 		this.main=main;
 		this.paczkomat=paczkomat;
 		paczkomat.setPaczkomatList();
-		client=main.getClient();
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -90,11 +81,9 @@ public class PaczkomatSetInfo2
 			{
 				if (event.getSource() == jButton) {
 					paczkomat.setPaczkomatCode(jButton.getText());
-					client.setWayOfDelivery(paczkomat);
-					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
-					paymentPanel=goToPayment.getjPanel();
-					main.getCardPanel().add(paymentPanel,"Delivery Page");
-					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+					main.getClient().setWayOfDelivery(paczkomat);
+					
+					main.changeLayoutToWaysOfPaymentSelectingCategory();
 				}
 			}
 		}
@@ -105,10 +94,7 @@ public class PaczkomatSetInfo2
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			goBackCategory=new PaczkomatSetInfo1(main);
-			backPanel=goBackCategory.getjPanel();
-			main.getCardPanel().add(backPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToPaczkomat1();
 		}
 	}
 }

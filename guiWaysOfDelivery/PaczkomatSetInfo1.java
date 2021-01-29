@@ -19,10 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import client.Client;
-import client.RegisteredClient;
 import guiShop.MainGUI;
-import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.Paczkomat;
 
 public class PaczkomatSetInfo1
@@ -36,14 +33,6 @@ public class PaczkomatSetInfo1
 	private JButton goBack;
 	private MainGUI main;
 	private Paczkomat paczkomat;
-	private Client client;
-	
-	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
-	private JPanel backPanel;
-	private WaysOfPaymentSelectingCategoryGUI goToPayment;
-	private JPanel paymentPanel;
-	private PaczkomatSetInfo2 goToPaczkomat2;
-	private JPanel paczkomat2Panel;
 	
 	public JPanel getjPanel() {
 		return jPanel;
@@ -52,7 +41,6 @@ public class PaczkomatSetInfo1
 	public PaczkomatSetInfo1(MainGUI main) 
 	{
 		this.main = main;
-		client=main.getClient();
 		paczkomat=new Paczkomat(main.getClient());
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
@@ -133,21 +121,17 @@ public class PaczkomatSetInfo1
 			{
 				paczkomat.setPaczkomatCode(code);
 				if(JOptionPane.showConfirmDialog(null, "Czy to twoje dane do dostawy: " + paczkomat.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					if (client instanceof RegisteredClient) {
-						((RegisteredClient) client).saveClient();
-					}
 					main.getClient().setWayOfDelivery(paczkomat);
-					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
-					paymentPanel=goToPayment.getjPanel();
-					main.getCardPanel().add(paymentPanel,"Delivery Page");
-					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
-					}
+					
+					main.changeLayoutToWaysOfPaymentSelectingCategory();
+				}
 			}
 			
 			else {
 				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
 			}
 		}
+		
 		private boolean isCorrectPaczkomatCode(String paczkomatCode)
 		{
 			if(paczkomatCode.isEmpty())
@@ -181,6 +165,7 @@ public class PaczkomatSetInfo1
 			}
 		}
 	}
+	
 	class ConfirmMiasto implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 
@@ -189,15 +174,10 @@ public class PaczkomatSetInfo1
 			
 			if (isCorrectMiasto(miast)) {
 				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					client.setWayOfDelivery(paczkomat);
-					if (client instanceof RegisteredClient) {
-						((RegisteredClient) client).saveClient();
-					}
+					main.getClient().setWayOfDelivery(paczkomat);
 					paczkomat.setMiasto(miast);
-					goToPaczkomat2=new PaczkomatSetInfo2(main,paczkomat);
-					paczkomat2Panel=goToPaczkomat2.getjPanel();
-					main.getCardPanel().add(paczkomat2Panel,"Delivery Page");
-					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+					
+					main.changeLayoutToPaczkomat2(paczkomat);
 				}
 			}
 			
@@ -231,10 +211,7 @@ public class PaczkomatSetInfo1
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
-			backPanel=goBackCategory.getjPanel();
-			main.getCardPanel().add(backPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToWaysOfDeliverySelectingCategory();
 		}
 	}
 }

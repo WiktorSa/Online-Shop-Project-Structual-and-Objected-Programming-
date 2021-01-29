@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import guiChooseItems.BasketGUI;
 import guiShop.MainGUI;
 import waysofdelivery.*;
 
@@ -26,13 +25,6 @@ public class WaysOfDeliverySelectingCategoryGUI {
 
 	private JPanel jPanel;
 	private MainGUI main;
-	private PaczkomatSetInfo1 paczkomatCategory;
-	private OsobistyGUI osobistyCategory;
-	private KurierSetInfo kurierCategory;
-	private JPanel deliveryOption;
-	
-	private BasketGUI goBackCategory;
-	private JPanel backPanel;
 	
 	public JPanel getjPanel() {
 		return jPanel;
@@ -63,19 +55,18 @@ public class WaysOfDeliverySelectingCategoryGUI {
 			
 			switch(way)
 			{
-			case "Odbior osobisty":
-				button.setToolTipText("Odbior osobisty cena: 0 PLN");
-				break;
-			case "Paczkomat":
-				button.setToolTipText("Paczkomat cena: 10.5 PLN");
-				break;
-			case "Kurier":
-				button.setToolTipText("Kurier cena: 12.5 PLN");
-				break;
-			default:
-				button.setToolTipText("Cos sie popsulo");
-				break;
-				
+				case "Odbior osobisty":
+					button.setToolTipText("Odbior osobisty cena: 0 PLN");
+					break;
+				case "Paczkomat":
+					button.setToolTipText("Paczkomat cena: 10.5 PLN");
+					break;
+				case "Kurier":
+					button.setToolTipText("Kurier cena: 12.5 PLN");
+					break;
+				default:
+					button.setToolTipText("Cos sie popsulo");
+					break;
 			}
 			
 			jPanel.add(button);
@@ -107,23 +98,15 @@ public class WaysOfDeliverySelectingCategoryGUI {
 			
 			if(jButton.getName().equals("Odbior osobisty")) {
 				
-				osobistyCategory=new OsobistyGUI(main);
-				deliveryOption=osobistyCategory.getjPanel();
-				main.getCardPanel().add(deliveryOption,"Delivery Page");
-				main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+				main.changeLayoutToOsobisty();
 				
 			}else if(jButton.getName().equals("Paczkomat")) {
 				
-				paczkomatCategory=new PaczkomatSetInfo1(main);
-				deliveryOption=paczkomatCategory.getjPanel();
-				main.getCardPanel().add(deliveryOption,"Delivery Page");
-				main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+				main.changeLayoutToPaczkomat1();
 				
 			}else if(jButton.getName().equals("Kurier")) {
-				kurierCategory=new KurierSetInfo(main);
-				deliveryOption=kurierCategory.getjPanel();
-				main.getCardPanel().add(deliveryOption,"Delivery Page");
-				main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+				
+				main.changeLayoutToKurier();
 			}
 		}
 	}
@@ -132,10 +115,7 @@ public class WaysOfDeliverySelectingCategoryGUI {
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			goBackCategory=new BasketGUI(main);
-			backPanel=goBackCategory.getJPanel();
-			main.getCardPanel().add(backPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToBasket();
 		}
 	}
 	

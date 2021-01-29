@@ -15,9 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import client.Client;
 import guiShop.MainGUI;
-import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.Osobisty;
 
 //Klasa stworzona przez Jana Skibinskiego
@@ -28,23 +26,16 @@ public class OsobistyGUI
 	// Zatwierdzanie lub cofanie
 	private JButton confimButton;
 	private JButton goBackButton;
-	private Client client;
 	private MainGUI main;
-	
-	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
-	private JPanel backPanel;
-	private WaysOfPaymentSelectingCategoryGUI goToPayment;
-	private JPanel paymentPanel;
 	
 	public JPanel getjPanel() {
 		return jPanel;
 	}
 	
-	OsobistyGUI(MainGUI main)
+	public OsobistyGUI(MainGUI main)
 	{
 		this.main=main;
-		client=main.getClient();
-		osobisty = new Osobisty(client);
+		osobisty = new Osobisty(this.main.getClient());
 		osobisty.setTomDt();
 		
 		jPanel = new JPanel();
@@ -108,10 +99,7 @@ public class OsobistyGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
-			backPanel=goBackCategory.getjPanel();
-			main.getCardPanel().add(backPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToWaysOfDeliverySelectingCategory();
 		}
 	}
 
@@ -119,11 +107,8 @@ public class OsobistyGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			client.setWayOfDelivery(osobisty);
-			goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
-			paymentPanel=goToPayment.getjPanel();
-			main.getCardPanel().add(paymentPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.getClient().setWayOfDelivery(osobisty);
+			main.changeLayoutToWaysOfPaymentSelectingCategory();
 		}
 	}
 }

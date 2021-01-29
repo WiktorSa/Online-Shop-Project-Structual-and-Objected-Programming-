@@ -20,7 +20,15 @@ import guiChooseItems.EraseItemGUI;
 import guiChooseItems.SelectingItemsGUI;
 import guiClient.LogInGUI;
 import guiClient.RegisterGUI;
+import guiClient.SetClientInfoGUI;
+import guiWaysOfDelivery.KurierSetInfo;
+import guiWaysOfDelivery.OsobistyGUI;
+import guiWaysOfDelivery.PaczkomatSetInfo1;
+import guiWaysOfDelivery.PaczkomatSetInfo2;
+import guiWaysOfDelivery.WaysOfDeliverySelectingCategoryGUI;
 import guiWaysOfPayment.CardGUI;
+import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
+import waysofdelivery.Paczkomat;
 
 public class MainGUI 
 {
@@ -144,6 +152,62 @@ public class MainGUI
 		jFrame.revalidate();
 	}
 	
+	public void changeLayoutToSetClientInfo()
+	{
+		SetClientInfoGUI setInfoCategory = new SetClientInfoGUI(MainGUI.this);
+		JPanel setInfoPanel = setInfoCategory.getjPanel();
+		cardPanel.add(setInfoPanel,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToWaysOfDeliverySelectingCategory()
+	{
+		WaysOfDeliverySelectingCategoryGUI deliveryCategory = new WaysOfDeliverySelectingCategoryGUI(MainGUI.this);
+		JPanel deliveryPanel = deliveryCategory.getjPanel();
+		cardPanel.add(deliveryPanel,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToWaysOfPaymentSelectingCategory()
+	{
+		WaysOfPaymentSelectingCategoryGUI goToPayment = new WaysOfPaymentSelectingCategoryGUI(MainGUI.this);
+		JPanel paymentPanel = goToPayment.getjPanel();
+		cardPanel.add(paymentPanel,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToKurier()
+	{
+		KurierSetInfo kurierCategory = new KurierSetInfo(MainGUI.this);
+		JPanel deliveryOption = kurierCategory.getjPanel();
+		cardPanel.add(deliveryOption,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToPaczkomat1()
+	{
+		PaczkomatSetInfo1 goBackCategory = new PaczkomatSetInfo1(MainGUI.this);
+		JPanel backPanel = goBackCategory.getjPanel();
+		cardPanel.add(backPanel,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToPaczkomat2(Paczkomat paczkomat)
+	{
+		PaczkomatSetInfo2 goToPaczkomat2 = new PaczkomatSetInfo2(MainGUI.this, paczkomat);
+		JPanel paczkomat2Panel = goToPaczkomat2.getjPanel();
+		cardPanel.add(paczkomat2Panel,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
+	public void changeLayoutToOsobisty()
+	{
+		OsobistyGUI osobistyCategory = new OsobistyGUI(MainGUI.this);
+		JPanel deliveryOption = osobistyCategory.getjPanel();
+		cardPanel.add(deliveryOption,"Delivery Page");
+		cardLayout.show(cardPanel, "Delivery Page");
+	}
+	
 	public void changeLayoutToCardPayment() {
 		
 		CardGUI cardGUI = new CardGUI(this);
@@ -155,9 +219,9 @@ public class MainGUI
 		
 	}
 	
-	public void changeLayoutToFinalTransaction() {
-		
-		FinalTransactionGUI finalGUI = new FinalTransactionGUI(client);
+	public void changeLayoutToFinalTransaction() 
+	{
+		FinalTransactionGUI finalGUI = new FinalTransactionGUI(MainGUI.this);
 		JPanel finalGUIPanel = finalGUI.getjPanel();
 		cardPanel.add(finalGUIPanel, "Final Page");
 		cardLayout.show(cardPanel,"Final Page");

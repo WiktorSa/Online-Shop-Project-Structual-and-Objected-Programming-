@@ -19,10 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import client.Client;
 import client.RegisteredClient;
 import guiShop.MainGUI;
-import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
 import waysofdelivery.Kurier;
 
 
@@ -36,13 +34,7 @@ public class KurierSetInfo
 	private JTextField kodPocztowyJTextField;
 	private JButton confirmDataButton;
 	private JButton goBackButton;
-	private Client client;
 	private Kurier kurier;
-	
-	private WaysOfDeliverySelectingCategoryGUI goBackCategory;
-	private JPanel backPanel;
-	private WaysOfPaymentSelectingCategoryGUI goToPayment;
-	private JPanel paymentPanel;
 
 	
 	public JPanel getjPanel() {
@@ -52,8 +44,7 @@ public class KurierSetInfo
 	public KurierSetInfo(MainGUI main) 
 	{
 		this.main=main;
-		client = main.getClient();
-		kurier=new Kurier(client);
+		kurier=new Kurier(this.main.getClient());
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -133,14 +124,12 @@ public class KurierSetInfo
 				kurier.setKodPocztowy(kodPocztowy);
 				
 				if(JOptionPane.showConfirmDialog(null, "Czy to twoje dane do dostawy: " + kurier.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					client.setWayOfDelivery(kurier);
-					if (client instanceof RegisteredClient) {
-						((RegisteredClient) client).saveClient();
+					main.getClient().setWayOfDelivery(kurier);
+					if (main.getClient() instanceof RegisteredClient) {
+						((RegisteredClient) main.getClient()).saveClient();
 					}
-					goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
-					paymentPanel=goToPayment.getjPanel();
-					main.getCardPanel().add(paymentPanel,"Delivery Page");
-					main.getCardLayout().show(main.getCardPanel(), "Delivery Page");;
+					
+					main.changeLayoutToWaysOfPaymentSelectingCategory();
 				}
 			}
 			
@@ -206,10 +195,7 @@ public class KurierSetInfo
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			goBackCategory=new WaysOfDeliverySelectingCategoryGUI(main);
-			backPanel=goBackCategory.getjPanel();
-			main.getCardPanel().add(backPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToWaysOfDeliverySelectingCategory();
 		}
 	}
 }

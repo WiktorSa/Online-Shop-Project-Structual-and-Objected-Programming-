@@ -29,13 +29,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import client.Client;
 import guiShop.MainGUI;
 import waysofpayments.Card;
 
 public class CardGUI {
 	
-	private Client client;
 	private JPanel jPanel;
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
@@ -49,8 +47,7 @@ public class CardGUI {
 	public CardGUI(MainGUI main) {
 		
 		this.main = main;
-		this.client = main.getClient(); 
-		client.setWayOfPayment(new Card());
+		main.getClient().setWayOfPayment(new Card());
 		
 		jPanel = new JPanel();
 		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
@@ -216,11 +213,8 @@ public class CardGUI {
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			WaysOfPaymentSelectingCategoryGUI goToPayment=new WaysOfPaymentSelectingCategoryGUI(main);
-			JPanel paymentPanel=goToPayment.getjPanel();
-			main.getCardPanel().add(paymentPanel,"Payment Page");
-			main.getCardLayout().show(main.getCardPanel(), "Payment Page");
-			client.setWayOfPayment(null);
+			main.getClient().setWayOfPayment(null);
+			main.changeLayoutToWaysOfPaymentSelectingCategory();
 		
 		}
 	}
@@ -247,7 +241,7 @@ public class CardGUI {
 			
 			if(!cardNumber.equals("") && !cvv.equals("") && !date.equals("") && cardNumber.length() == 16 && cvv.length() == 3) {
 				
-				if(((Card)client.getWayOfPayment()).pay(client, new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
+				if(((Card)main.getClient().getWayOfPayment()).pay(main.getClient(), new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
 					
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 					

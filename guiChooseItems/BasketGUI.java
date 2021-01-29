@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import chooseitems.Product;
-import guiClient.SetClientInfoGUI;
 import guiShop.MainGUI;
 
 //Klasa stworzona przez Wiktora Sadowego
@@ -122,10 +121,7 @@ public class BasketGUI
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			SetClientInfoGUI setInfoCategory = new SetClientInfoGUI(main);
-			JPanel setInfoPanel = setInfoCategory.getjPanel();
-			main.getCardPanel().add(setInfoPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToSetClientInfo();
 		}
 	}
 }

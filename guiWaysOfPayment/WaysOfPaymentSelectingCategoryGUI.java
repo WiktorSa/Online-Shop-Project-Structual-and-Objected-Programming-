@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import guiShop.MainGUI;
-import guiWaysOfDelivery.WaysOfDeliverySelectingCategoryGUI;
 import waysofpayments.WaysOfPayments;
 
 //Klasa zaimplementowana przez Szymona Sawczuka 
@@ -129,16 +128,14 @@ public class WaysOfPaymentSelectingCategoryGUI {
 			
 		}
 	}
+	
 	private class GoBack implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
 			main.getClient().setWayOfDelivery(null);
-			WaysOfDeliverySelectingCategoryGUI deliveryCategory=new WaysOfDeliverySelectingCategoryGUI(main);
-			JPanel deliveryPanel=deliveryCategory.getjPanel();
-			main.getCardPanel().add(deliveryPanel,"Delivery Page");
-			main.getCardLayout().show(main.getCardPanel(), "Delivery Page");
+			main.changeLayoutToWaysOfDeliverySelectingCategory();
 			
 		}
 		

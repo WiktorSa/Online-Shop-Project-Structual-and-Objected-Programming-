@@ -1,7 +1,6 @@
 package guiShop;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.Box;
@@ -9,17 +8,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import chooseitems.Basket;
-import client.Client;
 import client.RegisteredClient;
 
 
 
 public class FinalTransactionGUI {
 	
-	private Client client;
+	private MainGUI main;
 	private JPanel jPanel, infoPanel;
 	private BoxLayout boxLayout;
 	
@@ -27,9 +24,8 @@ public class FinalTransactionGUI {
 		return jPanel;
 	}
 	
-	public FinalTransactionGUI(Client client) {
-		
-		this.client = client;
+	public FinalTransactionGUI(MainGUI main) {
+		this.main = main;
 		
 		jPanel = new JPanel();
 		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
@@ -43,12 +39,12 @@ public class FinalTransactionGUI {
 		jPanel.add(Box.createVerticalGlue());
 
 		
-		if(client.getWayOfPayment().isPaymentDone()) {
-			client.setBasket(new Basket());
-			client.setWayOfDelivery(null);
-			client.setWayOfPayment(null);
-			if (this.client instanceof RegisteredClient) {
-				((RegisteredClient) this.client).saveClient();
+		if(this.main.getClient().getWayOfPayment().isPaymentDone()) {
+			this.main.getClient().setBasket(new Basket());
+			this.main.getClient().setWayOfDelivery(null);
+			this.main.getClient().setWayOfPayment(null);
+			if (this.main.getClient() instanceof RegisteredClient) {
+				((RegisteredClient) this.main.getClient()).saveClient();
 			}
 		}
 		
@@ -62,7 +58,7 @@ public class FinalTransactionGUI {
 		infoPanel.setLayout(boxLayout);
 		
 		JLabel infoLabel = new JLabel("<html><div style='text-align:center; font-size:30px;font-weight: bold;margin-bottom:20px;'>Informacje o transakcji:</div><div style='text-align:center;'>" 
-				+ client.getTransactionInfo().replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\n", "<br/>" )+ "</div></html>", SwingConstants.CENTER);
+				+ main.getClient().getTransactionInfo().replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\n", "<br/>" )+ "</div></html>", SwingConstants.CENTER);
 		infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 20));
 		
 		infoPanel.add(infoLabel);
