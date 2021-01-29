@@ -32,6 +32,8 @@ public class BasketGUI
 	public BasketGUI(MainGUI main)
 	{
 		this.main = main;
+		
+		Dimension buttonSize = new Dimension(300,40);
 
 		jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
@@ -87,6 +89,7 @@ public class BasketGUI
 		gbc.gridheight = 1;
 		
 		JButton giveBasicInfoJButton = new JButton("Dokoncz transakcje");
+		giveBasicInfoJButton.setPreferredSize(buttonSize);
 		giveBasicInfoJButton.addActionListener(new GiveBasicInfo());
 		if (this.main.getClient().getBasket().getProducts().size() == 0) {
 			giveBasicInfoJButton.setEnabled(false);
