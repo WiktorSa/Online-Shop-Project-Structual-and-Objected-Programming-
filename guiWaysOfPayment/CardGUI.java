@@ -70,7 +70,7 @@ public class CardGUI {
 		jPanel.add(Box.createVerticalGlue());
 	
 		
-
+		this.main.setButtonCursor(jPanel);
 	
 		
 	}

@@ -2,6 +2,7 @@ package guiWaysOfPayment;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -74,6 +75,7 @@ public class PayPalGUI {
 		
 		emailForm.transferFocus();
 		passwordForm.transferFocus();
+	
 	}
 	
 	private JPanel createTitlePanel() {
@@ -138,6 +140,7 @@ public class PayPalGUI {
 		JButton submitButton = new JButton("Zaloguj sie");
 		submitButton.addActionListener(new Submit());
 		submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		submitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		submitButton.setPreferredSize(sizeOfForms);
 		gridBag.gridx = 1;
 		gridBag.gridy = 3;

@@ -36,6 +36,7 @@ public class WaysOfPaymentSelectingCategoryGUI {
 		this.main = main; 
 
 		jPanel = createPanel();
+		this.main.setButtonCursor(jPanel);
 
 	}
 	
