@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,14 +31,16 @@ public class FinalTransactionGUI {
 		
 		this.client = client;
 		
-		jPanel = new JPanel(new BorderLayout());
+		jPanel = new JPanel();
+		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
 		
+		jPanel.add(Box.createVerticalGlue());
 		
 		infoPanel = createInfoPanel();
 
 	
 		jPanel.add(infoPanel, BorderLayout.CENTER);
-
+		jPanel.add(Box.createVerticalGlue());
 
 		
 		if(client.getWayOfPayment().isPaymentDone()) {
@@ -56,11 +59,12 @@ public class FinalTransactionGUI {
 		boxLayout = new BoxLayout(infoPanel, BoxLayout.Y_AXIS);
 		infoPanel.setLayout(boxLayout);
 		
-		JLabel titleJLabel = new JLabel("<html>" + client.getTransactionInfo().replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\n", "<br/>" )+ "</html>", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Arial", Font.BOLD, 30));
-		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
-		infoPanel.add(titleJLabel);
+		JLabel infoLabel = new JLabel("<html><div style='text-align:center; font-size:30px;font-weight: bold;margin-bottom:20px;'>Informacje o transakcji:</div><div style='text-align:center;'>" 
+				+ client.getTransactionInfo().replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\n", "<br/>" )+ "</div></html>", SwingConstants.CENTER);
+		infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 20));
+		
+		infoPanel.add(infoLabel);
+		
 		
 		return infoPanel;
 	}
