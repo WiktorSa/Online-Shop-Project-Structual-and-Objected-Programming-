@@ -110,6 +110,8 @@ public class SelectingItemsGUI
 		JScrollPane jScrollPane = new JScrollPane(allItemsJPanel);
 		jScrollPane.setAutoscrolls(true); // allows to autoscroll through items
 		outsidejPanel.add(jScrollPane);
+		
+		this.main.setButtonCursor(outsidejPanel);
 	}
 	
 	class BuyItems implements ActionListener
