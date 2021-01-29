@@ -2,7 +2,12 @@ package guiShop;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -48,6 +53,8 @@ public class MainGUI
 		jFrame.setResizable(true);
 		jFrame.pack();
 		jFrame.setVisible(true);
+		setButtonCursor(cardPanel);
+		
 	}
 	
 	public JFrame getjFrame() {
@@ -156,5 +163,22 @@ public class MainGUI
 		cardLayout.show(cardPanel,"Final Page");
 		jFrame.setEnabled(true);
 		
+	}
+	
+	public void setButtonCursor(JComponent component) {
+		
+		 for (Component comp : component.getComponents()) {
+
+		        if (comp instanceof JButton) {
+
+		        	comp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		        } else if (comp instanceof JComponent) {
+
+		            setButtonCursor((JComponent)comp);
+
+		        }
+
+		    }
 	}
 }
