@@ -87,7 +87,7 @@ public class SelectingItemsGUI
 				pricejJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				singleItemJPanel.add(pricejJLabel);
 				
-				JButton buyButton = new JButton("Kup");
+				JButton buyButton = new JButton("Dodaj do koszyka");
 				buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 				buyButton.addActionListener(new BuyItems(product, image));
 				singleItemJPanel.add(buyButton); 

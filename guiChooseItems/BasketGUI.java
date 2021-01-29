@@ -1,7 +1,5 @@
 package guiChooseItems;
 
-import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,7 +10,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -89,7 +86,7 @@ public class BasketGUI
 		gbc.gridy += 3;
 		gbc.gridheight = 1;
 		
-		JButton giveBasicInfoJButton = new JButton("Zakoncz transakcje");
+		JButton giveBasicInfoJButton = new JButton("Dokoncz transakcje");
 		giveBasicInfoJButton.addActionListener(new GiveBasicInfo());
 		if (this.main.getClient().getBasket().getProducts().size() == 0) {
 			giveBasicInfoJButton.setEnabled(false);

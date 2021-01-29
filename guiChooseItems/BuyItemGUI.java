@@ -1,7 +1,6 @@
 package guiChooseItems;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -13,7 +12,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -71,7 +69,7 @@ public class BuyItemGUI
 		// chce miec wolne miejsce pomiedzy JTextField a JButton
 		insideJPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
-		JButton buyButton = new JButton("KUP");
+		JButton buyButton = new JButton("Dodaj do koszyka");
 		buyButton.setPreferredSize(new Dimension(200, 30));
 		buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buyButton.addActionListener(new BuyItem(product));

@@ -1,7 +1,6 @@
 package guiClient;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -11,7 +10,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,9 +21,9 @@ import javax.swing.border.EmptyBorder;
 import client.Client;
 import client.HelperFunctionsClient;
 import client.RegisteredClient;
-import guiWaysOfDelivery.WaysOfDeliverySelectingCategoryGUI;
-import guiShop.MainGUI;
 import guiChooseItems.BasketGUI;
+import guiShop.MainGUI;
+import guiWaysOfDelivery.WaysOfDeliverySelectingCategoryGUI;
 
 
 // Klasa stworzona przez Wiktora Sadowego
