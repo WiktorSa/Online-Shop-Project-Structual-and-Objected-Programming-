@@ -294,6 +294,7 @@ public class BlikGUI {
 			((Blik)payment).destroyTimer();
 			main.getjFrame().setEnabled(true);
 			jFrame.dispose();
+			main.getClient().setWayOfPayment(null);
 	
 	    }
 		

@@ -235,6 +235,7 @@ public class PayPalGUI {
 	    public void windowClosing(WindowEvent e) {
 
 			main.getjFrame().setEnabled(true);
+			main.getClient().setWayOfPayment(null);
 			jFrame.dispose();
 	
 	    }
