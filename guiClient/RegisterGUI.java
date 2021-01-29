@@ -41,7 +41,7 @@ public class RegisterGUI
 	{
 		this.main = main;
 		
-		
+		Dimension buttonSize = new Dimension(10,40);
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -92,6 +92,7 @@ public class RegisterGUI
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		registerButton = new JButton("Zarejestruj sie");
+		registerButton.setPreferredSize(buttonSize);
 		registerButton.addActionListener(new Register());
 		registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(registerButton);

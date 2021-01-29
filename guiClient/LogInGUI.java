@@ -46,6 +46,7 @@ public class LogInGUI
 	{
 		this.main = main;
 		
+		Dimension buttonSize = new Dimension(10,40);
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -84,6 +85,7 @@ public class LogInGUI
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
 		logInButton = new JButton("Zaloguj sie");
+		logInButton.setPreferredSize(buttonSize);
 		logInButton.addActionListener(new LogIn());
 		logInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(logInButton);
@@ -91,6 +93,7 @@ public class LogInGUI
 		jPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		remindPasswrodButton = new JButton("Przypomnij sobie haslo");
+		remindPasswrodButton.setPreferredSize(buttonSize);
 		remindPasswrodButton.addActionListener(new RemindPassword());
 		remindPasswrodButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(remindPasswrodButton);
