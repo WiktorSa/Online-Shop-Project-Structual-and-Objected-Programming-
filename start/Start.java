@@ -33,10 +33,13 @@ public class Start
 		// Ustawianie czcionki calego programu przed jego rozpoczeciem
 		setUIFont (new javax.swing.plaf.FontUIResource("Dialog",Font.PLAIN,14));
 		
-		try {
-				UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel"); 
-		}catch(Exception e) {
-			e.printStackTrace();
+		try 
+		{
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel"); 
+		}
+		catch(Exception e) 
+		{
+			System.exit(-1);
 		}
 		
 		
