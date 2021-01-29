@@ -1,6 +1,7 @@
 package guiChooseItems;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -12,6 +13,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -76,6 +78,8 @@ public class EraseItemGUI
 		jPanel.add(insideJPanel);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(50,10)));
+		this.mainGUI.setButtonCursor(jPanel);
+		
 	}
 	
 	public NumberFormatter onlyAllowNaturalNumbersUpToNumberOfItems(int maxNumberToErase)

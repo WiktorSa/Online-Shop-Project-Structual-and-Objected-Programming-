@@ -1,5 +1,7 @@
 package guiChooseItems;
 
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -92,9 +95,11 @@ public class BasketGUI
 			giveBasicInfoJButton.setEnabled(false);
 		}
 		jPanel.add(giveBasicInfoJButton, gbc);
+		
+		this.main.setButtonCursor(jPanel);
 	
 	}
-	
+
 	class EraseItems implements ActionListener
 	{
 		private Product product;
