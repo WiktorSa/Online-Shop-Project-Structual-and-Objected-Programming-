@@ -1,7 +1,7 @@
 Category:Ksiazka
 Name:Zagrywka 
 Price:29.99 
-Author:Czynska Malgorzata
+Author:Katarzyna Nowakowska
 Subcategory:Literatura obyczajowa
 Publisher:Miedzy Slowami
 premiereDate:2021-01-27
