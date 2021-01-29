@@ -45,6 +45,8 @@ public class FinalTransactionGUI {
 		
 		if(client.getWayOfPayment().isPaymentDone()) {
 			client.setBasket(new Basket());
+			client.setWayOfDelivery(null);
+			client.setWayOfPayment(null);
 			if (this.client instanceof RegisteredClient) {
 				((RegisteredClient) this.client).saveClient();
 			}
