@@ -1,6 +1,7 @@
 package guiClient;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,13 +56,14 @@ public class SetClientInfoGUI
 		client = main.getClient();
 		
 		
+		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
 		jPanel.add(Box.createVerticalGlue());
 		
 		JLabel titleJLabel = new JLabel("Wpisz swoje podstawowe dane", SwingConstants.CENTER);
-		titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		titleJLabel.setFont(new Font(titleJLabel.getFont().getName(), Font.BOLD, 40));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,15,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
@@ -128,7 +131,11 @@ public class SetClientInfoGUI
 	
 		jPanel.add(buttonPanel);
 		jPanel.add(Box.createVerticalGlue());
+		this.main.setButtonCursor(jPanel);
+	
 	}
+	
+
 	
 	class ConfirmData implements ActionListener
 	{

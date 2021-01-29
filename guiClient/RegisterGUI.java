@@ -1,6 +1,7 @@
 package guiClient;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class RegisterGUI
 	{
 		this.main = main;
 		
-		Dimension buttonSize = new Dimension(10,40);
+		Dimension buttonSize = new Dimension(300,40);
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -49,7 +50,7 @@ public class RegisterGUI
 		
 		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
 		JLabel giveInstructionsJLabel = new JLabel("Zarejestruj sie", SwingConstants.CENTER);
-		giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		giveInstructionsJLabel.setFont(new Font(giveInstructionsJLabel.getFont().getName(), Font.BOLD, 40));
 		giveInstructionsJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jPanel.add(giveInstructionsJLabel);
 		
@@ -61,8 +62,8 @@ public class RegisterGUI
 		emailJTextField = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
-		emailJTextField.setMaximumSize(new Dimension(300, 25));
-		emailJTextField.setPreferredSize(new Dimension(300, 25));
+		emailJTextField.setMaximumSize(new Dimension(300, 30));
+		emailJTextField.setPreferredSize(new Dimension(300, 30));
 		jPanel.add(emailJTextField);
 		
 		JLabel passswordJLabel = new JLabel("Wpisz haslo", SwingConstants.CENTER);
@@ -73,8 +74,8 @@ public class RegisterGUI
 		passwordJPasswordField = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		passwordJPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordJPasswordField.setHorizontalAlignment(JTextField.CENTER);
-		passwordJPasswordField.setMaximumSize(new Dimension(300, 25));
-		passwordJPasswordField.setPreferredSize(new Dimension(300, 25));
+		passwordJPasswordField.setMaximumSize(buttonSize);
+		passwordJPasswordField.setPreferredSize(new Dimension(300, 30));
 		jPanel.add(passwordJPasswordField);
 		
 		JLabel passswordConfirmJLabel = new JLabel("Potwierdz haslo", SwingConstants.CENTER);
@@ -85,17 +86,22 @@ public class RegisterGUI
 		passwordConfirmJPasswordField = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
 		passwordConfirmJPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordConfirmJPasswordField.setHorizontalAlignment(JTextField.CENTER);
-		passwordConfirmJPasswordField.setMaximumSize(new Dimension(300, 25));
-		passwordConfirmJPasswordField.setPreferredSize(new Dimension(300, 25));
+		passwordConfirmJPasswordField.setMaximumSize(new Dimension(300, 30));
+		passwordConfirmJPasswordField.setPreferredSize(new Dimension(300, 30));
 		jPanel.add(passwordConfirmJPasswordField);
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 		
+		JPanel registerButtonPanel = new JPanel();
+		registerButtonPanel.setMaximumSize(buttonSize);
+		
 		registerButton = new JButton("Zarejestruj sie");
 		registerButton.setPreferredSize(buttonSize);
+		registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		registerButton.addActionListener(new Register());
 		registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		jPanel.add(registerButton);
+		registerButtonPanel.add(registerButton);
+		jPanel.add(registerButtonPanel);
 		
 		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
 		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
