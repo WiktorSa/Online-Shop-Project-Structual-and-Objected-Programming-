@@ -1,7 +1,0 @@
-Category:Plyta
-Name:S&M
-Price:18.99
-Subcategory:Metal
-Author:Metallica
-Publisher:Mercury Records
-premiereDate:1999-11-19
