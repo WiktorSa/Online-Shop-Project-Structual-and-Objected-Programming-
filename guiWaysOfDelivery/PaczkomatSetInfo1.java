@@ -41,7 +41,7 @@ public class PaczkomatSetInfo1
 	public PaczkomatSetInfo1(MainGUI main) 
 	{
 		this.main = main;
-		paczkomat=new Paczkomat(main.getClient());
+		paczkomat=new Paczkomat(main);
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -117,7 +117,7 @@ public class PaczkomatSetInfo1
 		{
 			String code = paczkomatCode.getText();
 			
-			if (isCorrectPaczkomatCode(code))
+			if (paczkomat.isCorrectCode(code))
 			{
 				paczkomat.setPaczkomatCode(code);
 				if(JOptionPane.showConfirmDialog(null, "Czy to twoje dane do dostawy: " + paczkomat.toString(), "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -131,39 +131,6 @@ public class PaczkomatSetInfo1
 				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
 			}
 		}
-		
-		private boolean isCorrectPaczkomatCode(String paczkomatCode)
-		{
-			if(paczkomatCode.isEmpty())
-			{
-				return false;
-			}
-			if (paczkomatCode.length() == 6)
-			{
-				char[] letters = paczkomatCode.toCharArray();
-				for (int i=0; i<paczkomatCode.length(); i++)
-				{
-					if(i<3)
-					{
-						if(!Character.isLetter(letters[i]))
-						{
-							return false;
-						}
-					}
-					else
-					{
-						if(!Character.isDigit(letters[i]))
-						{
-							return false;
-						}
-					}	
-				}
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
 	}
 	
 	class ConfirmMiasto implements ActionListener
@@ -172,7 +139,7 @@ public class PaczkomatSetInfo1
 		{
 			String miast = miasto.getText();
 			
-			if (isCorrectMiasto(miast)) {
+			if (paczkomat.isCorrectMiasto(miast)) {
 				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					main.getClient().setWayOfDelivery(paczkomat);
 					paczkomat.setMiasto(miast);
@@ -185,28 +152,7 @@ public class PaczkomatSetInfo1
 				JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne dane. Wprowadz poprawne dane");
 			}
 		}
-		
-		private boolean isCorrectMiasto(String miasto)
-		{
-			if (miasto.isEmpty()) {
-				return false;
-			}
-			if(miasto.length()<3)
-			{
-				return false;
-			}
-			char[] letters = miasto.toCharArray();
-			for (int i=0; i<letters.length; i++)
-			{
-				if (!Character.isLetter(letters[i])) {
-					return false;
-				}
-			}
-			return true;
-		}
-		
-	}
-	
+	}	
 	class GoBack implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 

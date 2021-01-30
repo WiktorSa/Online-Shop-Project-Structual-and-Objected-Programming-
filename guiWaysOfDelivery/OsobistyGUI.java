@@ -35,7 +35,7 @@ public class OsobistyGUI
 	public OsobistyGUI(MainGUI main)
 	{
 		this.main=main;
-		osobisty = new Osobisty(this.main.getClient());
+		osobisty = new Osobisty(main);
 		osobisty.setTomDt();
 		
 		jPanel = new JPanel();

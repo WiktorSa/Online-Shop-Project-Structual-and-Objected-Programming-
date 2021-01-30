@@ -96,18 +96,22 @@ public class WaysOfDeliverySelectingCategoryGUI {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			
-			if(jButton.getName().equals("Odbior osobisty")) {
-				
-				main.changeLayoutToOsobisty();
-				
-			}else if(jButton.getName().equals("Paczkomat")) {
-				
-				main.changeLayoutToPaczkomat1();
-				
-			}else if(jButton.getName().equals("Kurier")) {
-				
-				main.changeLayoutToKurier();
+			switch(jButton.getName())
+			{
+				case "Odbior osobisty":
+					main.getClient().setWayOfDelivery(new Osobisty(main));
+					break;
+				case "Paczkomat":
+					main.getClient().setWayOfDelivery(new Paczkomat(main));
+					break;
+				case "Kurier":
+					main.getClient().setWayOfDelivery(new Kurier(main));
+					break;
+				default:
+					System.out.println("Cos sie popsulo");;
+					break;
 			}
+			((Dostawa)main.getClient().getWaysOfDelivery()).changeLayout();
 		}
 	}
 	

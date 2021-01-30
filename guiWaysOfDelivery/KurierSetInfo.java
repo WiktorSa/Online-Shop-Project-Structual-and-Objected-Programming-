@@ -44,7 +44,7 @@ public class KurierSetInfo
 	public KurierSetInfo(MainGUI main) 
 	{
 		this.main=main;
-		kurier=new Kurier(this.main.getClient());
+		kurier=new Kurier(main);
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -118,7 +118,7 @@ public class KurierSetInfo
 			String ulica = ulicaJTextField.getText();
 			String kodPocztowy = kodPocztowyJTextField.getText();
 			
-			if (isCorrectMiasto(miasto) && isCorrectUlica(ulica) && isCorrectKodPocztowy(kodPocztowy)) {
+			if (kurier.areAllInputsValid(miasto, ulica, kodPocztowy)) {
 				kurier.setMiasto(miasto);
 				kurier.setUlica(ulica);
 				kurier.setKodPocztowy(kodPocztowy);
@@ -134,60 +134,16 @@ public class KurierSetInfo
 			}
 			
 			else {
-				if(!isCorrectMiasto(miasto)) {
+				if(!kurier.isCorrectMiasto(miasto)) {
 					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawne miasto, na pewno zawiera tylko litery?");
 				}
-				else if(!isCorrectUlica(ulica)) {
+				else if(!kurier.isCorrectUlica(ulica)) {
 					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawna ulica, wypadaloby cos tam wpisac.");
 				}
-				else if(!isCorrectKodPocztowy(kodPocztowy)) {
+				else if(!kurier.isCorrectKodPocztowy(kodPocztowy)) {
 					JOptionPane.showMessageDialog(new JFrame(), "Niepoprawny kod pocztowy, powinien zawierac 5 cyfr bez spacji.");
 				}
 			}
-		}
-		
-		private boolean isCorrectMiasto(String miasto)
-		{
-			if (miasto.isEmpty()) {
-				return false;
-			}
-			
-			char[] letters = miasto.toCharArray();
-			for (int i=0; i<letters.length; i++)
-			{
-				if (!Character.isLetter(letters[i])) {
-					return false;
-				}
-			}
-			return true;
-		}
-		private boolean isCorrectUlica(String ulica)
-		{
-			if (ulica.isEmpty()) {
-				return false;
-			}
-			return true;
-		}
-		
-		
-		private boolean isCorrectKodPocztowy(String kodPocztowy)
-		{
-			if (kodPocztowy.length() == 5)
-			{
-				char[] digits = kodPocztowy.toCharArray();
-				for (int i=0; i<5; i++)
-				{
-					if (!Character.isDigit(digits[i])){
-						return false;
-					}
-				}
-				
-				return true;
-			}
-			else
-			{
-				return false;
-			}		
 		}
 	}
 	
