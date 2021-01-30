@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import guiShop.MainGUI;
 // Klasa stworzona przez Jana Skibinskiego
 public abstract class WaysOfDelivery {
 	
@@ -16,6 +16,7 @@ public abstract class WaysOfDelivery {
 	public String lastName;
 	public double price;
 	public String name;
+	public MainGUI main;
 	private static ArrayList <String> categories=WODobtainCategories();
 	//getery
 	

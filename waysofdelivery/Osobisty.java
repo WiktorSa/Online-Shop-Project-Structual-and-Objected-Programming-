@@ -1,15 +1,16 @@
 package waysofdelivery;
 import java.util.Calendar;
+import guiShop.MainGUI;
 import java.util.Date;
-import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Osobisty extends WaysOfDelivery implements Dostawa {
 
 	private static Date dt = new Date();
-	public Osobisty(Client client)
+	public Osobisty(MainGUI main)
 	{
-		this.firstName=client.getFirstName();
-		this.lastName=client.getLastName();
+		this.main=main;
+		this.firstName=main.getClient().getFirstName();
+		this.lastName=main.getClient().getLastName();
 		this.name="Odbior osobisty";
 		this.price=0f;
 	}
@@ -29,4 +30,13 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 	{
 		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbierajacego: "+ firstName +" "+lastName;
 	}	
+	public void changeLayout()
+	{
+		main.changeLayoutToOsobisty();
+	}
+
+	public boolean isCorrectInput(String input)
+	{
+		return true;
+	}
 }
