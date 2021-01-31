@@ -6,6 +6,8 @@ import java.util.TimerTask;
 
 
 import client.Client;
+import guiShop.MainGUI;
+import guiWaysOfPayment.BlikGUI;
 
 //Klasa zimplementowana przez Szymona Sawczuka
 
@@ -82,6 +84,13 @@ public class Blik implements WaysOfPayments{
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void starFrame(MainGUI main) {
+		
+		new BlikGUI(main);
+		
 	}
 	
 

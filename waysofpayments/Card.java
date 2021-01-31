@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 
 import client.Client;
+import guiShop.MainGUI;
+import guiWaysOfPayment.CardGUI;
 
 //Klasa zimplementowana przez Szymona Sawczuka
 
@@ -67,5 +69,12 @@ public class Card implements WaysOfPayments{
 		int yearInteger = Integer.parseInt(year);
 		
 		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; 
+	}
+
+	@Override
+	public void starFrame(MainGUI main) {
+		
+		new CardGUI(main);
+		
 	}
 }
