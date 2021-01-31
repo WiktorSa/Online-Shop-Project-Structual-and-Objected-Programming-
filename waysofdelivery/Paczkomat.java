@@ -30,11 +30,6 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		return code+String.valueOf(randomNum);
 	}
 	
-	public void changeLayout()
-	{
-		main.changeLayoutToPaczkomat1();
-	}
-	
 	public boolean isCorrectCode(String paczkomatCode)
 	{
 		if(paczkomatCode.isEmpty())
@@ -118,5 +113,16 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	public ArrayList <String> getPACZKOMATLIST()
 	{
 		return PACZKOMATLIST;
+	}
+
+	@Override
+	public boolean isCorrectData(ArrayList<String> arrayList) {
+		return isCorrectCode(arrayList.get(0));
+	}
+
+	@Override
+	public void setDeliveryInfo(ArrayList<String> arrayList) {
+		// TODO Auto-generated method stub
+		
 	}
 }

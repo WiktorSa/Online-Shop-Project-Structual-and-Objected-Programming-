@@ -111,7 +111,7 @@ public class WaysOfDeliverySelectingCategoryGUI {
 					System.out.println("Cos sie popsulo");;
 					break;
 			}
-			((Dostawa)main.getClient().getWaysOfDelivery()).changeLayout();
+			main.changeLayoutToWaysOfDelivery();
 		}
 	}
 	

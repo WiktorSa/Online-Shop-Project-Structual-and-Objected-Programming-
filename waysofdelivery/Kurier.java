@@ -1,5 +1,7 @@
 package waysofdelivery;
 
+import java.util.ArrayList;
+
 import guiShop.MainGUI;
 //Klasa stworzona przez Jana Skibinskiego
 public class Kurier extends WaysOfDelivery implements Dostawa {
@@ -22,11 +24,6 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 	public String toString()
 	{
 		return "Dostawa do miasta: " +miasto+ "\nNa ulice:"+ ulica+ "\n Kod pocztowy: "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
-	}
-	
-	public void changeLayout()
-	{
-		main.changeLayoutToKurier();
 	}
 	
 	public boolean isCorrectMiasto(String miasto)
@@ -73,14 +70,6 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 		}		
 	}
 	
-	public boolean areAllInputsValid(String m, String u, String k)
-	{
-		if(isCorrectMiasto(m) && isCorrectUlica(u) && isCorrectKodPocztowy(k)){
-			return true;
-		}else {
-			return false;
-		}
-	}
 	//setery
 	
 	public void setMiasto(String miasto)
@@ -109,5 +98,18 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 	{
 		return kodPocztowy;
 	}
-	
+
+	@Override
+	public boolean isCorrectData(ArrayList<String> arrayList) 
+	{
+		return (isCorrectMiasto(arrayList.get(0)) && isCorrectUlica(arrayList.get(1)) && isCorrectKodPocztowy(arrayList.get(2)));
+	}
+
+	@Override
+	public void setDeliveryInfo(ArrayList<String> arrayList) 
+	{
+		miasto = arrayList.get(0);
+		ulica = arrayList.get(1);
+		kodPocztowy = arrayList.get(2);
+	}
 }

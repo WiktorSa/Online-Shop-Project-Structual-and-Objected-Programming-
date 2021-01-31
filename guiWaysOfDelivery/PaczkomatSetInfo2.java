@@ -25,18 +25,16 @@ public class PaczkomatSetInfo2
 	private ArrayList<JButton> selectPaczkomat = new ArrayList<JButton>();
 	private JPanel jPanel;
 	private JButton goBackButton;
-	private Paczkomat paczkomat;
 	private MainGUI main;
 	
 	public JPanel getjPanel() {
 		return jPanel;
 	}
 	
-	public PaczkomatSetInfo2(MainGUI main,Paczkomat paczkomat) 
+	public PaczkomatSetInfo2(MainGUI main) 
 	{
 		this.main=main;
-		this.paczkomat=paczkomat;
-		paczkomat.setPaczkomatList();
+		((Paczkomat) this.main.getClient().getWaysOfDelivery()).setPaczkomatList();
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -48,7 +46,7 @@ public class PaczkomatSetInfo2
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
-		for (String category : paczkomat.getPACZKOMATLIST())
+		for (String category : ((Paczkomat) this.main.getClient().getWaysOfDelivery()).getPACZKOMATLIST())
 		{
 			JButton jButton = new JButton(category);
 			jButton.addActionListener(new SelectCategory());
@@ -80,8 +78,7 @@ public class PaczkomatSetInfo2
 			for (JButton jButton : selectPaczkomat)
 			{
 				if (event.getSource() == jButton) {
-					paczkomat.setPaczkomatCode(jButton.getText());
-					main.getClient().setWayOfDelivery(paczkomat);
+					((Paczkomat) main.getClient().getWaysOfDelivery()).setPaczkomatCode(jButton.getText());
 					
 					main.changeLayoutToWaysOfPaymentSelectingCategory();
 				}
@@ -94,7 +91,7 @@ public class PaczkomatSetInfo2
 	{
 		public void actionPerformed(ActionEvent event) 
 		{
-			main.changeLayoutToPaczkomat1();
+			main.changeLayoutToWaysOfDelivery();;
 		}
 	}
 }

@@ -21,14 +21,11 @@ import guiChooseItems.SelectingItemsGUI;
 import guiClient.LogInGUI;
 import guiClient.RegisterGUI;
 import guiClient.SetClientInfoGUI;
-import guiWaysOfDelivery.KurierSetInfo;
-import guiWaysOfDelivery.OsobistyGUI;
-import guiWaysOfDelivery.PaczkomatSetInfo1;
 import guiWaysOfDelivery.PaczkomatSetInfo2;
+import guiWaysOfDelivery.WayOfDeliveryGUI;
 import guiWaysOfDelivery.WaysOfDeliverySelectingCategoryGUI;
 import guiWaysOfPayment.CardGUI;
 import guiWaysOfPayment.WaysOfPaymentSelectingCategoryGUI;
-import waysofdelivery.Paczkomat;
 
 public class MainGUI 
 {
@@ -176,35 +173,19 @@ public class MainGUI
 		cardLayout.show(cardPanel, "Delivery Page");
 	}
 	
-	public void changeLayoutToKurier()
+	public void changeLayoutToWaysOfDelivery()
 	{
-		KurierSetInfo kurierCategory = new KurierSetInfo(MainGUI.this);
-		JPanel deliveryOption = kurierCategory.getjPanel();
-		cardPanel.add(deliveryOption,"Delivery Page");
+		WayOfDeliveryGUI wayOfDeliveryGUI = new WayOfDeliveryGUI(MainGUI.this);
+		JPanel jPanel = wayOfDeliveryGUI.getjPanel();
+		cardPanel.add(jPanel, "Delivery Page");
 		cardLayout.show(cardPanel, "Delivery Page");
 	}
 	
-	public void changeLayoutToPaczkomat1()
+	public void changeLayoutToPaczkomat2()
 	{
-		PaczkomatSetInfo1 goBackCategory = new PaczkomatSetInfo1(MainGUI.this);
-		JPanel backPanel = goBackCategory.getjPanel();
-		cardPanel.add(backPanel,"Delivery Page");
-		cardLayout.show(cardPanel, "Delivery Page");
-	}
-	
-	public void changeLayoutToPaczkomat2(Paczkomat paczkomat)
-	{
-		PaczkomatSetInfo2 goToPaczkomat2 = new PaczkomatSetInfo2(MainGUI.this, paczkomat);
+		PaczkomatSetInfo2 goToPaczkomat2 = new PaczkomatSetInfo2(MainGUI.this);
 		JPanel paczkomat2Panel = goToPaczkomat2.getjPanel();
 		cardPanel.add(paczkomat2Panel,"Delivery Page");
-		cardLayout.show(cardPanel, "Delivery Page");
-	}
-	
-	public void changeLayoutToOsobisty()
-	{
-		OsobistyGUI osobistyCategory = new OsobistyGUI(MainGUI.this);
-		JPanel deliveryOption = osobistyCategory.getjPanel();
-		cardPanel.add(deliveryOption,"Delivery Page");
 		cardLayout.show(cardPanel, "Delivery Page");
 	}
 	
