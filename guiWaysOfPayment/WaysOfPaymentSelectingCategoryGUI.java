@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import guiShop.MainGUI;
-import waysofpayments.WaysOfPayments;
+import waysofpayments.*;
 
 //Klasa zaimplementowana przez Szymona Sawczuka 
 public class WaysOfPaymentSelectingCategoryGUI {
@@ -62,27 +62,7 @@ public class WaysOfPaymentSelectingCategoryGUI {
 			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			button.addActionListener(new SelectWay(button));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
-			
-			switch(way)
-			{
-			case "Blik":
-				button.setToolTipText("Blik");
-				break;
-			case "Platnosc karta":
-				button.setToolTipText("Platnosc karta");
-				break;
-			case "Paypal":
-				button.setToolTipText("Paypal");
-				break;
-			default:
-				button.setToolTipText("Cos sie popsulo");
-				break;
-			}
-			
-			if(way.equals("Blik")) {
-			
-			}
-			
+			button.setToolTipText(way);
 			choicePanel.add(button);
 		}
 		choicePanel.setMaximumSize(new Dimension(400,36));
@@ -114,18 +94,18 @@ public class WaysOfPaymentSelectingCategoryGUI {
 			
 			if(jButton.getName().equals("Blik")) {
 				
-				new BlikGUI(main);
+				main.getClient().setWayOfPayment(new Blik());
 			
 			}else if(jButton.getName().equals("Platnosc karta")) {
 				
-				main.changeLayoutToCardPayment();
+				main.getClient().setWayOfPayment(new Card());
 			
 			}else if(jButton.getName().equals("Paypal")) {
 				
-				new PayPalGUI(main);
+				main.getClient().setWayOfPayment(new Paypal());
 			}
 			
-			
+			main.getClient().getWayOfPayment().starFrame(main);
 		}
 	}
 	

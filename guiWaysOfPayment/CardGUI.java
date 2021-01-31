@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +16,10 @@ import java.util.Calendar;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,11 +32,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import guiShop.MainGUI;
-import waysofpayments.Card;
 
 public class CardGUI {
 	
 	private JPanel jPanel;
+	private JFrame jFrame;
 	private JFormattedTextField[] cardNumberForm;
 	private JFormattedTextField cvvNumberForm;
 	private JSpinner monthSpinner, yearSpinner;
@@ -47,7 +49,13 @@ public class CardGUI {
 	public CardGUI(MainGUI main) {
 		
 		this.main = main;
-		main.getClient().setWayOfPayment(new Card());
+		
+		jFrame = new JFrame();
+		jFrame.setLocationRelativeTo(null);
+		jFrame.setTitle(main.getClient().getWayOfPayment().getName());
+		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		jFrame.addWindowListener(new WindowClose());
+		jFrame.setResizable(false);
 		
 		jPanel = new JPanel();
 		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
@@ -65,8 +73,11 @@ public class CardGUI {
 		normalPanel.add(innerPanel);
 		jPanel.add(normalPanel);
 		jPanel.add(Box.createVerticalGlue());
-	
-		
+
+		jFrame.add(jPanel);
+		jFrame.pack();
+		jFrame.setVisible(true);
+
 		this.main.setButtonCursor(jPanel);
 	
 		
@@ -158,18 +169,16 @@ public class CardGUI {
 	
 	private JPanel createSouthPanel() {
 		
+		Dimension buttonSize = new Dimension(200,40);
+		
 		JPanel southPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(southPanel, BoxLayout.Y_AXIS);
 		southPanel.setLayout(boxLayout);
 		
 		JPanel buttonPanel = new JPanel();
 		
-		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
-		goBackButton.addActionListener(new GoBack());
-		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		buttonPanel.add(goBackButton);
-		
-		JButton submitButton = new JButton(new ImageIcon("Ikony/forward.png"));
+		JButton submitButton = new JButton("Zaplac");
+		submitButton.setPreferredSize(buttonSize);
 		submitButton.addActionListener(new SubmitCardInfo());
 		submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttonPanel.add(submitButton);
@@ -209,15 +218,19 @@ public class CardGUI {
 		return formatter;
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			main.getClient().setWayOfPayment(null);
-			main.changeLayoutToWaysOfPaymentSelectingCategory();
+	class WindowClose extends WindowAdapter{
 		
-		}
+		@Override
+	    public void windowClosing(WindowEvent e) {
+
+			main.getjFrame().setEnabled(true);
+			main.getClient().setWayOfPayment(null);
+			jFrame.dispose();
+	
+	    }
+		
 	}
+	
 	
 	class SubmitCardInfo implements ActionListener
 	{
@@ -241,7 +254,7 @@ public class CardGUI {
 			
 			if(!cardNumber.equals("") && !cvv.equals("") && !date.equals("") && cardNumber.length() == 16 && cvv.length() == 3) {
 				
-				if(((Card)main.getClient().getWayOfPayment()).pay(main.getClient(), new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
+				if(main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
 					
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 					

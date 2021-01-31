@@ -51,11 +51,10 @@ public class PayPalGUI {
 		mistakesCounter = 0;
 
 		this.main = main; 
-		main.getClient().setWayOfPayment(new Paypal());
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("PayPal");
+		jFrame.setTitle(main.getClient().getWayOfPayment().getName());
 		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new WindowClose());
 		jFrame.setResizable(false);
@@ -63,13 +62,9 @@ public class PayPalGUI {
 		titlePanel = createTitlePanel();
 		logginPanel = createLogginPanel();
 	
-
-		
 		jFrame.getContentPane().add(BorderLayout.NORTH,titlePanel);
 		jFrame.getContentPane().add(BorderLayout.CENTER,logginPanel);
 		
-
-
 		jFrame.pack();
 		jFrame.setVisible(true);
 		
@@ -180,7 +175,7 @@ public class PayPalGUI {
 				
 				if(!(emailText.equals("") || passwordText.equals(""))) {
 					
-					boolean isPaymentDoneCorrectly = ((Paypal)main.getClient().getWayOfPayment()).pay(main.getClient(), new ArrayList<String>(Arrays.asList(emailText, passwordText)));
+					boolean isPaymentDoneCorrectly = main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(emailText, passwordText)));
 					
 					if(isPaymentDoneCorrectly) {
 						
@@ -205,10 +200,8 @@ public class PayPalGUI {
 							jFrame.setSize(jFrame.getWidth(), jFrame.getHeight() + 90);
 							
 						}
-						emailForm.setText("Email/nr tel.");
 						passwordForm.setText("Haslo");
 						passwordForm.setEchoChar((char)0);
-						emailText = "";
 						passwordText = "";
 					}
 				}
@@ -217,10 +210,8 @@ public class PayPalGUI {
 				JOptionPane.showMessageDialog(null,"Wpisz poprawny kod Captcha");
 				code = ((Paypal)main.getClient().getWayOfPayment()).captchaGeneretor();
 				captchaLabel.setText("Przepisz kod:"+code);
-				emailForm.setText("Email/nr tel.");
 				passwordForm.setText("Haslo");
 				passwordForm.setEchoChar((char)0);
-				emailText = "";
 				passwordText = "";
 				captchaForm.setText("");
 

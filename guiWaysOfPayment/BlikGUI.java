@@ -34,7 +34,6 @@ import javax.swing.text.MaskFormatter;
 
 import guiShop.MainGUI;
 import waysofpayments.Blik;
-import waysofpayments.WaysOfPayments;
 
 //Klasa zimplementowana przez Szymona Sawczuka
 public class BlikGUI {
@@ -48,8 +47,7 @@ public class BlikGUI {
 	private JButton refreshButton;
 	
 	private MainGUI main;
-	private WaysOfPayments payment;
-	
+
 	private final int TIMELOAD = 1000; //Okres odswiezania
 	private final int MAXTIME = 120 * 1000/TIMELOAD; //NOTE: W sekundach - wystarczy zmienic tylko pierwsza wartosc
 	private int minutes = MAXTIME/60, seconds = MAXTIME - minutes*60;
@@ -61,13 +59,12 @@ public class BlikGUI {
 
 
 		this.main = main; 
-		main.getClient().setWayOfPayment(new Blik());
-		payment = main.getClient().getWayOfPayment();
+		
 		generator = new GenerateCode();
 		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
-		jFrame.setTitle("BLIK");
+		jFrame.setTitle(main.getClient().getWayOfPayment().getName());
 		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new WindowClose());
 		jFrame.setResizable(false);
@@ -291,7 +288,7 @@ public class BlikGUI {
 			if(timer != null && timer.isRunning()) {
 				timer.stop();	
 			}
-			((Blik)payment).destroyTimer();
+			((Blik)main.getClient().getWayOfPayment()).destroyTimer();
 			main.getjFrame().setEnabled(true);
 			jFrame.dispose();
 			main.getClient().setWayOfPayment(null);
@@ -309,7 +306,7 @@ public class BlikGUI {
 			
 			if(!text.equals("")) {
 				
-				if(((Blik)main.getClient().getWayOfPayment()).pay(main.getClient(), new ArrayList<String>(Arrays.asList(text)))) {
+				if(main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(text)))) {
 					
 					timer.stop();
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
@@ -337,7 +334,7 @@ public class BlikGUI {
 			
 			refreshButton.setVisible(false);
 			
-			String codeTmp = Integer.toString(((Blik)payment).generateCode());
+			String codeTmp = Integer.toString(((Blik)main.getClient().getWayOfPayment()).generateCode());
 			
 			progressBar.setValue(MAXTIME);
 			codeLabel.setText(String.format("%.3s %s", codeTmp,codeTmp.substring(3)));
