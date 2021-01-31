@@ -21,7 +21,7 @@ public class Kurier extends WaysOfDelivery implements Dostawa {
 	
 	public String toString()
 	{
-		return "Dostawa na adres: " +miasto+ "\n"+ ulica+ " Kod pocztowy: "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
+		return "Dostawa do miasta: " +miasto+ "\nNa ulice:"+ ulica+ "\n Kod pocztowy: "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
 	}
 	
 	public void changeLayout()
