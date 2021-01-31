@@ -44,7 +44,7 @@ public class KurierSetInfo
 	public KurierSetInfo(MainGUI main) 
 	{
 		this.main=main;
-		kurier=new Kurier(main);
+		kurier=(Kurier) main.getClient().getWaysOfDelivery();
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);

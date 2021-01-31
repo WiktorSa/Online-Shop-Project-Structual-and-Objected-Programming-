@@ -41,7 +41,7 @@ public class PaczkomatSetInfo1
 	public PaczkomatSetInfo1(MainGUI main) 
 	{
 		this.main = main;
-		paczkomat=new Paczkomat(main);
+		paczkomat=(Paczkomat)main.getClient().getWaysOfDelivery();
 		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
