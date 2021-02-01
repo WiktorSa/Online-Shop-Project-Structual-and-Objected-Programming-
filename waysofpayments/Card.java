@@ -1,6 +1,6 @@
 package waysofpayments;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 
 import client.Client;
 import guiShop.MainGUI;
@@ -68,7 +68,7 @@ public class Card implements WaysOfPayments{
 		int monthInteger = Integer.parseInt(month);
 		int yearInteger = Integer.parseInt(year);
 		
-		return monthInteger > 0 && monthInteger < 13 && yearInteger > 20; 
+		return monthInteger >= Calendar.getInstance().get(Calendar.MONTH)+1  && monthInteger < 13 && yearInteger >= (Calendar.getInstance().get(Calendar.YEAR)%100); 
 	}
 
 	@Override
