@@ -259,6 +259,8 @@ public class CardGUI {
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 					
 					main.changeLayoutToFinalTransaction();
+					jFrame.dispose();
+					main.getjFrame().setEnabled(true);
 					
 				}else {
 					JOptionPane.showMessageDialog(null,"Bledne dane");
