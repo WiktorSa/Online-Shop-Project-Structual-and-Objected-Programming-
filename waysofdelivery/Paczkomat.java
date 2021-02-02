@@ -1,19 +1,18 @@
 package waysofdelivery;
 import java.util.ArrayList;
-import guiShop.MainGUI;
 import java.util.concurrent.ThreadLocalRandom;
+import client.Client;
 // Klasa zaimplementowana przez Jana Skibinskiego
 public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	
 	private String paczkomatCode;
 	private String miasto;
 	private ArrayList<String> PACZKOMATLIST;
-	public Paczkomat(MainGUI main)
+	public Paczkomat(Client client)
 	{
-		this.main=main;
 		this.paczkomatCode="";
-		this.clientEmail=main.getClient().getEmail();
-		this.clientNumber=main.getClient().getPhoneNumber();
+		this.clientEmail=client.getEmail();
+		this.clientNumber=client.getPhoneNumber();
 		this.name="Paczkomat InPost";
 		this.price=10.5f;
 	}
@@ -28,58 +27,6 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		int randomNum = ThreadLocalRandom.current().nextInt(100, 998 + 1);
 		String code=Character.toString(Character.toUpperCase(miasto.charAt(0)))+Character.toUpperCase((miasto.charAt(1)))+Character.toUpperCase(miasto.charAt(2));
 		return code+String.valueOf(randomNum);
-	}
-	
-	public boolean isCorrectCode(String paczkomatCode)
-	{
-		if(paczkomatCode.isEmpty())
-		{
-			return false;
-		}
-		if (paczkomatCode.length() == 6)
-		{
-			char[] letters = paczkomatCode.toCharArray();
-			for (int i=0; i<paczkomatCode.length(); i++)
-			{
-				if(i<3)
-				{
-					if(!Character.isLetter(letters[i]))
-					{
-						return false;
-					}
-				}
-				else
-				{
-					if(!Character.isDigit(letters[i]))
-					{
-						return false;
-					}
-				}	
-			}
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean isCorrectMiasto(String miasto)
-	{
-		if (miasto.isEmpty()) {
-			return false;
-		}
-		if(miasto.length()<3)
-		{
-			return false;
-		}
-		char[] letters = miasto.toCharArray();
-		for (int i=0; i<letters.length; i++)
-		{
-			if (!Character.isLetter(letters[i])) {
-				return false;
-			}
-		}
-		return true;
 	}
 	 
 	//seter
@@ -113,16 +60,5 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	public ArrayList <String> getPACZKOMATLIST()
 	{
 		return PACZKOMATLIST;
-	}
-
-	@Override
-	public boolean isCorrectData(ArrayList<String> arrayList) {
-		return isCorrectCode(arrayList.get(0));
-	}
-
-	@Override
-	public void setDeliveryInfo(ArrayList<String> arrayList) {
-		// TODO Auto-generated method stub
-		
 	}
 }
