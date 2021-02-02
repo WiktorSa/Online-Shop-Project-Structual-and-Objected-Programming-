@@ -280,9 +280,9 @@ public class WayOfDeliveryGUI
 		public void actionPerformed(ActionEvent event) 
 		{
 			String miast = miasto.getText();
-			if (((Kurier) main.getClient().getWaysOfDelivery()).isCorrectMiasto(miast)) {
+			if (((Dostawa) main.getClient().getWaysOfDelivery()).isCorrectMiasto(miast)) {
 				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					((Kurier) main.getClient().getWaysOfDelivery()).setMiasto(miast);
+					((Dostawa) main.getClient().getWaysOfDelivery()).setMiasto(miast);
 					
 					main.changeLayoutToPaczkomat2();
 				}
