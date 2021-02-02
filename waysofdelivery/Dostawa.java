@@ -7,6 +7,4 @@ public interface Dostawa {
 	public String toString();
 	public boolean isCorrectData(ArrayList<String> arrayList);
 	public void setDeliveryInfo(ArrayList<String> arrayList);
-	public boolean isCorrectMiasto(String miasto);
-	public void setMiasto(String miasto);
 }
