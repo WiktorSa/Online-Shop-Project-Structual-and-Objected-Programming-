@@ -1,5 +1,6 @@
 package waysofdelivery;
 import java.util.ArrayList;
+import client.Client;
 import guiShop.MainGUI;
 import java.util.concurrent.ThreadLocalRandom;
 // Klasa zaimplementowana przez Jana Skibinskiego
@@ -7,6 +8,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	
 	private String paczkomatCode;
 	private String miasto;
+	private Client client;
 	private ArrayList<String> PACZKOMATLIST;
 	public Paczkomat(MainGUI main)
 	{
@@ -14,6 +16,7 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		this.paczkomatCode="";
 		this.clientEmail=main.getClient().getEmail();
 		this.clientNumber=main.getClient().getPhoneNumber();
+		this.client=main.getClient();
 		this.name="Paczkomat InPost";
 		this.price=10.5f;
 	}
@@ -28,6 +31,11 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 		int randomNum = ThreadLocalRandom.current().nextInt(100, 998 + 1);
 		String code=Character.toString(Character.toUpperCase(miasto.charAt(0)))+Character.toUpperCase((miasto.charAt(1)))+Character.toUpperCase(miasto.charAt(2));
 		return code+String.valueOf(randomNum);
+	}
+	
+	public void changeLayout()
+	{
+		main.changeLayoutToPaczkomat1();
 	}
 	
 	public boolean isCorrectCode(String paczkomatCode)
@@ -114,15 +122,8 @@ public class Paczkomat extends WaysOfDelivery implements Dostawa {
 	{
 		return PACZKOMATLIST;
 	}
-
-	@Override
-	public boolean isCorrectData(ArrayList<String> arrayList) {
-		return isCorrectCode(arrayList.get(0));
-	}
-
-	@Override
-	public void setDeliveryInfo(ArrayList<String> arrayList) {
-		// TODO Auto-generated method stub
-		
+	public Client getClient()
+	{
+		return client;
 	}
 }
