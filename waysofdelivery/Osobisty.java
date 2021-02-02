@@ -49,4 +49,13 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean isCorrectMiasto(String miasto)
+	{
+		return true;
+	}
+	public void setMiasto(String miasto)
+	{
+		//nic sie nie dzieje bo sklep zawsze we wrocku
+	}
 }
