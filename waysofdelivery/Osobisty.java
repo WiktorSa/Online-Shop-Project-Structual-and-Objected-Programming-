@@ -1,5 +1,4 @@
 package waysofdelivery;
-import java.util.ArrayList;
 import java.util.Calendar;
 import guiShop.MainGUI;
 import java.util.Date;
@@ -31,22 +30,13 @@ public class Osobisty extends WaysOfDelivery implements Dostawa {
 	{
 		return "Odbior osobisty zostal umowiony od dnia  "+dt+"\nGodnosc odbierajacego: "+ firstName +" "+lastName;
 	}	
-	
+	public void changeLayout()
+	{
+		main.changeLayoutToOsobisty();
+	}
+
 	public boolean isCorrectInput(String input)
 	{
 		return true;
-	}
-	
-	@Override
-	public boolean isCorrectData(ArrayList<String> arrayList) 
-	{
-		return true;
-	}
-	
-	@Override
-	public void setDeliveryInfo(ArrayList<String> arrayList) 
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }
