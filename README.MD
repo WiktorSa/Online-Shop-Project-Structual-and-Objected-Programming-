@@ -1,4 +1,6 @@
-# Project - Shop (Structural and Objected Programming)
+# Project - Shop (Structural and Objected Oriented Programming)
+
+Project written for
 
 Our main goal was to implement an advanced GUI programme using strategy pattern
 
