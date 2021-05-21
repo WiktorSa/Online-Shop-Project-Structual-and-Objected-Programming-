@@ -1,5 +1,5 @@
 # Project - Shop (Structural and Objected Oriented Programming)
-Project made for the course Structural and Object Oriented Programming at the Wrocław University of Science and Technology (Politechnika Wroclawska)
+Project made for the course Structural and Object Oriented Programming (laboratory) at the Wrocław University of Science and Technology (Politechnika Wroclawska)
 
 Our main goal was to implement an advanced GUI programme using strategy pattern
 
