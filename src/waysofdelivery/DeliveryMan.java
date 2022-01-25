@@ -5,35 +5,33 @@ import java.util.ArrayList;
 import gui.shop.MainGUI;
 
 public class DeliveryMan extends WaysOfDelivery implements Delivery {
-	private String miasto;
-	private String ulica;
-	private String kodPocztowy;
-	public DeliveryMan(MainGUI main)
-	{
-		this.main=main;
-		this.miasto="";
-		this.ulica="";
-		this.kodPocztowy="";
-		this.clientEmail=main.getClient().getEmail();
-		this.clientNumber=main.getClient().getPhoneNumber();
-		this.name="Kurier DPD";
-		this.price=12.5f;
+	private String city;
+	private String street;
+	private String postcode;
+	
+	public DeliveryMan(MainGUI main){
+		this.main = main;
+		this.city = "";
+		this.street = "";
+		this.postcode = "";
+		this.clientEmail = main.getClient().getEmail();
+		this.clientNumber = main.getClient().getPhoneNumber();
+		this.name = "Kurier DPD";
+		this.price = 12.5f;
 	}
 	
-	public String toString()
-	{
-		return "Dostawa do miasta: " +miasto+ "\nNa ulice:"+ ulica+ "\n Kod pocztowy: "+ kodPocztowy+" \nNa numer telefonu: "+ clientNumber;
+	public String toString() {
+		return "Dostawa do miasta: " + city + "\nNa ulice:" + street + "\n Kod pocztowy: " + postcode +" \nNa numer telefonu: " + clientNumber;
 	}
 	
-	public boolean isCorrectMiasto(String miasto)
+	public boolean isCorrectCity(String city)
 	{
-		if (miasto.isEmpty()) {
+		if (city.isEmpty()) {
 			return false;
 		}
 		
-		char[] letters = miasto.toCharArray();
-		for (int i=0; i<letters.length; i++)
-		{
+		char[] letters = city.toCharArray();
+		for (int i=0; i<letters.length; i++) {
 			if (!Character.isLetter(letters[i])) {
 				return false;
 			}
@@ -41,21 +39,19 @@ public class DeliveryMan extends WaysOfDelivery implements Delivery {
 		return true;
 	}
 	
-	public boolean isCorrectUlica(String ulica)
+	public boolean isCorrectStreet(String street)
 	{
-		if (ulica.isEmpty()) {
+		if (street.isEmpty()) {
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isCorrectKodPocztowy(String kodPocztowy)
+	public boolean isCorrectPostcode(String postcode)
 	{
-		if (kodPocztowy.length() == 5)
-		{
-			char[] digits = kodPocztowy.toCharArray();
-			for (int i=0; i<5; i++)
-			{
+		if (postcode.length() == 5){
+			char[] digits = postcode.toCharArray();
+			for (int i=0; i<5; i++){
 				if (!Character.isDigit(digits[i])){
 					return false;
 				}
@@ -63,53 +59,44 @@ public class DeliveryMan extends WaysOfDelivery implements Delivery {
 			
 			return true;
 		}
-		else
-		{
+		else{
 			return false;
 		}		
 	}
 	
-	public void setMiasto(String miasto)
-	{
-		this.miasto=miasto;
+	public void setCity(String city){
+		this.city = city;
 	}
 	
-	public void setUlica(String ulica)
-	{
-		this.ulica=ulica;
+	public void setStreet(String street){
+		this.street = street;
 	}
 	
-	public void setKodPocztowy(String kodPocztowy)
-	{
-		this.kodPocztowy=kodPocztowy;
+	public void setPostcode(String postcode){
+		this.postcode = postcode;
 	}
 
-	public String getMiasto()
-	{
-		return miasto;
+	public String getCity(){
+		return city;
 	}
 	
-	public String getUlica()
-	{
-		return ulica;
+	public String getStreet(){
+		return street;
 	}
 	
-	public String getKodPocztowy()
-	{
-		return kodPocztowy;
+	public String getPostcode(){
+		return postcode;
 	}
 
 	@Override
-	public boolean isCorrectData(ArrayList<String> arrayList) 
-	{
-		return (isCorrectMiasto(arrayList.get(0)) && isCorrectUlica(arrayList.get(1)) && isCorrectKodPocztowy(arrayList.get(2)));
+	public boolean isCorrectData(ArrayList<String> arrayList) {
+		return (isCorrectCity(arrayList.get(0)) && isCorrectStreet(arrayList.get(1)) && isCorrectPostcode(arrayList.get(2)));
 	}
 
 	@Override
-	public void setDeliveryInfo(ArrayList<String> arrayList) 
-	{
-		miasto = arrayList.get(0);
-		ulica = arrayList.get(1);
-		kodPocztowy = arrayList.get(2);
+	public void setDeliveryInfo(ArrayList<String> arrayList) {
+		city = arrayList.get(0);
+		street = arrayList.get(1);
+		postcode = arrayList.get(2);
 	}
 }

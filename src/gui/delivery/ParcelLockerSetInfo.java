@@ -31,7 +31,7 @@ public class ParcelLockerSetInfo {
 	
 	public ParcelLockerSetInfo(MainGUI main) {
 		this.main=main;
-		((ParcelLocker) this.main.getClient().getWaysOfDelivery()).setPaczkomatList();
+		((ParcelLocker) this.main.getClient().getWaysOfDelivery()).setParcelLockerList();
 		
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -43,7 +43,7 @@ public class ParcelLockerSetInfo {
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
-		for (String category : ((ParcelLocker) this.main.getClient().getWaysOfDelivery()).getPACZKOMATLIST()) {
+		for (String category : ((ParcelLocker) this.main.getClient().getWaysOfDelivery()).getPARCELLOCKERLIST()) {
 			JButton jButton = new JButton(category);
 			jButton.addActionListener(new SelectCategory());
 			jButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,7 +68,7 @@ public class ParcelLockerSetInfo {
 		public void actionPerformed(ActionEvent event) {
 			for (JButton jButton : selectParcelLocker){
 				if (event.getSource() == jButton) {
-					((ParcelLocker) main.getClient().getWaysOfDelivery()).setPaczkomatCode(jButton.getText());
+					((ParcelLocker) main.getClient().getWaysOfDelivery()).setParcelLockerCode(jButton.getText());
 					main.changeLayoutToPaymentSelectingCategory();
 				}
 			}

@@ -61,7 +61,7 @@ public class DeliveryGUI {
 			cityJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 			jPanel.add(cityJLabel);
 			
-			JTextField cityJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getMiasto()); 
+			JTextField cityJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getCity()); 
 			cityJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 			cityJTextField.setHorizontalAlignment(JTextField.CENTER);
 			cityJTextField.setMaximumSize(new Dimension(200, 60));
@@ -73,7 +73,7 @@ public class DeliveryGUI {
 			streetJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 			jPanel.add(streetJLabel);
 			
-			JTextField streetJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getUlica());
+			JTextField streetJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getStreet());
 			streetJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 			streetJTextField.setHorizontalAlignment(JTextField.CENTER);
 			streetJTextField.setMaximumSize(new Dimension(200, 60));
@@ -85,7 +85,7 @@ public class DeliveryGUI {
 			emaiJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 			jPanel.add(emaiJLabel);
 			
-			JTextField postcodeJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getKodPocztowy());
+			JTextField postcodeJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getPostcode());
 			postcodeJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 			postcodeJTextField.setHorizontalAlignment(JTextField.CENTER);
 			postcodeJTextField.setMaximumSize(new Dimension(200, 60));
@@ -268,9 +268,9 @@ public class DeliveryGUI {
 	class ConfirmCity implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			String miast = city.getText();
-			if (((ParcelLocker) main.getClient().getWaysOfDelivery()).isCorrectMiasto(miast)) {
+			if (((ParcelLocker) main.getClient().getWaysOfDelivery()).isCorrectCity(miast)) {
 				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					((ParcelLocker) main.getClient().getWaysOfDelivery()).setMiasto(miast);
+					((ParcelLocker) main.getClient().getWaysOfDelivery()).setCity(miast);
 					main.changeLayoutToParcelLocker();
 				}
 			}

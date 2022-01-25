@@ -5,54 +5,44 @@ import java.util.concurrent.ThreadLocalRandom;
 import gui.shop.MainGUI;
 
 public class ParcelLocker extends WaysOfDelivery implements Delivery {
+	private String parcelLockerCode;
+	private String city;
+	private ArrayList<String> PARCELLOCKERLIST;
 	
-	private String paczkomatCode;
-	private String miasto;
-	private ArrayList<String> PACZKOMATLIST;
-	public ParcelLocker(MainGUI main)
-	{
-		this.main=main;
-		this.paczkomatCode="";
-		this.clientEmail=main.getClient().getEmail();
-		this.clientNumber=main.getClient().getPhoneNumber();
-		this.name="Paczkomat InPost";
-		this.price=10.5f;
+	public ParcelLocker(MainGUI main){
+		this.main = main;
+		this.parcelLockerCode = "";
+		this.clientEmail = main.getClient().getEmail();
+		this.clientNumber = main.getClient().getPhoneNumber();
+		this.name = "Paczkomat InPost";
+		this.price = 10.5f;
 	}
 
-	public String toString()
-	{
-		return "Dostawa zostala zamowiona do paczkomatu " + paczkomatCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" +clientEmail;
+	public String toString(){
+		return "Dostawa zostala zamowiona do paczkomatu " + parcelLockerCode + ".\nNa numer telefonu: " + clientNumber + "\nOraz adres email:" + clientEmail;
 	}
 	
-	public String closeByPaczkomat()
-	{
+	public String closeByPaczkomat() {
 		int randomNum = ThreadLocalRandom.current().nextInt(100, 998 + 1);
-		String code=Character.toString(Character.toUpperCase(miasto.charAt(0)))+Character.toUpperCase((miasto.charAt(1)))+Character.toUpperCase(miasto.charAt(2));
-		return code+String.valueOf(randomNum);
+		String code = Character.toString(Character.toUpperCase(city.charAt(0))) + Character.toUpperCase((city.charAt(1))) + Character.toUpperCase(city.charAt(2));
+		return code + String.valueOf(randomNum);
 	}
 	
-	public boolean isCorrectCode(String paczkomatCode)
-	{
-		if(paczkomatCode.isEmpty())
-		{
+	public boolean isCorrectCode(String parcelLockerCode){
+		if(parcelLockerCode.isEmpty()) {
 			return false;
 		}
-		if (paczkomatCode.length() == 6)
-		{
-			char[] letters = paczkomatCode.toCharArray();
-			for (int i=0; i<paczkomatCode.length(); i++)
-			{
-				if(i<3)
-				{
-					if(!Character.isLetter(letters[i]))
-					{
+		
+		if (parcelLockerCode.length() == 6){
+			char[] letters = parcelLockerCode.toCharArray();
+			for (int i=0; i<parcelLockerCode.length(); i++) {
+				if(i<3) {
+					if(!Character.isLetter(letters[i])) {
 						return false;
 					}
 				}
-				else
-				{
-					if(!Character.isDigit(letters[i]))
-					{
+				else{
+					if(!Character.isDigit(letters[i])) {
 						return false;
 					}
 				}	
@@ -64,18 +54,17 @@ public class ParcelLocker extends WaysOfDelivery implements Delivery {
 		}
 	}
 	
-	public boolean isCorrectMiasto(String miasto)
-	{
-		if (miasto.isEmpty()) {
+	public boolean isCorrectCity(String city) {
+		if (city.isEmpty()) {
 			return false;
 		}
-		if(miasto.length()<3)
-		{
+		
+		if(city.length()<3) {
 			return false;
 		}
-		char[] letters = miasto.toCharArray();
-		for (int i=0; i<letters.length; i++)
-		{
+		
+		char[] letters = city.toCharArray();
+		for (int i=0; i<letters.length; i++) {
 			if (!Character.isLetter(letters[i])) {
 				return false;
 			}
@@ -83,48 +72,41 @@ public class ParcelLocker extends WaysOfDelivery implements Delivery {
 		return true;
 	}
 	 
-	public void setPaczkomatCode(String kod)
-	{
-		paczkomatCode=kod;
+	public void setParcelLockerCode(String parcelLockerCode){
+		this.parcelLockerCode = parcelLockerCode;
 	}
 	
-	public void setMiasto(String miasto)
-	{
-		this.miasto=miasto;
+	public void setCity(String city) {
+		this.city = city;
 	}
 	
-	public void setPaczkomatList()
-	{
-		PACZKOMATLIST=null;
-		PACZKOMATLIST=new ArrayList<String>();
-		PACZKOMATLIST.add(closeByPaczkomat());
-		PACZKOMATLIST.add(closeByPaczkomat());
-		PACZKOMATLIST.add(closeByPaczkomat());
+	public void setParcelLockerList() {
+		PARCELLOCKERLIST = null;
+		PARCELLOCKERLIST = new ArrayList<String>();
+		PARCELLOCKERLIST.add(closeByPaczkomat());
+		PARCELLOCKERLIST.add(closeByPaczkomat());
+		PARCELLOCKERLIST.add(closeByPaczkomat());
 	}
 	
-	public String getPaczkomatCode()
-	{
-		return paczkomatCode;
+	public String getParcelLockerCode() {
+		return parcelLockerCode;
 	}
 	
-	public String getMiasto()
-	{
-		return miasto;
+	public String getMiasto() {
+		return city;
 	}
 	
-	public ArrayList <String> getPACZKOMATLIST()
-	{
-		return PACZKOMATLIST;
+	public ArrayList <String> getPARCELLOCKERLIST() {
+		return PARCELLOCKERLIST;
 	}
 
 	@Override
-	public boolean isCorrectData(ArrayList<String> arrayList) {
-		return isCorrectCode(arrayList.get(0));
+	public boolean isCorrectData(ArrayList<String> data) {
+		return isCorrectCode(data.get(0));
 	}
 
 	@Override
-	public void setDeliveryInfo(ArrayList<String> arrayList) 
-	{
-		paczkomatCode = arrayList.get(0);
+	public void setDeliveryInfo(ArrayList<String> data) {
+		parcelLockerCode = data.get(0);
 	}
 }

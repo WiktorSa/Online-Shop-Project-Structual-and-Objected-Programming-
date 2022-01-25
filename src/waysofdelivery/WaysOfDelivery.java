@@ -15,71 +15,51 @@ public abstract class WaysOfDelivery {
 	public double price;
 	public String name;
 	public MainGUI main;
-	private static ArrayList <String> categories=WODobtainCategories();
+	private static ArrayList <String> categories = WODobtainCategories();
 	
-	public double getPrice()
-	{
+	public double getPrice() {
 		return price;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public void setClientNumber(String number)
-	{
+	public void setClientNumber(String number) {
 		clientNumber=number;
 	}
 	
-	public void setClientEmail(String email)
-	{
+	public void setClientEmail(String email) {
 		clientEmail=email;
 	}
 	
-	public void setFirstName(String firstName)
-	{
+	public void setFirstName(String firstName) {
 		this.firstName=firstName;
 	}
 	
-	public void setLastName(String lastName)
-	{
+	public void setLastName(String lastName) {
 		this.lastName=lastName;
 	}
 	
-	public static ArrayList<String> getCategories()
-	{
+	public static ArrayList<String> getCategories() {
 		return categories;
 	}
 	
-	private static ArrayList<String> WODobtainCategories()
-	{
+	private static ArrayList<String> WODobtainCategories(){
 		BufferedReader categoriesReader = null;
 		ArrayList<String> categories = new ArrayList<String>();
-		
-		try 
-		{
+		try {
 			categoriesReader = new BufferedReader(new FileReader(locationOfShopCatalog + "WODcategories.txt"));	
-			
 			String categoryName = "";
-			while ((categoryName = categoriesReader.readLine()) != null)
-			{
+			while ((categoryName = categoriesReader.readLine()) != null) {
 				categories.add(categoryName);
 			}
-
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			System.exit(-1);
-		}
-		finally 
-		{
-			try 
-			{
+		} finally {
+			try {
 				categoriesReader.close();
-			} 
-			catch (IOException e) 
-			{
+			} catch (IOException e) {
 				System.exit(-1);
 			}
 		}
