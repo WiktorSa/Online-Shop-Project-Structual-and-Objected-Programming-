@@ -19,9 +19,8 @@ import javax.swing.border.EmptyBorder;
 import gui.shop.MainGUI;
 import waysofdelivery.ParcelLocker;
 
-public class ParcelLockerSetInfo
-{
-	private ArrayList<JButton> selectPaczkomat = new ArrayList<JButton>();
+public class ParcelLockerSetInfo {
+	private ArrayList<JButton> selectParcelLocker = new ArrayList<JButton>();
 	private JPanel jPanel;
 	private JButton goBackButton;
 	private MainGUI main;
@@ -30,8 +29,7 @@ public class ParcelLockerSetInfo
 		return jPanel;
 	}
 	
-	public ParcelLockerSetInfo(MainGUI main) 
-	{
+	public ParcelLockerSetInfo(MainGUI main) {
 		this.main=main;
 		((ParcelLocker) this.main.getClient().getWaysOfDelivery()).setPaczkomatList();
 		
@@ -45,15 +43,12 @@ public class ParcelLockerSetInfo
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
 		jPanel.add(titleJLabel);
-		for (String category : ((ParcelLocker) this.main.getClient().getWaysOfDelivery()).getPACZKOMATLIST())
-		{
+		for (String category : ((ParcelLocker) this.main.getClient().getWaysOfDelivery()).getPACZKOMATLIST()) {
 			JButton jButton = new JButton(category);
 			jButton.addActionListener(new SelectCategory());
 			jButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			jPanel.add(jButton);
-			selectPaczkomat.add(jButton);
-			
-			// Made so buttons do not overlay
+			selectParcelLocker.add(jButton);
 			jPanel.add(Box.createRigidArea(new Dimension(0,7))); 
 		}
 		
@@ -69,25 +64,19 @@ public class ParcelLockerSetInfo
 		this.main.setButtonCursor(jPanel);
 	}
 	
-	class SelectCategory implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			for (JButton jButton : selectPaczkomat)
-			{
+	class SelectCategory implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
+			for (JButton jButton : selectParcelLocker){
 				if (event.getSource() == jButton) {
 					((ParcelLocker) main.getClient().getWaysOfDelivery()).setPaczkomatCode(jButton.getText());
-					
 					main.changeLayoutToPaymentSelectingCategory();
 				}
 			}
 		}
 	}
 
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class GoBack implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToWaysOfDelivery();;
 		}
 	}

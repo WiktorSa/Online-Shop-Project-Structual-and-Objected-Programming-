@@ -20,8 +20,7 @@ import javax.swing.border.EmptyBorder;
 import gui.shop.MainGUI;
 import waysofdelivery.*;
 
-public class DeliverySelectingCategoryGUI 
-{
+public class DeliverySelectingCategoryGUI {
 	private JPanel jPanel;
 	private MainGUI main;
 	
@@ -30,7 +29,6 @@ public class DeliverySelectingCategoryGUI
 	}
 	
 	public DeliverySelectingCategoryGUI(MainGUI main) {
-		
 		this.main = main; 
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
@@ -51,8 +49,7 @@ public class DeliverySelectingCategoryGUI
 			button.addActionListener(new SelectWay(button));
 			button.setAlignmentX(Component.CENTER_ALIGNMENT);
 			
-			switch(way)
-			{
+			switch(way) {
 				case "Odbior osobisty":
 					button.setToolTipText("Odbior osobisty cena: 0 PLN");
 					break;
@@ -68,13 +65,11 @@ public class DeliverySelectingCategoryGUI
 			}
 			
 			jPanel.add(button);
-			// Zeby guziki na siebie nie nachodzily
 			jPanel.add(Box.createRigidArea(new Dimension(0,7))); 
 			
 		}
 		
 		jPanel.add(Box.createRigidArea(new Dimension(0,20))); 
-		
 		JButton goBackButton = new JButton(new ImageIcon("Ikony/goBack.png"));
 		goBackButton.addActionListener(new GoBack());
 		goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -113,12 +108,9 @@ public class DeliverySelectingCategoryGUI
 		}
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class GoBack implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToBasket();
 		}
 	}
-	
 }

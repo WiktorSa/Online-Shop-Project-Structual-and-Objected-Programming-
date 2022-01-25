@@ -28,23 +28,20 @@ import waysofdelivery.DeliveryMan;
 import waysofdelivery.Personal;
 import waysofdelivery.ParcelLocker;
 
-public class DeliveryGUI 
-{
+public class DeliveryGUI {
 	private MainGUI main;
 	private JPanel jPanel;
-	private JButton confirmMiasto;
+	private JButton confirmCity;
 	private JButton confirmButton;
 	private JButton goBackButton;
 	private ArrayList<JTextField> jTextFields = new ArrayList<JTextField>();
-	private JTextField miasto;
+	private JTextField city;
 	
-	public JPanel getjPanel() 
-	{
+	public JPanel getjPanel() {
 		return jPanel;
 	}
 	
-	public DeliveryGUI(MainGUI main) 
-	{
+	public DeliveryGUI(MainGUI main) {
 		this.main = main;
 		
 		if (this.main.getClient().getWaysOfDelivery() instanceof DeliveryMan) {
@@ -56,44 +53,44 @@ public class DeliveryGUI
 			JLabel titleJLabel = new JLabel("Wpisz dane potrzebne do dostawy kurierskiej", SwingConstants.CENTER);
 			titleJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 			titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			titleJLabel.setBorder(new EmptyBorder(5,10,15,10)); //top,left,bottom,right
+			titleJLabel.setBorder(new EmptyBorder(5,10,15,10));
 			jPanel.add(titleJLabel);
 			
-			JLabel miastoJLabel = new JLabel("Wpisz swoje miasto", SwingConstants.CENTER);
-			miastoJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			miastoJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
-			jPanel.add(miastoJLabel);
+			JLabel cityJLabel = new JLabel("Wpisz swoje miasto", SwingConstants.CENTER);
+			cityJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			cityJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
+			jPanel.add(cityJLabel);
 			
-			JTextField miastoJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getMiasto()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
-			miastoJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			miastoJTextField.setHorizontalAlignment(JTextField.CENTER);
-			miastoJTextField.setMaximumSize(new Dimension(200, 60));
-			jTextFields.add(miastoJTextField);
-			jPanel.add(miastoJTextField);
+			JTextField cityJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getMiasto()); 
+			cityJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
+			cityJTextField.setHorizontalAlignment(JTextField.CENTER);
+			cityJTextField.setMaximumSize(new Dimension(200, 60));
+			jTextFields.add(cityJTextField);
+			jPanel.add(cityJTextField);
 			
-			JLabel ulicaJLabel = new JLabel("Wpisz swoja ulica z numerem domu/mieszkania", SwingConstants.CENTER);
-			ulicaJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			ulicaJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
-			jPanel.add(ulicaJLabel);
+			JLabel streetJLabel = new JLabel("Wpisz swoja ulica z numerem domu/mieszkania", SwingConstants.CENTER);
+			streetJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			streetJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
+			jPanel.add(streetJLabel);
 			
-			JTextField ulicaJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getUlica()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
-			ulicaJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			ulicaJTextField.setHorizontalAlignment(JTextField.CENTER);
-			ulicaJTextField.setMaximumSize(new Dimension(200, 60));
-			jTextFields.add(ulicaJTextField);
-			jPanel.add(ulicaJTextField);
+			JTextField streetJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getUlica());
+			streetJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
+			streetJTextField.setHorizontalAlignment(JTextField.CENTER);
+			streetJTextField.setMaximumSize(new Dimension(200, 60));
+			jTextFields.add(streetJTextField);
+			jPanel.add(streetJTextField);
 			
-			JLabel adresEmailJLabel = new JLabel("Wpisz swoj kod pocztowy (bez myslnika)", SwingConstants.CENTER);
-			adresEmailJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			adresEmailJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
-			jPanel.add(adresEmailJLabel);
+			JLabel emaiJLabel = new JLabel("Wpisz swoj kod pocztowy (bez myslnika)", SwingConstants.CENTER);
+			emaiJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			emaiJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
+			jPanel.add(emaiJLabel);
 			
-			JTextField kodPocztowyJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getKodPocztowy()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
-			kodPocztowyJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-			kodPocztowyJTextField.setHorizontalAlignment(JTextField.CENTER);
-			kodPocztowyJTextField.setMaximumSize(new Dimension(200, 60));
-			jTextFields.add(kodPocztowyJTextField);
-			jPanel.add(kodPocztowyJTextField);
+			JTextField postcodeJTextField = new JTextField(((DeliveryMan) this.main.getClient().getWaysOfDelivery()).getKodPocztowy());
+			postcodeJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
+			postcodeJTextField.setHorizontalAlignment(JTextField.CENTER);
+			postcodeJTextField.setMaximumSize(new Dimension(200, 60));
+			jTextFields.add(postcodeJTextField);
+			jPanel.add(postcodeJTextField);
 			
 			jPanel.add(Box.createRigidArea(new Dimension(5, 15)));
 			
@@ -179,7 +176,7 @@ public class DeliveryGUI
 			jPanel = new JPanel();
 			BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 			jPanel.setLayout(boxLayout);
-			jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
+			jPanel.add(Box.createVerticalGlue());
 			
 			JLabel giveInstructionsJLabel = new JLabel("Podaj informacje do wysylki paczkomatem.", SwingConstants.CENTER);
 			giveInstructionsJLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -191,19 +188,19 @@ public class DeliveryGUI
 			miastoJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 			jPanel.add(miastoJLabel);
 			
-			miasto = new JTextField(); 
-			miasto.setAlignmentX(Component.CENTER_ALIGNMENT);
-			miasto.setHorizontalAlignment(JTextField.CENTER);
-			miasto.setPreferredSize(new Dimension(300, 25));
-			miasto.setMaximumSize(new Dimension(300, 25));
-			jPanel.add(miasto);
+			city = new JTextField(); 
+			city.setAlignmentX(Component.CENTER_ALIGNMENT);
+			city.setHorizontalAlignment(JTextField.CENTER);
+			city.setPreferredSize(new Dimension(300, 25));
+			city.setMaximumSize(new Dimension(300, 25));
+			jPanel.add(city);
 			
 			jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 			
-			confirmMiasto = new JButton("Potwierdz");
-			confirmMiasto.addActionListener(new ConfirmMiasto());
-			confirmMiasto.setAlignmentX(Component.CENTER_ALIGNMENT);
-			jPanel.add(confirmMiasto);
+			confirmCity = new JButton("Potwierdz");
+			confirmCity.addActionListener(new ConfirmCity());
+			confirmCity.setAlignmentX(Component.CENTER_ALIGNMENT);
+			jPanel.add(confirmCity);
 			
 			jPanel.add(Box.createRigidArea(new Dimension(0,7)));
 			
@@ -212,7 +209,7 @@ public class DeliveryGUI
 			kodJlabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 			jPanel.add(kodJlabel);
 			
-			JTextField paczkomatCode = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+			JTextField paczkomatCode = new JTextField(); 
 			paczkomatCode.setAlignmentX(Component.CENTER_ALIGNMENT);
 			paczkomatCode.setHorizontalAlignment(JTextField.CENTER);
 			paczkomatCode.setPreferredSize(new Dimension(300, 25));
@@ -235,21 +232,16 @@ public class DeliveryGUI
 			buttonPanel.add(confirmButton);
 
 			jPanel.add(buttonPanel);
-			
-			//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
-			jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
+			jPanel.add(Box.createVerticalGlue());
 			
 			this.main.setButtonCursor(jPanel);
 		}
 	}
 	
-	class ConfirmData implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class ConfirmData implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			ArrayList<String> deliveryInfo = new ArrayList<String>();
-			for (JTextField jTextField : jTextFields)
-			{
+			for (JTextField jTextField : jTextFields){
 				deliveryInfo.add(jTextField.getText());
 			}
 			
@@ -267,23 +259,18 @@ public class DeliveryGUI
 		}
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class GoBack implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToDeliverySelectingCategory();
 		}
 	}
 	
-	class ConfirmMiasto implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
-			String miast = miasto.getText();
+	class ConfirmCity implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
+			String miast = city.getText();
 			if (((ParcelLocker) main.getClient().getWaysOfDelivery()).isCorrectMiasto(miast)) {
 				if(JOptionPane.showConfirmDialog(null, "Czy to na pewno jest twoje miasto? " + miast, "Potwierdz dane", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					((ParcelLocker) main.getClient().getWaysOfDelivery()).setMiasto(miast);
-					
 					main.changeLayoutToParcelLocker();
 				}
 			}
