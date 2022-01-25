@@ -14,3 +14,6 @@ Our shop simulates an average shop. That means that you can:
 Project was made alongside:
 Jan Skibinski: https://github.com/Pandorianim
 Szymon Sawczuk: https://github.com/SzymonSawczuk
+
+Update 25.01.2022
+Refactor was made by Wiktor Sadowy (added gitignore and code refactor).
