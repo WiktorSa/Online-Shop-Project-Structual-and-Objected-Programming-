@@ -24,9 +24,7 @@ import client.NormalClient;
 import client.RegisteredClient;
 import gui.shop.MainGUI;
 
-public class RegisterGUI 
-{
-
+public class RegisterGUI {
 	private JPanel jPanel;
 	private JTextField emailJTextField;
 	private JPasswordField passwordJPasswordField;
@@ -38,17 +36,15 @@ public class RegisterGUI
 		return jPanel;
 	}
 	
-	public RegisterGUI(MainGUI main) 
-	{
+	public RegisterGUI(MainGUI main) {
 		this.main = main;
 		
 		Dimension buttonSize = new Dimension(300,40);
-		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
 		
-		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie (musi byc na poczatku i koncu)
+		jPanel.add(Box.createVerticalGlue());
 		JLabel giveInstructionsJLabel = new JLabel("Zarejestruj sie", SwingConstants.CENTER);
 		giveInstructionsJLabel.setFont(new Font(giveInstructionsJLabel.getFont().getName(), Font.BOLD, 40));
 		giveInstructionsJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,7 +55,7 @@ public class RegisterGUI
 		emaiJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(emaiJLabel);
 		
-		emailJTextField = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		emailJTextField = new JTextField();
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
 		emailJTextField.setMaximumSize(new Dimension(300, 30));
@@ -71,7 +67,7 @@ public class RegisterGUI
 		passswordJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(passswordJLabel);
 		
-		passwordJPasswordField = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		passwordJPasswordField = new JPasswordField();
 		passwordJPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordJPasswordField.setHorizontalAlignment(JTextField.CENTER);
 		passwordJPasswordField.setMaximumSize(buttonSize);
@@ -103,16 +99,11 @@ public class RegisterGUI
 		registerButtonPanel.add(registerButton);
 		jPanel.add(registerButtonPanel);
 		
-		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
-		
-
+		jPanel.add(Box.createVerticalGlue());
 	}
 	
-	class Register implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class Register implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
 			String email = emailJTextField.getText();
 			String password = String.valueOf(passwordJPasswordField.getPassword());
 			String passwordConfirm = String.valueOf(passwordConfirmJPasswordField.getPassword());
@@ -142,5 +133,4 @@ public class RegisterGUI
 			}
 		}
 	}
-
 }

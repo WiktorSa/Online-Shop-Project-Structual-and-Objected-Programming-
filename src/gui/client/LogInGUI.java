@@ -28,9 +28,7 @@ import client.Client;
 import client.RegisteredClient;
 import gui.shop.MainGUI;
 
-public class LogInGUI 
-{
-
+public class LogInGUI {
 	private JPanel jPanel;
 	private JTextField emailJTextField;
 	private JPasswordField passwordJPasswordField;
@@ -38,17 +36,14 @@ public class LogInGUI
 	private JButton remindPasswrodButton;
 	private MainGUI main;
 	
-	public JPanel getjPanel() 
-	{
+	public JPanel getjPanel() {
 		return jPanel;
 	}
 	
-	public LogInGUI(MainGUI main) 
-	{
+	public LogInGUI(MainGUI main) {
 		this.main = main;
 		
 		Dimension buttonSize = new Dimension(300,40);
-		// Tekst bedzie sie wyswietlal od gory do dolu
 		jPanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jPanel, BoxLayout.Y_AXIS);
 		jPanel.setLayout(boxLayout);
@@ -64,7 +59,7 @@ public class LogInGUI
 		emaiJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(emaiJLabel);
 		
-		emailJTextField = new JTextField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		emailJTextField = new JTextField();
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
 		emailJTextField.setPreferredSize(new Dimension(300, 30));
@@ -76,7 +71,7 @@ public class LogInGUI
 		passswordJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(passswordJLabel);
 		
-		passwordJPasswordField = new JPasswordField(); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		passwordJPasswordField = new JPasswordField();
 		passwordJPasswordField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordJPasswordField.setHorizontalAlignment(JTextField.CENTER);
 		passwordJPasswordField.setPreferredSize(new Dimension(300, 30));
@@ -94,7 +89,6 @@ public class LogInGUI
 		logInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		logInButtonPanel.add(logInButton);
 		jPanel.add(logInButtonPanel);
-		//jPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		JPanel remindPasswrodButtonPanel = new JPanel();
 		remindPasswrodButtonPanel.setMaximumSize(buttonSize);
@@ -105,14 +99,11 @@ public class LogInGUI
 		remindPasswrodButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		remindPasswrodButtonPanel.add(remindPasswrodButton);
 		jPanel.add(remindPasswrodButtonPanel);
-		//jPanel.add(Box.createRigidArea(new Dimension(0,20)));
-		jPanel.add(Box.createVerticalGlue());//NOTE: Centrowanie 
+		jPanel.add(Box.createVerticalGlue());
 	}
 	
-	class LogIn implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class LogIn implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			String email = emailJTextField.getText();
 			String password = String.valueOf(passwordJPasswordField.getPassword());
 			
@@ -123,12 +114,10 @@ public class LogInGUI
 			}
 			
 			else {
-				try(ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(file)))
-				{
+				try(ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(file))) {
 					Client clientFromFile = (RegisteredClient) outputStream.readObject();
 					ShoppingBasket oldBasket = main.getClient().getBasket();
 					
-					// Jezeli klient wypelnil towar produktami i potem sie zaloguje to kasujemy zawartosc z koszyka zalogowanego klienta i zastepujemy nowym koszykiem
 					if (oldBasket.getProducts().size() != 0) {
 						clientFromFile.setBasket(oldBasket);
 					}
@@ -145,27 +134,19 @@ public class LogInGUI
 					else {
 						JOptionPane.showMessageDialog(null, "Zle haslo");
 					}
-				} 
-				catch (FileNotFoundException e) 
-				{
+				} catch (FileNotFoundException e) {
 					System.exit(-1);
-				} 
-				catch (IOException e) 
-				{
+				} catch (IOException e) {
 					System.exit(-1);
-				} 
-				catch (ClassNotFoundException e) 
-				{
+				} catch (ClassNotFoundException e) {
 					System.exit(-1);
 				}
 			}
 		}
 	}
 
-	class RemindPassword implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class RemindPassword implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
 			String email = emailJTextField.getText();
 			
 			File file = new File("Client_" + email + ".ser");
@@ -175,21 +156,14 @@ public class LogInGUI
 			}
 			
 			else {
-				try(ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(file)))
-				{
+				try(ObjectInputStream outputStream = new ObjectInputStream(new FileInputStream(file))){
 					Client clientFromFile = (RegisteredClient) outputStream.readObject();
 					JOptionPane.showMessageDialog(null, "Twoje haslo to: " + ((RegisteredClient) clientFromFile).getPassword());
-				} 
-				catch (FileNotFoundException e) 
-				{
+				} catch (FileNotFoundException e) {
 					System.exit(-1);
-				} 
-				catch (IOException e) 
-				{
+				} catch (IOException e) {
 					System.exit(-1);
-				} 
-				catch (ClassNotFoundException e) 
-				{
+				} catch (ClassNotFoundException e) {
 					System.exit(-1);
 				}
 			}

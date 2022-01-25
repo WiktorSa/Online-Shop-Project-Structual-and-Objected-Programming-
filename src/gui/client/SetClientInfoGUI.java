@@ -22,8 +22,7 @@ import client.HelperFunctionsClient;
 import client.RegisteredClient;
 import gui.shop.MainGUI;
 
-public class SetClientInfoGUI 
-{
+public class SetClientInfoGUI {
 	private MainGUI main;
 	private JPanel jPanel;
 	private JTextField firstNameJTextField;
@@ -37,8 +36,7 @@ public class SetClientInfoGUI
 		return jPanel;
 	}
 	
-	public SetClientInfoGUI(MainGUI main) 
-	{
+	public SetClientInfoGUI(MainGUI main) {
 		this.main = main;
 		
 		jPanel = new JPanel();
@@ -57,7 +55,7 @@ public class SetClientInfoGUI
 		firstNameJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(firstNameJLabel);
 		
-		firstNameJTextField = new JTextField(main.getClient().getFirstName()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		firstNameJTextField = new JTextField(main.getClient().getFirstName()); 
 		firstNameJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		firstNameJTextField.setHorizontalAlignment(JTextField.CENTER);
 		firstNameJTextField.setMaximumSize(new Dimension(250, 90));
@@ -68,7 +66,7 @@ public class SetClientInfoGUI
 		lastNameJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(lastNameJLabel);
 		
-		lastNameJTextField = new JTextField(main.getClient().getLastName()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		lastNameJTextField = new JTextField(main.getClient().getLastName());
 		lastNameJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lastNameJTextField.setHorizontalAlignment(JTextField.CENTER);
 		lastNameJTextField.setMaximumSize(new Dimension(250, 90));
@@ -79,12 +77,12 @@ public class SetClientInfoGUI
 		adresEmailJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(adresEmailJLabel);
 		
-		emailJTextField = new JTextField(main.getClient().getEmail()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		emailJTextField = new JTextField(main.getClient().getEmail()); 
 		emailJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		emailJTextField.setHorizontalAlignment(JTextField.CENTER);
 		emailJTextField.setMaximumSize(new Dimension(250, 90));
 		if (main.getClient() instanceof RegisteredClient) {
-			emailJTextField.setEditable(false); // Jak uzytkownik jest zalogowany to nie moze zmienic swojego adresu email
+			emailJTextField.setEditable(false); 
 		}
 		jPanel.add(emailJTextField);
 		
@@ -93,7 +91,7 @@ public class SetClientInfoGUI
 		phoneNumberEmailJLabel.setBorder(new EmptyBorder(15, 0, 5, 0));
 		jPanel.add(phoneNumberEmailJLabel);
 		
-		phoneNumberJTextField = new JTextField(main.getClient().getPhoneNumber()); // Zeby uzytkownik nie musial ponownie wpisywac swoich danych
+		phoneNumberJTextField = new JTextField(main.getClient().getPhoneNumber()); 
 		phoneNumberJTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phoneNumberJTextField.setHorizontalAlignment(JTextField.CENTER);
 		phoneNumberJTextField.setMaximumSize(new Dimension(250, 90));
@@ -119,12 +117,8 @@ public class SetClientInfoGUI
 	
 	}
 	
-
-	
-	class ConfirmData implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class ConfirmData implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			String firstName = firstNameJTextField.getText();
 			String lastName = lastNameJTextField.getText();
 			String email = emailJTextField.getText();
@@ -165,10 +159,8 @@ public class SetClientInfoGUI
 		}
 	}
 	
-	class GoBack implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class GoBack implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToBasket();
 		}
 	}
