@@ -31,7 +31,6 @@ import gui.shop.MainGUI;
 import waysofpayments.Paypal;
 
 public class PayPalGUI {
-	
 	private JFrame jFrame;
 	private int mistakesCounter;
 	private final int MISTAKESMAX = 3;
@@ -44,10 +43,8 @@ public class PayPalGUI {
 	private String passwordText = "";
 	private MainGUI main;
 	
-	public PayPalGUI(MainGUI main) {
-				
+	public PayPalGUI(MainGUI main) {	
 		mistakesCounter = 0;
-
 		this.main = main; 
 		
 		jFrame = new JFrame();
@@ -68,11 +65,9 @@ public class PayPalGUI {
 		
 		emailForm.transferFocus();
 		passwordForm.transferFocus();
-	
 	}
 	
 	private JPanel createTitlePanel() {
-		
 		JPanel titlePanel = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(titlePanel, BoxLayout.Y_AXIS);
 		titlePanel.setLayout(boxLayout);
@@ -87,13 +82,10 @@ public class PayPalGUI {
 		titleJLabel.setBorder(new EmptyBorder(20,150,5,150)); //top,left,bottom,right
 		titlePanel.add(titleJLabel);
 		
-		
 		return titlePanel;
-		
 	}
 	
 	private JPanel createLogginPanel() {
-		
 		JPanel logginForm = new JPanel();
 		GridBagLayout gridLayout = new GridBagLayout();
 		GridBagConstraints gridBag = new GridBagConstraints();
@@ -110,8 +102,6 @@ public class PayPalGUI {
 		gridBag.gridy = 0;
 		gridBag.gridwidth = 1;
 		logginForm.add(emailForm, gridBag);
-
-		
 		
 		passwordForm = new JPasswordField();
 		passwordForm.setPreferredSize(sizeOfForms);
@@ -161,30 +151,20 @@ public class PayPalGUI {
 	}
 	
 	private class Submit implements ActionListener{
-		
-		
-		public void actionPerformed(ActionEvent event) {
-			
+		public void actionPerformed(ActionEvent event) {	
 			if(captchaForm.getText().equals(code) || code.equals("")) {
-				
 				if(!(emailText.equals("") || passwordText.equals(""))) {
-					
 					boolean isPaymentDoneCorrectly = main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(emailText, passwordText)));
-					
 					if(isPaymentDoneCorrectly) {
-						
 						JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 						jFrame.dispose();
 						main.getjFrame().setEnabled(true);
 						main.changeLayoutToFinalTransaction();
-						
 					}else {
-						
 						JOptionPane.showMessageDialog(null,"Bledne dane");
 						mistakesCounter++;
 						
 						if(mistakesCounter >= MISTAKESMAX) {
-							
 							code =  ((Paypal)main.getClient().getWayOfPayment()).captchaGeneretor();
 							captchaLabel.setText("Przepisz kod:"+code);
 							captchaLabel.setVisible(true);
@@ -200,7 +180,6 @@ public class PayPalGUI {
 					}
 				}
 			}else {
-				
 				JOptionPane.showMessageDialog(null,"Wpisz poprawny kod Captcha");
 				code = ((Paypal)main.getClient().getWayOfPayment()).captchaGeneretor();
 				captchaLabel.setText("Przepisz kod:"+code);
@@ -208,62 +187,44 @@ public class PayPalGUI {
 				passwordForm.setEchoChar((char)0);
 				passwordText = "";
 				captchaForm.setText("");
-
 			}
 		}
-		
 	}
 	
 	class WindowClose extends WindowAdapter{
-		
 		@Override
 	    public void windowClosing(WindowEvent e) {
-
 			main.getjFrame().setEnabled(true);
 			main.getClient().setWayOfPayment(null);
 			jFrame.dispose();
-	
 	    }
-		
 	}
 	
 	private class FocusDetector implements FocusListener{
-
 		@Override
 		public void focusGained(FocusEvent e) {
-			
 			if(e.getSource() == emailForm) {
 				emailForm.setText(emailText);
 			}else if(e.getSource() == passwordForm) {
 				passwordForm.setText(passwordText);
 				passwordForm.setEchoChar('*');
 			}
-			
-		
-			
 		}
 
 		@Override
 		public void focusLost(FocusEvent e) {
-			
 			if(e.getSource() == emailForm ) {
 				emailText = emailForm.getText();
-				
-				if(emailText.equals(""))
+				if(emailText.equals("")) {
 					emailForm.setText("Email/nr tel.");
-				
-			
+				}
 			}else if(e.getSource() == passwordForm) {
 				passwordText = String.valueOf(passwordForm.getPassword());
-				
 				if(passwordText.equals("")) {
 					passwordForm.setText("Haslo");
 					passwordForm.setEchoChar((char)0);
 				}
-			
 			}
-			
 		}
-		
 	}
 }

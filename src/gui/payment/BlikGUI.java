@@ -38,7 +38,10 @@ import waysofpayments.Blik;
 public class BlikGUI 
 {
 	private JFrame jFrame;
-	private JPanel titlePanel, blikCodePanel, blikFormPanel, refreshPanel;
+	private JPanel titlePanel;
+	private JPanel blikCodePanel;
+	private JPanel blikFormPanel;
+	private JPanel refreshPanel;
 	private JLabel codeLabel, timerLabel;
 	private JProgressBar progressBar;
 	private JFormattedTextField blikForm;
@@ -51,48 +54,36 @@ public class BlikGUI
 	private Timer timer;
 	
 	public BlikGUI(MainGUI main) {
-
-
 		this.main = main; 
-		
 		generator = new GenerateCode();
-		
 		jFrame = new JFrame();
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setTitle(main.getClient().getWayOfPayment().getName());
 		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new WindowClose());
 		jFrame.setResizable(false);
-
 		jFrame.setMinimumSize(new Dimension(350,200));
-		
 		titlePanel = createtitlePanel();		
 		createBlikCodePanel();
 		
 		try {
 			createBlikFormPanel();
 		} catch (ParseException e) {
-//			e.printStackTrace();
 		}
 		
 		jFrame.add(titlePanel,BorderLayout.NORTH);
 		jFrame.add(blikCodePanel, BorderLayout.WEST);
 		jFrame.add(blikFormPanel, BorderLayout.EAST);
-		
 		generator.actionPerformed(null);
-
-		jFrame.pack();
-		
+		jFrame.pack();		
 		jFrame.setVisible(true);
 	}
 	
 	private JPanel createtitlePanel() {
-		
 		JPanel titlePanel = new JPanel();
 		
 		titlePanel.setLayout(new GridBagLayout());
 		GridBagConstraints gridBag = new GridBagConstraints();
-		
 		
 		JPanel logoPanel = new JPanel();
 		logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -133,7 +124,6 @@ public class BlikGUI
 	}
 	
 	private void createBlikCodePanel() {
-		
 		blikCodePanel = new JPanel();
 		
 		JPanel innerPanel = new JPanel();
@@ -193,7 +183,6 @@ public class BlikGUI
 	}
 	
 	private void createBlikFormPanel() throws ParseException {
-		
 		blikFormPanel = new JPanel();
 		
 		JPanel innerPanel = new JPanel();
@@ -225,16 +214,11 @@ public class BlikGUI
 		innerPanel.add(blikFormInnerPanel);
 		innerPanel.add(buttonPanel);
 		blikFormPanel.add(innerPanel);
-		
-		
 	}
 	
 	private class ClickDetector implements MouseListener{
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			
-			
 		}
 
 		@Override
@@ -252,31 +236,20 @@ public class BlikGUI
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
-
-		
-		
 	}
 	
 	class WindowClose extends WindowAdapter{
-		
 		@Override
 	    public void windowClosing(WindowEvent e) {
-
 			if(timer != null && timer.isRunning()) {
 				timer.stop();	
 			}
@@ -284,46 +257,32 @@ public class BlikGUI
 			main.getjFrame().setEnabled(true);
 			jFrame.dispose();
 			main.getClient().setWayOfPayment(null);
-	
 	    }
-		
 	}
 	
 	class SubmitCode implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			
 			String text = blikForm.getText().replaceAll("\\s+", "");
-			
 			if(!text.equals("")) {
-				
 				if(main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(text)))) {
-					
 					timer.stop();
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
 					((Blik)main.getClient().getWayOfPayment()).destroyTimer();
 					main.getjFrame().setEnabled(true);
 					jFrame.dispose();
 					main.changeLayoutToFinalTransaction();
-					
-					
 				}else {
 					JOptionPane.showMessageDialog(null,"Bledny kod blik");
 				}
 			}
-			
 		}
-		
 	}
 	
 	private class GenerateCode implements ActionListener{
-
 		private int time;
-
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			
+		public void actionPerformed(ActionEvent e) {			
 			refreshButton.setVisible(false);
 			
 			String codeTmp = Integer.toString(((Blik)main.getClient().getWayOfPayment()).generateCode());
@@ -335,7 +294,6 @@ public class BlikGUI
 			seconds = MAXTIME - minutes*60;
 			timerLabel.setText(String.format("%dm %02ds", minutes,seconds));
 			
-			//NOTE: zeruje timer przy kliknieciu przycisku
 			if(timer != null && timer.isRunning()) {
 				timer.stop();	
 			}
@@ -367,8 +325,6 @@ public class BlikGUI
 		         }
 		     });
 			timer.start();
-
 		}
-		
 	}
 }

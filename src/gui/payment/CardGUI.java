@@ -34,7 +34,6 @@ import javax.swing.text.NumberFormatter;
 import gui.shop.MainGUI;
 
 public class CardGUI {
-	
 	private JPanel jPanel;
 	private JFrame jFrame;
 	private JFormattedTextField[] cardNumberForm;
@@ -47,7 +46,6 @@ public class CardGUI {
 	}
 	
 	public CardGUI(MainGUI main) {
-		
 		this.main = main;
 		
 		jFrame = new JFrame();
@@ -79,24 +77,18 @@ public class CardGUI {
 		jFrame.setVisible(true);
 
 		this.main.setButtonCursor(jPanel);
-	
-		
 	}
 	
 	private JLabel createTitleForm() {
-
-		
-		
 		JLabel titleJLabel = new JLabel("Wpisz dane karty kredytowej", SwingConstants.CENTER);
 		titleJLabel.setFont(new Font(titleJLabel.getFont().getName(), Font.BOLD, 40));
 		titleJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); //top,left,bottom,right
+		titleJLabel.setBorder(new EmptyBorder(5,10,20,10)); 
 		
 		return titleJLabel;
 	}
 	
 	private JPanel createCardForm() {
-		
 		JPanel cardForm = new JPanel();
 		GridBagLayout gridLayout = new GridBagLayout();
 		GridBagConstraints gridBag = new GridBagConstraints();
@@ -108,7 +100,6 @@ public class CardGUI {
 		gridBag.gridwidth = 1;
 		cardForm.add(cardNumberLabel, gridBag);
 		
-
 		cardNumberForm = new JFormattedTextField[4];
 		for(int i = 0;i<cardNumberForm.length;i++) {
 			cardNumberForm[i] = new JFormattedTextField(onlyAllowNaturalNumbersUpTo4Digits());
@@ -159,16 +150,13 @@ public class CardGUI {
 		gridBag.gridwidth = 1;
 		cardForm.add(yearSpinner, gridBag);
 
-		//NOTE: Ustawienie identycznego rozmiaru
 		Dimension d = yearSpinner.getPreferredSize();
 		monthSpinner.setPreferredSize(d);
 		
 		return cardForm;
-		
 	}
 	
 	private JPanel createSouthPanel() {
-		
 		Dimension buttonSize = new Dimension(200,40);
 		
 		JPanel southPanel = new JPanel();
@@ -192,11 +180,7 @@ public class CardGUI {
 		return southPanel;
 	}
 	
-
-	
-	public NumberFormatter onlyAllowNaturalNumbersUpTo4Digits()
-	{
-		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
+	public NumberFormatter onlyAllowNaturalNumbersUpTo4Digits() {
 		NumberFormat format = NumberFormat.getInstance();
 		format.setGroupingUsed(false);
 		NumberFormatter formatter = new NumberFormatter(format);
@@ -206,9 +190,7 @@ public class CardGUI {
 		return formatter;
 	}
 	
-	public NumberFormatter onlyAllowNaturalNumbersUpTo3Digits()
-	{
-		// Nie pozwalam uzytkownikowi na wpisanie niczego innego oprocz liczb naturalnych
+	public NumberFormatter onlyAllowNaturalNumbersUpTo3Digits(){
 		NumberFormat format = NumberFormat.getInstance();
 		format.setGroupingUsed(false);
 		NumberFormatter formatter = new NumberFormatter(format);
@@ -219,45 +201,32 @@ public class CardGUI {
 	}
 	
 	class WindowClose extends WindowAdapter{
-		
 		@Override
 	    public void windowClosing(WindowEvent e) {
-
 			main.getjFrame().setEnabled(true);
 			main.getClient().setWayOfPayment(null);
 			jFrame.dispose();
-	
 	    }
-		
 	}
-	
-	
-	class SubmitCardInfo implements ActionListener
-	{
-	
+		
+	class SubmitCardInfo implements ActionListener{
 		private String cardNumber = "", cvv = "", date = "";
 
 		public void actionPerformed(ActionEvent event) {
-			
 			cardNumber = "";
 			cvv = "";
 			date = "";
 			
 			for(int i = 0;i<cardNumberForm.length;i++) {
-				
 				cardNumber += cardNumberForm[i].getText();
-				
 			}
 			
 			cvv = cvvNumberForm.getText();
 			date = monthSpinner.getValue().toString() + "/" +  yearSpinner.getValue();
 			
 			if(!cardNumber.equals("") && !cvv.equals("") && !date.equals("") && cardNumber.length() == 16 && cvv.length() == 3) {
-				
 				if(main.getClient().getWayOfPayment().pay(main.getClient(), new ArrayList<String>(Arrays.asList(cardNumber, cvv, date)))) {
-					
 					JOptionPane.showMessageDialog(null,"Dokonano platnosci");
-					
 					main.changeLayoutToFinalTransaction();
 					jFrame.dispose();
 					main.getjFrame().setEnabled(true);
@@ -265,10 +234,7 @@ public class CardGUI {
 				}else {
 					JOptionPane.showMessageDialog(null,"Bledne dane");
 				}
-				
 			}
-			
 		}
 	}
-
 }
