@@ -2,8 +2,7 @@ package chooseitems;
 
 import java.util.ArrayList;
 
-public class Book extends Product implements Comparable<Book>
-{
+public class Book extends Product implements Comparable<Book> {
 	private static final long serialVersionUID = 1L;
 	private String author;
 	// for instance biographical
@@ -12,8 +11,7 @@ public class Book extends Product implements Comparable<Book>
 	private String premiereDate;
 	private int numberOfPages;
 	
-	public Book(String category, String name, double price, String author, String subcategory, String publisher, String premiereDate, int numberOfPages) 
-	{
+	public Book(String category, String name, double price, String author, String subcategory, String publisher, String premiereDate, int numberOfPages) {
 		super(category, name, price);
 		this.author = author;
 		this.subcategory = subcategory;
@@ -22,8 +20,7 @@ public class Book extends Product implements Comparable<Book>
 		this.numberOfPages = numberOfPages;
 	}
 	
-	public Book(ArrayList<String> information)
-	{
+	public Book(ArrayList<String> information) {
 		super(information.get(0), information.get(1), Double.parseDouble(information.get(2)));
 		this.author = information.get(3);
 		this.subcategory = information.get(4);
@@ -32,23 +29,19 @@ public class Book extends Product implements Comparable<Book>
 		this.numberOfPages = Integer.parseInt(information.get(7));
 	}
 	
-	public String getAuthor()
-	{
+	public String getAuthor() {
 		return author;
 	}
 	
-	public void setAuthor(String author)
-	{
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
-	public String getSubcategory() 
-	{
+	public String getSubcategory() {
 		return subcategory;
 	}
 
-	public void setSubcategory(String subcategory) 
-	{
+	public void setSubcategory(String subcategory) {
 		this.subcategory = subcategory;
 	}
 
@@ -68,18 +61,15 @@ public class Book extends Product implements Comparable<Book>
 		this.premiereDate = premiereDate;
 	}
 
-	public int getNumberOfPages() 
-	{
+	public int getNumberOfPages() {
 		return numberOfPages;
 	}
 
-	public void setNumberOfPages(int numberOfPages) 
-	{
+	public void setNumberOfPages(int numberOfPages) {
 		this.numberOfPages = numberOfPages;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		String info = super.toString();
 		info = info + "Autor: " + author + "\n";
 		info = info + "Tematyka: " + subcategory + "\n";
@@ -89,8 +79,7 @@ public class Book extends Product implements Comparable<Book>
 		return info;
 	}
 
-	public int compareTo(Book ksiazka) 
-	{
+	public int compareTo(Book ksiazka) {
 		return getName().compareTo(ksiazka.getName());
 	}
 }

@@ -10,8 +10,7 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
-public class ChooseItems 
-{
+public class ChooseItems {
 	private String locationOfShopCatalog;
 	private ArrayList<String> categories;
 	// String - category, rest - ArrayList - info about the product
@@ -19,82 +18,63 @@ public class ChooseItems
 	// Each product has an image attached to it. If we cannot find the picture we post a default one
 	private TreeMap<Product, Image> imagesOfProducts = new TreeMap<Product, Image>();
 	
-	public ChooseItems()
-	{
+	public ChooseItems() {
 		this.locationOfShopCatalog = "Sklep/";
 		this.categories = obtaincategories();
 		this.listOfProducts = obtainListOfProducts(categories);
 	}
 	
-	public String getLocationOfShopCatalog() 
-	{
+	public String getLocationOfShopCatalog() {
 		return locationOfShopCatalog;
 	}
 
-	public void setLocationOfShopCatalog(String locationOfShopCatalog) 
-	{
+	public void setLocationOfShopCatalog(String locationOfShopCatalog) {
 		this.locationOfShopCatalog = locationOfShopCatalog;
 	}
 
-	public ArrayList<String> getCategories() 
-	{
+	public ArrayList<String> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(ArrayList<String> categories) 
-	{
+	public void setCategories(ArrayList<String> categories) {
 		this.categories = categories;
 	}
 
-	public TreeMap<String, ArrayList<Product>> getListOfProducts() 
-	{
+	public TreeMap<String, ArrayList<Product>> getListOfProducts() {
 		return listOfProducts;
 	}
 
-	public void setListOfProducts(TreeMap<String, ArrayList<Product>> listOfProducts) 
-	{
+	public void setListOfProducts(TreeMap<String, ArrayList<Product>> listOfProducts) {
 		this.listOfProducts = listOfProducts;
 	}
 
-	public TreeMap<Product, Image> getImagesOfProducts() 
-	{
+	public TreeMap<Product, Image> getImagesOfProducts() {
 		return imagesOfProducts;
 	}
 
-	public void setImagesOfProducts(TreeMap<Product, Image> imagesOfProducts) 
-	{
+	public void setImagesOfProducts(TreeMap<Product, Image> imagesOfProducts) {
 		this.imagesOfProducts = imagesOfProducts;
 	}
 
-	private ArrayList<String> obtaincategories()
-	{
+	private ArrayList<String> obtaincategories() {
 		BufferedReader categoriesReader = null;
 		ArrayList<String> categories = new ArrayList<String>();
 		
-		try 
-		{
+		try {
 			categoriesReader = new BufferedReader(new FileReader(locationOfShopCatalog + "kategorie.txt"));	
 			
 			String categoryName = "";
-			while ((categoryName = categoriesReader.readLine()) != null)
-			{
+			while ((categoryName = categoriesReader.readLine()) != null) {
 				categories.add(categoryName);
 			}
 
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			System.out.println("Nastapil krytyczny blad w dzialaniu aplikacji.");
 			System.exit(-1);
-		}
-		finally 
-		{
-			try 
-			{
+		} finally {
+			try {
 				categoriesReader.close();
-			} 
-			catch (IOException e) 
-			{
+			} catch (IOException e) {
 				System.out.println("Krytyczny blad w dzialaniu aplikacji");
 				System.exit(-1);
 			}
@@ -103,12 +83,10 @@ public class ChooseItems
 		return categories;
 	}
 	
-	private TreeMap<String, ArrayList<Product>> obtainListOfProducts(ArrayList<String> categories)
-	{
+	private TreeMap<String, ArrayList<Product>> obtainListOfProducts(ArrayList<String> categories) {
 		TreeMap<String, ArrayList<Product>> listOfProducts = new TreeMap<String, ArrayList<Product>>();
 		
-		for (String category : categories)
-		{
+		for (String category : categories) {
 			ArrayList<Product> products = obtainProducts(category);
 			listOfProducts.put(category, products);
 		}
@@ -116,42 +94,28 @@ public class ChooseItems
 		return listOfProducts;
 	}
 	
-	private ArrayList<Product> obtainProducts(String category)
-	{
+	private ArrayList<Product> obtainProducts(String category) {
 		ArrayList<Product> products = new ArrayList<Product>();
 		String locationOfCategoryCatalog = locationOfShopCatalog + category + "/";
 		
 		File[] files = new File(locationOfCategoryCatalog).listFiles();
 		if (files != null) {
-			for (int i=0; i<files.length; i++)
-			{
+			for (int i=0; i<files.length; i++) {
 				if (files[i].getName().substring(files[i].getName().length() - 3).equals("txt")) {
-					
 					Product product = obtainProduct(category, files[i]);
 					if (product != null) {
-						// Adding a product to the list of products
 						products.add(product);
-						
-						// Trying to find the image for the given product
 						String imageLocation = locationOfShopCatalog + category + "/" + files[i].getName().substring(0, files[i].getName().length() - 3) + "jpg";
 						Image image = null;
-						try 
-						{
+						try {
 							image = ImageIO.read(new File(imageLocation));
-						} 
-						
-						catch (IOException e) 
-						{
-							try 
-							{
+						} catch (IOException e) {
+							try {
 								image = ImageIO.read(new File(locationOfShopCatalog + category + "/notfound.jpg"));
-							} 
-							catch (IOException e2) 
-							{
+							} catch (IOException e2) {
 								System.exit(-1);
 							}
 						}
-						
 						imagesOfProducts.put(product, image);
 					}
 				}
@@ -161,52 +125,34 @@ public class ChooseItems
 		return products;
 	}
 	
-	private Product obtainProduct(String category, File file)
-	{
+	private Product obtainProduct(String category, File file) {
 		BufferedReader bufferedReader = null;
 		Product product = null;
 		ArrayList<String> information = new ArrayList<String>();
 		
-		try 
-		{
+		try {
 			bufferedReader = new BufferedReader(new FileReader(file));	
-			
 			String info = "";
-			while ((info = bufferedReader.readLine()) != null)
-			{
-				try 
-				{
+			while ((info = bufferedReader.readLine()) != null) {
+				try {
 					info = info.split(":")[1];
 					information.add(info);
-				} 
-				catch (java.lang.ArrayIndexOutOfBoundsException e) 
-				{
+				} catch (java.lang.ArrayIndexOutOfBoundsException e) {
 					// W pliku moga byc dodatkowe entery. Pomijamy te linijki
 				}
 			}
-
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			return null;
-		}
-		finally 
-		{
-			try 
-			{
+		} finally {
+			try {
 				bufferedReader.close();
-			} 
-			catch (IOException e) 
-			{
+			} catch (IOException e) {
 				return null;
 			}
 		}
 		
-		// Deklarujemy obiekt. Jezeli sa zle dane to danego produktu nie bedzie w sklepie
-		try 
-		{
-			switch (category) 
-			{
+		try {
+			switch (category) {
 				case "Ksiazka":
 					product = new Book(information);
 					break;
@@ -214,9 +160,7 @@ public class ChooseItems
 				default:
 					break;
 			}
-		} 
-		catch (java.lang.IndexOutOfBoundsException | java.lang.NumberFormatException e) 
-		{
+		} catch (java.lang.IndexOutOfBoundsException | java.lang.NumberFormatException e) {
 			return null;
 		}
 		

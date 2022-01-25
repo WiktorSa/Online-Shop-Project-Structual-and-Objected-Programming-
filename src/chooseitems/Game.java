@@ -3,7 +3,7 @@ package chooseitems;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game extends Product implements Serializable{
+public class Game extends Product implements Serializable {
 	
 	//for instance RPG
 	private String subCategory;  
@@ -14,7 +14,6 @@ public class Game extends Product implements Serializable{
 	private static final long serialVersionUID = 3L;
 
 	public Game(String category, String name, double price,  String subcategory, String author, String publisher, String premiereDate, String platform) {
-		
 		super(category, name, price);
 		this.subCategory = subcategory;
 		this.author = author;
@@ -24,7 +23,7 @@ public class Game extends Product implements Serializable{
 		
 	}
 	
-	public Game(ArrayList<String> information){
+	public Game(ArrayList<String> information) {
 		
 		super(information.get(0), information.get(1), Double.parseDouble(information.get(2)));
 		this.subCategory = information.get(3);
