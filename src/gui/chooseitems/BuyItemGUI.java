@@ -23,19 +23,16 @@ import chooseitems.Product;
 import client.RegisteredClient;
 import gui.shop.MainGUI;
 
-public class BuyItemGUI
-{
+public class BuyItemGUI{
 	private JPanel jPanel;
 	private JFormattedTextField numberOfItems;
 	private MainGUI mainGUI;
 	
-	public JPanel getPanel()
-	{
+	public JPanel getPanel(){
 		return jPanel;
 	}
 	
-	public BuyItemGUI(MainGUI mainGUI, Product product, Image image)
-	{
+	public BuyItemGUI(MainGUI mainGUI, Product product, Image image){
 		this.mainGUI = mainGUI;
 		
 		jPanel = new JPanel();
@@ -48,8 +45,6 @@ public class BuyItemGUI
 		
 		JPanel insideJPanel = new JPanel();
 		insideJPanel.setLayout(new BoxLayout(insideJPanel, BoxLayout.Y_AXIS));
-		
-		// Polecenie w HTML-u na ladne wyswietlanie tekstu (wstawiam entery we wlasciwych miejsach i umieszczam tekst na srodku)
 		JLabel itemLabel = new JLabel("<html>" + (product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>", SwingConstants.CENTER);
 		itemLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		itemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -63,8 +58,6 @@ public class BuyItemGUI
 		numberOfItems.setMaximumSize(new Dimension(200, 30));
 		numberOfItems.setAlignmentX(Component.CENTER_ALIGNMENT);
 		insideJPanel.add(numberOfItems);
-		
-		// chce miec wolne miejsce pomiedzy JTextField a JButton
 		insideJPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		JButton buyButton = new JButton("Dodaj do koszyka");
@@ -80,9 +73,7 @@ public class BuyItemGUI
 		this.mainGUI.setButtonCursor(jPanel);
 	}
 	
-	public NumberFormatter onlyAllowNaturalNumbersUpTo999()
-	{
-		// Do not allow user to input anything different than integer
+	public NumberFormatter onlyAllowNaturalNumbersUpTo999(){
 		NumberFormat format = NumberFormat.getInstance();
 		format.setGroupingUsed(false);
 		NumberFormatter formatter = new NumberFormatter(format);
@@ -94,17 +85,14 @@ public class BuyItemGUI
 		return formatter;
 	}
 	
-	class BuyItem implements ActionListener
-	{
+	class BuyItem implements ActionListener{
 		private Product product;
 		
-		public BuyItem(Product product) 
-		{
+		public BuyItem(Product product) {
 			this.product = product;
 		}
 		
-		public void actionPerformed(ActionEvent event) 
-		{
+		public void actionPerformed(ActionEvent event) {
 			int numberOfBoughtProducts = Integer.parseInt(numberOfItems.getText());
 			mainGUI.getClient().addAProductToClientBasket(product, numberOfBoughtProducts);
 			if (mainGUI.getClient() instanceof RegisteredClient) {

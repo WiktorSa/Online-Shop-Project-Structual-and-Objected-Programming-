@@ -18,18 +18,15 @@ import javax.swing.border.EmptyBorder;
 import chooseitems.Product;
 import gui.shop.MainGUI;
 
-public class BasketGUI
-{
+public class BasketGUI{
 	private JPanel jPanel;
 	private MainGUI main;
 	
-	public JPanel getJPanel() 
-	{
+	public JPanel getJPanel() {
 		return jPanel;
 	}
 	
-	public BasketGUI(MainGUI main)
-	{
+	public BasketGUI(MainGUI main){
 		this.main = main;
 		
 		Dimension buttonSize = new Dimension(300,40);
@@ -56,8 +53,7 @@ public class BasketGUI
 		
 		Iterator<Entry<Product, Integer>> listOfBoughtItems = this.main.getClient().getBasket().getProducts().entrySet().iterator();
 		
-		while(listOfBoughtItems.hasNext())
-		{
+		while(listOfBoughtItems.hasNext()) {
 			Entry<Product, Integer> entry = listOfBoughtItems.next();
 			
 			JLabel jLabel = new JLabel(entry.getKey().toStringOneLine() + " Lista produktow: " + entry.getValue());
@@ -98,27 +94,22 @@ public class BasketGUI
 	
 	}
 
-	class EraseItems implements ActionListener
-	{
+	class EraseItems implements ActionListener{
 		private Product product;
 		private int maxNumberToErase;
 		
-		public EraseItems(Product product, int maxNumberToErase) 
-		{
+		public EraseItems(Product product, int maxNumberToErase) {
 			this.product = product;
 			this.maxNumberToErase = maxNumberToErase;
 		}
 		
-		public void actionPerformed(ActionEvent event) 
-		{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToEraseItem(product, maxNumberToErase);
 		}
 	}
 	
-	class GiveBasicInfo implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event) 
-		{
+	class GiveBasicInfo implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToSetClientInfo();
 		}
 	}

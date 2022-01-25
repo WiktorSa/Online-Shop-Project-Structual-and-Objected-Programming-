@@ -23,19 +23,16 @@ import chooseitems.Product;
 import client.RegisteredClient;
 import gui.shop.MainGUI;
 
-public class EraseItemGUI 
-{
+public class EraseItemGUI {
 	private MainGUI mainGUI;
 	private JPanel jPanel;
 	private JFormattedTextField numberOfItems;
 	
-	public JPanel getPanel()
-	{
+	public JPanel getPanel(){
 		return jPanel;
 	}
 	
-	public EraseItemGUI(MainGUI mainGUI, Product product, Image image, int maxNumberToErase)
-	{
+	public EraseItemGUI(MainGUI mainGUI, Product product, Image image, int maxNumberToErase){
 		this.mainGUI = mainGUI;
 		
 		jPanel = new JPanel();
@@ -49,7 +46,6 @@ public class EraseItemGUI
 		JPanel insideJPanel = new JPanel();
 		insideJPanel.setLayout(new BoxLayout(insideJPanel, BoxLayout.Y_AXIS));
 		
-		// Polecenie w HTML-u na ladne wyswietlanie tekstu (wstawiam entery we wlasciwych miejsach i umieszczam tekst na srodku)
 		JLabel itemLabel = new JLabel("<html>" + (product.toString()).replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>", SwingConstants.CENTER);
 		itemLabel.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		itemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -63,8 +59,6 @@ public class EraseItemGUI
 		numberOfItems.setMaximumSize(new Dimension(200, 30));
 		numberOfItems.setAlignmentX(Component.CENTER_ALIGNMENT);
 		insideJPanel.add(numberOfItems);
-		
-		// chce miec wolne miejsce pomiedzy JTextField a JButton
 		insideJPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		JButton buyButton = new JButton("Skasuj z koszyka");

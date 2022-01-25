@@ -23,22 +23,17 @@ import chooseitems.Book;
 import chooseitems.Product;
 import gui.shop.MainGUI;
 
-public class SelectingItemsGUI
-{
+public class SelectingItemsGUI{
 	private JPanel outsidejPanel;
 	private MainGUI main;
 	
-	public JPanel getPanel() 
-	{
+	public JPanel getPanel() {
 		return outsidejPanel;
 	}
 	
-	public SelectingItemsGUI(MainGUI main, ChooseItems chooseItems) 
-	{
+	public SelectingItemsGUI(MainGUI main, ChooseItems chooseItems) {
 		this.main = main;
-		// Lista wszystkich produktow
 		ArrayList<Product> items = chooseItems.getListOfProducts().get("Ksiazka");
-		// Lista obrazow do produktow
 		TreeMap<Product, Image> images = chooseItems.getImagesOfProducts();
 		
 		outsidejPanel = new JPanel();
@@ -51,14 +46,12 @@ public class SelectingItemsGUI
 		Iterator<Product> productsIterator = items.iterator();
 		
 		allItemsJPanel.add(Box.createRigidArea(new Dimension(0,10)));
-		while (productsIterator.hasNext())
-		{
+		while (productsIterator.hasNext()){
 			// There are three items in a row
 			JPanel itemsJPanel = new JPanel();
 			itemsJPanel.setLayout(new BoxLayout(itemsJPanel, BoxLayout.X_AXIS));
 			
-			for(int j = 0; j<5; j++) 
-			{
+			for(int j = 0; j<5; j++) {
 				Product product = productsIterator.next();
 				Image image = images.get(product);
 				
@@ -107,24 +100,20 @@ public class SelectingItemsGUI
 		allItemsJPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		
 		JScrollPane jScrollPane = new JScrollPane(allItemsJPanel);
-		jScrollPane.setAutoscrolls(true); // allows to autoscroll through items
+		jScrollPane.setAutoscrolls(true);
 		outsidejPanel.add(jScrollPane);
 		
 		this.main.setButtonCursor(outsidejPanel);
 	}
 	
-	class BuyItems implements ActionListener
-	{
+	class BuyItems implements ActionListener{
 		private Product product;
 	
-		// Zeby potem moc latwo przekazac product i image do kupna pojedynczego przedmiotu
-		public BuyItems(Product product, Image image) 
-		{
+		public BuyItems(Product product, Image image) {
 			this.product = product;
 		}
 		
-		public void actionPerformed(ActionEvent event) 
-		{
+		public void actionPerformed(ActionEvent event) {
 			main.changeLayoutToBuyItem(product);
 		}
 	}
